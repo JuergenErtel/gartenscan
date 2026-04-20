@@ -7,6 +7,7 @@ import { HistoryEntry } from "@/components/features/history/HistoryEntry";
 import { Chip } from "@/components/ui/Chip";
 import { MOCK_SCANS } from "@/lib/mock/scans";
 import type { Category } from "@/domain/types";
+import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
 type FilterType = "ALL" | Category | "URGENT";
 
@@ -58,7 +59,8 @@ export default function HistoryPage() {
   }, [filtered]);
 
   return (
-    <AppShell>
+    <OnboardingGuard>
+      <AppShell>
       <div className="px-5 pt-8 safe-top">
         <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted mb-2">
           Mein Verlauf
@@ -146,5 +148,6 @@ export default function HistoryPage() {
         </div>
       </section>
     </AppShell>
+    </OnboardingGuard>
   );
 }

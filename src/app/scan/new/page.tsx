@@ -18,6 +18,7 @@ import { Chip } from "@/components/ui/Chip";
 import { BetaBadge } from "@/components/ui/BetaBadge";
 import type { Category } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
 // Feature-Flag: Echte Kamera-/Foto-Upload-UI ist für den Beta-Launch deaktiviert.
 // Wenn der echte Vision-Provider kommt, auf `true` setzen und die Demo-Auswahl entfernen.
@@ -48,10 +49,11 @@ const demoEntries = [
 ];
 
 export default function ScanNewPage() {
-  if (ENABLE_PHOTO_UPLOAD) {
-    return <PhotoCaptureMode />;
-  }
-  return <DemoPickerMode />;
+  return (
+    <OnboardingGuard>
+      {ENABLE_PHOTO_UPLOAD ? <PhotoCaptureMode /> : <DemoPickerMode />}
+    </OnboardingGuard>
+  );
 }
 
 function DemoPickerMode() {

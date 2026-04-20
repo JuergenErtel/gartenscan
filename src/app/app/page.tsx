@@ -9,6 +9,7 @@ import { MOCK_PLANTS, MOCK_TASKS } from "@/lib/mock/garden";
 import { fetchWeatherForPLZ } from "@/lib/weather/openmeteo";
 import { USER_PROFILE } from "@/lib/profile";
 import { Sparkles, ArrowRight, Bell } from "lucide-react";
+import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
 export const revalidate = 1800; // refresh weather every 30 min
 
@@ -26,7 +27,8 @@ export default async function DashboardPage() {
     hour < 11 ? "Guten Morgen" : hour < 18 ? "Hallo" : "Guten Abend";
 
   return (
-    <AppShell>
+    <OnboardingGuard>
+      <AppShell>
       <div className="px-5 pt-6 pb-2 safe-top">
         <div className="flex items-start justify-between mb-1">
           <div>
@@ -177,5 +179,6 @@ export default async function DashboardPage() {
         </Link>
       </section>
     </AppShell>
+    </OnboardingGuard>
   );
 }

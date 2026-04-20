@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { UrgencyIndicator } from "@/components/ui/UrgencyIndicator";
 import { getContentById } from "@/content";
 import type { EffortLevel, TreatmentMethod } from "@/domain/types";
+import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
 export default async function ActionsPage({
   params,
@@ -21,6 +22,7 @@ export default async function ActionsPage({
   const totalMin = entry.methods.reduce((s, m) => s + m.durationMin, 0);
 
   return (
+    <OnboardingGuard>
     <div className="min-h-screen bg-sage-50 pb-10">
       <ScreenHeader
         back={`/scan/${entry.id}`}
@@ -133,6 +135,7 @@ export default async function ActionsPage({
         </Button>
       </section>
     </div>
+    </OnboardingGuard>
   );
 }
 

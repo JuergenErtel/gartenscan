@@ -4,6 +4,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { PlantTile } from "@/components/features/garden/PlantTile";
 import { MOCK_PLANTS } from "@/lib/mock/garden";
 import { Button } from "@/components/ui/Button";
+import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
 export default function GardenPage() {
   const critical = MOCK_PLANTS.filter((p) => p.healthStatus === "CRITICAL");
@@ -13,7 +14,8 @@ export default function GardenPage() {
   );
 
   return (
-    <AppShell>
+    <OnboardingGuard>
+      <AppShell>
       <div className="px-5 pt-8 safe-top">
         <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted mb-2">
           Mein Garten · München
@@ -79,5 +81,6 @@ export default function GardenPage() {
         </Button>
       </section>
     </AppShell>
+    </OnboardingGuard>
   );
 }

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { HistoryEntry } from "@/components/features/history/HistoryEntry";
 import { Badge } from "@/components/ui/Badge";
 import { formatRelativeDate } from "@/lib/utils";
+import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
 const statusLabel = {
   HEALTHY: { label: "Gesund", tone: "success" as const },
@@ -30,6 +31,7 @@ export default async function PlantDetailPage({
   const status = statusLabel[plant.healthStatus];
 
   return (
+    <OnboardingGuard>
     <div className="min-h-screen bg-sage-50 pb-20">
       <div className="relative h-[50vh] min-h-[380px] w-full overflow-hidden">
         <Image
@@ -112,6 +114,7 @@ export default async function PlantDetailPage({
         </Button>
       </section>
     </div>
+    </OnboardingGuard>
   );
 }
 

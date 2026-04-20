@@ -8,6 +8,7 @@ import { Chip } from "@/components/ui/Chip";
 import { COACH_INITIAL, COACH_SUGGESTIONS, findCoachResponse } from "@/lib/mock/coach";
 import type { CoachMessage } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
 export default function CoachPage() {
   const [messages, setMessages] = useState<CoachMessage[]>(COACH_INITIAL);
@@ -48,7 +49,8 @@ export default function CoachPage() {
   };
 
   return (
-    <AppShell>
+    <OnboardingGuard>
+      <AppShell>
       {/* Header */}
       <div className="sticky top-0 z-20 bg-sage-50/90 backdrop-blur-md border-b border-sage-200/60 safe-top">
         <div className="flex items-center gap-3 px-5 py-3">
@@ -144,6 +146,7 @@ export default function CoachPage() {
         </div>
       </div>
     </AppShell>
+    </OnboardingGuard>
   );
 }
 

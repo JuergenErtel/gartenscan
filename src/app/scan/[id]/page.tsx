@@ -19,6 +19,7 @@ import { PersonalizedSafetyBanner } from "@/components/features/diagnosis/Person
 import { PersonalizedPrimaryAction } from "@/components/features/diagnosis/PersonalizedPrimaryAction";
 import { CategoryLabel } from "@/components/ui/CategoryIcon";
 import { getContentById } from "@/content";
+import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
 export default async function ScanResultPage({
   params,
@@ -35,6 +36,7 @@ export default async function ScanResultPage({
   const alternatives = entry.confusionRisk.slice(0, 2);
 
   return (
+    <OnboardingGuard>
     <div className="min-h-screen bg-sage-50 pb-28">
       {/* Hero with photo */}
       <div className="relative h-[55vh] min-h-[400px] w-full overflow-hidden">
@@ -262,6 +264,7 @@ export default async function ScanResultPage({
         </div>
       </div>
     </div>
+    </OnboardingGuard>
   );
 }
 
