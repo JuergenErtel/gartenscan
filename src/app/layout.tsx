@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Fraunces } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { Footer } from "@/components/layout/Footer";
+import { ConditionalFooter } from "@/components/layout/ConditionalFooter";
 import "./globals.css";
 
 const inter = Inter({
@@ -85,7 +85,7 @@ export default function RootLayout({
         }
       >
         {children}
-        <Footer />
+        <ConditionalFooter />
         <Analytics />
       </body>
     </html>
