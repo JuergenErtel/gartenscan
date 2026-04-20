@@ -1,0 +1,121 @@
+import type { ContentEntry } from "@/domain/types";
+import { CONTENT_VERSION, SOURCES } from "../_shared";
+
+export const hortensie: ContentEntry = {
+  id: "plant_hortensie",
+  category: "PLANT",
+  name: "Bauernhortensie",
+  scientificName: "Hydrangea macrophylla",
+  aliases: ["Gartenhortensie", "Hortensie"],
+  description:
+    "Einer der beliebtesten Zierstrauch Deutschlands. Besonderheit: Blütenfarbe hängt vom Boden-pH ab. Blau bei sauren Böden (pH <5,5), rosa bei neutralen bis alkalischen. Relativ pflegeleicht, aber empfindlich bei Wassermangel.",
+  traits: [
+    "Große, runde oder gewölbte Blütenstände",
+    "Blüten blau, rosa, weiß oder purpur",
+    "Blätter groß, gezähnt, gegenständig",
+    "Wuchshöhe 1–2 m, breit ausladend",
+    "Blütezeit Juni bis Oktober",
+  ],
+  significance: "BENEFIT",
+  defaultUrgency: "GONE",
+  habitat: "Halbschattig, windgeschützt, gleichmäßig feuchter humoser Boden",
+  seasons: ["SPRING", "SUMMER", "AUTUMN"],
+  areas: ["GARDEN", "BED", "POTS"],
+  confusionRisk: [
+    {
+      name: "Rispenhortensie (Hydrangea paniculata)",
+      note: "Kegelförmige statt runde Blütenstände, deutlich robuster, Rückschnitt anders.",
+    },
+  ],
+  safety: {
+    toxicToChildren: true,
+    toxicToPets: ["DOG", "CAT"],
+    allergyRisk: false,
+    invasive: false,
+    notes:
+      "Alle Pflanzenteile enthalten geringe Mengen blausäurebildender Glykoside. Verzehr größerer Mengen führt zu Übelkeit bei Kindern und Haustieren. Berührung unbedenklich.",
+  },
+  methods: [
+    {
+      id: "m_giessen",
+      type: "CULTURAL",
+      style: ["ORGANIC", "BALANCED", "EFFECTIVE"],
+      title: "Richtig gießen – der Name sagt es",
+      description:
+        "'Hydro' = Wasser. Hortensien sind Wasser-intensiv. Bei Trockenheit hängen Blätter binnen Stunden, bei anhaltender Trockenheit gehen Blüten verloren.",
+      steps: [
+        "Bei trockenem Wetter alle 2–3 Tage durchdringend wässern",
+        "Morgens gießen, 10–15 l pro m²",
+        "Nur am Boden, nicht über die Blüten",
+        "Mulchen mit Rindenhumus hält Feuchtigkeit",
+        "Regenwasser bevorzugen (kalkarm)",
+      ],
+      effort: "EASY",
+      durationMin: 15,
+      timeframe: "THIS_WEEK",
+      ecoScore: 5,
+      successRate: "HIGH",
+      minExperience: "BEGINNER",
+      safeForChildren: true,
+      safeForPets: true,
+      costEur: "€",
+    },
+    {
+      id: "m_rueckschnitt",
+      type: "CULTURAL",
+      style: ["ORGANIC", "BALANCED", "EFFECTIVE"],
+      title: "Rückschnitt im Frühjahr",
+      description:
+        "Bauernhortensie blüht am VORJÄHRIGEN Holz – darum NICHT stark schneiden. Nur ausputzen.",
+      steps: [
+        "Im März/April, nach dem Frost",
+        "Alte Blütenstände direkt über dem obersten neuen Knospenpaar abschneiden",
+        "Abgestorbene Triebe bodennah entfernen",
+        "Nicht in den Stock schneiden – das kostet die ganze Blüte",
+      ],
+      effort: "EASY",
+      durationMin: 30,
+      timeframe: "SEASONAL",
+      ecoScore: 5,
+      successRate: "HIGH",
+      minExperience: "BEGINNER",
+      safeForChildren: true,
+      safeForPets: true,
+      costEur: "€",
+    },
+    {
+      id: "m_blaufärbung",
+      type: "CULTURAL",
+      style: ["ORGANIC", "BALANCED"],
+      title: "Blaufärbung durch sauren Boden",
+      description:
+        "Die Hortensie zieht Aluminium nur bei niedrigem pH auf – was zu blauen Blüten führt.",
+      steps: [
+        "Mit Rhododendronerde oder Nadelkompost den Boden ansäuern",
+        "Alle 2 Wochen mit 'Alaun' (Kalialaun, im Fachhandel) gießen",
+        "pH-Wert unter 5,5 halten (mit Teststreifen messen)",
+        "Keine kalkhaltigen Dünger verwenden",
+      ],
+      effort: "MEDIUM",
+      durationMin: 20,
+      timeframe: "SEASONAL",
+      ecoScore: 4,
+      successRate: "MEDIUM",
+      minExperience: "INTERMEDIATE",
+      safeForChildren: true,
+      safeForPets: true,
+      costEur: "€€",
+    },
+  ],
+  prevention: [
+    "Standort halbschattig wählen – volle Südsonne trocknet zu schnell aus.",
+    "Windgeschützt pflanzen – junge Blätter sind frostempfindlich.",
+    "Nicht in der Nähe von Beton oder frisch gekalkten Mauern (pH-Wert-Problem).",
+    "Haustiere und Kleinkinder vom Verzehr abhalten – leicht giftig.",
+  ],
+  sources: [SOURCES.GPP],
+  contentConfidence: "HIGH",
+  version: CONTENT_VERSION,
+  imageUrl:
+    "https://upload.wikimedia.org/wikipedia/commons/7/7f/Hydrangea_macrophylla_01.jpg",
+};

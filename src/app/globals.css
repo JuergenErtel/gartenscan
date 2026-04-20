@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@theme {
+  /* ===== Brand Colors ===== */
+  --color-forest-900: #1c2a21;
+  --color-forest-800: #23352a;
+  --color-forest-700: #2e4a38;
+  --color-forest-600: #3c5d47;
+  --color-moss-600: #4d6c4a;
+  --color-moss-500: #5a7a56;
+  --color-moss-400: #7a9673;
+  --color-sage-300: #aec19d;
+  --color-sage-200: #c8d5bb;
+  --color-sage-100: #dfe6d3;
+  --color-sage-50: #f3f1ea;
+  --color-paper: #faf8f3;
+  --color-paper-dim: #f1ede4;
+
+  /* Accents */
+  --color-clay-600: #9f5230;
+  --color-clay-500: #b8623a;
+  --color-clay-400: #cf8463;
+  --color-clay-100: #f2dfd2;
+  --color-sun-500: #c49a3e;
+  --color-sun-400: #d4a84b;
+  --color-sun-100: #f5e8c4;
+  --color-berry-600: #7a2e2e;
+  --color-berry-500: #8a3a3a;
+  --color-berry-100: #efd6d6;
+  --color-sky-400: #6d8e9f;
+  --color-sky-300: #8ba7b8;
+  --color-sky-100: #dbe5eb;
+
+  /* Ink shortcuts */
+  --color-ink: #1c2a21;
+  --color-ink-muted: #5c6b60;
+  --color-ink-soft: #8a968d;
+
+  /* Fonts */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+
+  /* Radius scale */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-soft: 0 2px 16px rgba(28, 42, 33, 0.06);
+  --shadow-card: 0 6px 28px rgba(28, 42, 33, 0.08);
+  --shadow-float: 0 12px 40px rgba(28, 42, 33, 0.16);
+}
+
+/* ===== Base ===== */
+html,
+body {
+  background: var(--color-sage-50);
+  color: var(--color-forest-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--color-sage-200);
+  color: var(--color-forest-900);
+}
+
+/* ===== Typography helpers ===== */
+.font-serif {
+  font-family: var(--font-serif);
+  font-feature-settings: "ss01", "ss02";
+  letter-spacing: -0.01em;
+}
+
+.display-xl {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 2.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.display-l {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.display-m {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.micro {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ===== Background textures ===== */
+.bg-paper {
+  background: var(--color-paper);
+}
+.bg-paper-dim {
+  background: var(--color-paper-dim);
+}
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(rgba(28, 42, 33, 0.04) 1px, transparent 1px);
+  background-size: 3px 3px;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+
+/* ===== Motion ===== */
+.anim-breath {
+  animation: breath 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+@keyframes breath {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+.anim-pulse-ring {
+  animation: pulseRing 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(138, 58, 58, 0.35); }
+  100% { box-shadow: 0 0 0 14px rgba(138, 58, 58, 0); }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(200, 213, 187, 0.2) 0%,
+    rgba(200, 213, 187, 0.5) 50%,
+    rgba(200, 213, 187, 0.2) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ===== Scrollbars (subtle) ===== */
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ===== Safe Area ===== */
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+.safe-top {
+  padding-top: max(env(safe-area-inset-top), 0.5rem);
+}
