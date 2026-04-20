@@ -41,7 +41,7 @@ export default function DatenschutzPage() {
             <br />
             Geschäftsführer: Carsten Hater, Jürgen Ertel
             <br />
-            E-Mail: [EMAIL-ADRESSE]
+            E-Mail: info@codingbrothers.de
           </p>
         </section>
 
@@ -121,7 +121,7 @@ export default function DatenschutzPage() {
             Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch gegen
             die Verarbeitung (Art. 15–21 DSGVO). Zudem steht dir ein
             Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu. Für Anfragen
-            wende dich an: [EMAIL-ADRESSE]
+            wende dich an: info@codingbrothers.de
           </p>
         </section>
 

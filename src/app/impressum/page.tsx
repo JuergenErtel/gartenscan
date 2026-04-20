@@ -52,7 +52,7 @@ export default function ImpressumPage() {
             Kontakt
           </h2>
           <p>
-            E-Mail: [EMAIL-ADRESSE]
+            E-Mail: info@codingbrothers.de
             <br />
             Web: www.codingbrothers.de
           </p>
