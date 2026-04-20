@@ -1,200 +1,199 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Home, Trees, Flower2, PocketKnife, Sprout, Sun } from "lucide-react";
-import { OnboardingLayout } from "@/components/features/onboarding/OnboardingLayout";
-import { OnboardingFooter } from "@/components/features/onboarding/OnboardingFooter";
-import { onboardingStorage } from "@/lib/storage/profile";
-import { track } from "@/domain/analytics/tracker";
-import { EVENT } from "@/domain/analytics/events";
-import type { GardenArea, PetType } from "@/domain/types";
-import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { OnboardingShell } from "@/components/features/onboarding/OnboardingShell";
+import { OnboardingHeadline } from "@/components/features/onboarding/OnboardingHeadline";
+import { ChipGroup } from "@/components/features/onboarding/ChipGroup";
+import { SegmentedControl } from "@/components/features/onboarding/SegmentedControl";
+import { YesNoToggle } from "@/components/features/onboarding/YesNoToggle";
+import { useOnboarding } from "@/hooks/useOnboarding";
+import {
+  trackOnboardingStepViewed,
+  trackProfileCompleted,
+} from "@/domain/analytics/onboarding";
+import type {
+  GardenArea,
+  SolutionStyle,
+  ExperienceLevel,
+} from "@/domain/types";
 
-const areas: { id: GardenArea; label: string; Icon: React.ElementType }[] = [
-  { id: "GARDEN", label: "Garten", Icon: Trees },
-  { id: "LAWN", label: "Rasen", Icon: Sprout },
-  { id: "BED", label: "Beet", Icon: Flower2 },
-  { id: "BALCONY", label: "Balkon", Icon: Home },
-  { id: "TERRACE", label: "Terrasse", Icon: Sun },
-  { id: "POTS", label: "Topfpflanzen", Icon: PocketKnife },
+const AREA_OPTIONS: Array<{ value: GardenArea; label: string }> = [
+  { value: "GARDEN", label: "Garten" },
+  { value: "LAWN", label: "Rasen" },
+  { value: "BED", label: "Beet" },
+  { value: "BALCONY", label: "Balkon" },
+  { value: "TERRACE", label: "Terrasse" },
+  { value: "POTS", label: "Topfpflanzen" },
+];
+
+const STYLE_OPTIONS: Array<{ value: SolutionStyle; label: string }> = [
+  { value: "ORGANIC", label: "Bio" },
+  { value: "BALANCED", label: "Ausgewogen" },
+  { value: "EFFECTIVE", label: "Schnell" },
+];
+
+const EXP_OPTIONS: Array<{ value: ExperienceLevel; label: string }> = [
+  { value: "BEGINNER", label: "Anfänger" },
+  { value: "INTERMEDIATE", label: "Fortgeschritten" },
 ];
 
 export default function GardenPage() {
-  const router = useRouter();
-  const [plz, setPlz] = useState("");
-  const [areaSet, setAreaSet] = useState<Set<GardenArea>>(new Set());
+  const { advance, state } = useOnboarding();
+  const [areas, setAreas] = useState<GardenArea[]>([]);
   const [hasChildren, setHasChildren] = useState<boolean | null>(null);
-  const [pets, setPets] = useState<Set<PetType>>(new Set());
+  const [hasPets, setHasPets] = useState<boolean | null>(null);
+  const [style, setStyle] = useState<SolutionStyle | null>(null);
+  const [exp, setExp] = useState<ExperienceLevel | null>(null);
+  const [showAreaError, setShowAreaError] = useState(false);
 
-  const toggleArea = (a: GardenArea) => {
-    const next = new Set(areaSet);
-    next.has(a) ? next.delete(a) : next.add(a);
-    setAreaSet(next);
-  };
+  useEffect(() => {
+    trackOnboardingStepViewed("GARDEN");
+  }, []);
 
-  const togglePet = (p: PetType) => {
-    const next = new Set(pets);
-    next.has(p) ? next.delete(p) : next.add(p);
-    setPets(next);
-  };
+  useEffect(() => {
+    if (!state?.profile) return;
+    const p = state.profile;
+    if (p.areas) setAreas(p.areas);
+    if (typeof p.hasChildren === "boolean") setHasChildren(p.hasChildren);
+    if (typeof p.hasPets === "boolean") setHasPets(p.hasPets);
+    if (p.solutionStyle) setStyle(p.solutionStyle);
+    if (p.experience) setExp(p.experience);
+  }, [state]);
 
-  const plzValid = /^\d{5}$/.test(plz);
-  const canContinue = plzValid && hasChildren !== null;
+  function toggleArea(v: GardenArea) {
+    setAreas((prev) =>
+      prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v]
+    );
+    setShowAreaError(false);
+  }
 
-  const onContinue = () => {
-    if (!canContinue) return;
-    const existing = onboardingStorage.get();
-    onboardingStorage.set({
-      currentStep: "STYLE",
-      completedSteps: [...(existing?.completedSteps ?? []), "GARDEN"],
-      profile: {
-        ...(existing?.profile ?? {}),
-        postalCode: plz,
-        areas: Array.from(areaSet),
-        hasChildren: !!hasChildren,
-        pets: Array.from(pets),
-      },
-      startedAt: existing?.startedAt ?? new Date(),
+  function onSubmit() {
+    if (areas.length === 0) {
+      setShowAreaError(true);
+      return;
+    }
+    const resolvedStyle: SolutionStyle = style ?? "BALANCED";
+    const resolvedExp: ExperienceLevel = exp ?? "BEGINNER";
+    const resolvedHasChildren = hasChildren ?? false;
+    const resolvedHasPets = hasPets ?? false;
+
+    trackProfileCompleted({
+      areas,
+      hasChildren: resolvedHasChildren,
+      hasPets: resolvedHasPets,
+      solutionStyle: resolvedStyle,
+      experience: resolvedExp,
     });
 
-    track(EVENT.ONBOARDING_STEP_COMPLETED, {
-      step: "garden",
-      plz: plz,
-      areas: areaSet.size,
-      has_children: !!hasChildren,
-      has_pets: pets.size > 0,
+    advance("GARDEN", {
+      areas,
+      hasChildren: resolvedHasChildren,
+      hasPets: resolvedHasPets,
+      pets: resolvedHasPets ? ["DOG"] : [],
+      solutionStyle: resolvedStyle,
+      experience: resolvedExp,
     });
-
-    router.push("/onboarding/style");
-  };
+  }
 
   return (
-    <OnboardingLayout step={3} totalSteps={6}>
-      <div className="px-5 pt-8">
-        <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-ink-muted mb-2">
-          Schritt 2 von 5
-        </p>
-        <h1 className="font-serif text-[32px] leading-[1.1] tracking-tight text-forest-900 font-normal">
-          Erzähl uns von deinem Garten
-        </h1>
-        <p className="mt-3 text-[14px] text-ink-muted leading-relaxed">
-          Diese Infos verwenden wir ausschließlich, um dir passende Empfehlungen zu geben.
-        </p>
+    <OnboardingShell step={3}>
+      <div className="pt-6 flex-1 pb-6">
+        <OnboardingHeadline
+          title="Erzähl uns kurz von dir."
+          subtitle="Damit unsere Empfehlungen zu dir passen."
+        />
+
+        <section className="mb-8">
+          <h2 className="text-[13px] font-semibold uppercase tracking-wide text-ink-muted mb-3">
+            Dein Garten
+          </h2>
+          <div className="rounded-2xl bg-paper p-5 space-y-5 border border-sage-200/60">
+            <div>
+              <label className="block text-[13px] font-medium text-forest-900 mb-2">
+                Bereich
+              </label>
+              <ChipGroup
+                options={AREA_OPTIONS}
+                selected={areas}
+                onToggle={toggleArea}
+              />
+              {showAreaError && (
+                <p className="mt-2 text-[12px] text-clay-600">
+                  Wähle mindestens einen Bereich
+                </p>
+              )}
+            </div>
+            <Row label="Kinder im Haushalt">
+              <YesNoToggle
+                value={hasChildren}
+                onChange={setHasChildren}
+                ariaLabel="Kinder im Haushalt"
+              />
+            </Row>
+            <Row label="Haustiere">
+              <YesNoToggle
+                value={hasPets}
+                onChange={setHasPets}
+                ariaLabel="Haustiere"
+              />
+            </Row>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-[13px] font-semibold uppercase tracking-wide text-ink-muted mb-3">
+            Deine Vorlieben
+          </h2>
+          <div className="rounded-2xl bg-paper p-5 space-y-5 border border-sage-200/60">
+            <div>
+              <label className="block text-[13px] font-medium text-forest-900 mb-2">
+                Lösungsart
+              </label>
+              <SegmentedControl
+                options={STYLE_OPTIONS}
+                value={style}
+                onChange={setStyle}
+              />
+            </div>
+            <div>
+              <label className="block text-[13px] font-medium text-forest-900 mb-2">
+                Erfahrung
+              </label>
+              <SegmentedControl
+                options={EXP_OPTIONS}
+                value={exp}
+                onChange={setExp}
+              />
+            </div>
+          </div>
+        </section>
       </div>
 
-      {/* PLZ */}
-      <section className="px-5 pt-8">
-        <label className="block text-[11px] uppercase tracking-[0.12em] font-semibold text-forest-700 mb-2">
-          Postleitzahl <span className="text-berry-500">*</span>
-        </label>
-        <input
-          type="text"
-          inputMode="numeric"
-          maxLength={5}
-          placeholder="z.B. 80331"
-          value={plz}
-          onChange={(e) => setPlz(e.target.value.replace(/\D/g, ""))}
-          className="w-full h-14 px-4 rounded-[14px] bg-paper border-2 border-sage-200 focus:border-forest-700 focus:outline-none text-[18px] font-medium text-forest-900 placeholder:text-ink-soft tabular-nums tracking-wide"
-        />
-        <p className="text-[12px] text-ink-muted mt-2">
-          Aktiviert sofort echtes Wetter + Klimazone-spezifische Tipps für deinen Standort.
-        </p>
-      </section>
+      <div className="pt-2">
+        <button
+          type="button"
+          onClick={onSubmit}
+          className="flex w-full items-center justify-center rounded-full bg-clay-500 hover:bg-clay-600 text-paper text-[15px] font-semibold transition active:scale-[0.98]"
+          style={{ height: 52 }}
+        >
+          Weiter
+        </button>
+      </div>
+    </OnboardingShell>
+  );
+}
 
-      {/* Areas */}
-      <section className="px-5 pt-8">
-        <label className="block text-[11px] uppercase tracking-[0.12em] font-semibold text-forest-700 mb-3">
-          Welche Bereiche hast du?
-        </label>
-        <div className="grid grid-cols-3 gap-2">
-          {areas.map((a) => {
-            const active = areaSet.has(a.id);
-            return (
-              <button
-                key={a.id}
-                onClick={() => toggleArea(a.id)}
-                className={cn(
-                  "flex flex-col items-center gap-1.5 rounded-[14px] p-3.5 transition",
-                  active
-                    ? "bg-forest-700 text-paper"
-                    : "bg-paper ring-1 ring-sage-200 text-forest-800 hover:ring-forest-700/40"
-                )}
-              >
-                <a.Icon className="h-5 w-5" strokeWidth={1.75} />
-                <span className="text-[12px] font-medium">{a.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Children */}
-      <section className="px-5 pt-8">
-        <label className="block text-[11px] uppercase tracking-[0.12em] font-semibold text-forest-700 mb-3">
-          Kinder im Haushalt? <span className="text-berry-500">*</span>
-        </label>
-        <div className="grid grid-cols-2 gap-2">
-          {[
-            { v: true, label: "Ja" },
-            { v: false, label: "Nein" },
-          ].map((o) => (
-            <button
-              key={String(o.v)}
-              onClick={() => setHasChildren(o.v)}
-              className={cn(
-                "h-12 rounded-[14px] text-[14px] font-medium transition",
-                hasChildren === o.v
-                  ? "bg-forest-700 text-paper"
-                  : "bg-paper ring-1 ring-sage-200 text-forest-800 hover:ring-forest-700/40"
-              )}
-            >
-              {o.label}
-            </button>
-          ))}
-        </div>
-        <p className="text-[11px] text-ink-muted mt-2">
-          Wir warnen dich bei giftigen Pflanzen und ungeeigneten Mitteln.
-        </p>
-      </section>
-
-      {/* Pets */}
-      <section className="px-5 pt-8">
-        <label className="block text-[11px] uppercase tracking-[0.12em] font-semibold text-forest-700 mb-3">
-          Haustiere?
-        </label>
-        <div className="grid grid-cols-3 gap-2">
-          {(
-            [
-              { id: "DOG" as PetType, label: "Hund" },
-              { id: "CAT" as PetType, label: "Katze" },
-              { id: "OTHER" as PetType, label: "Andere" },
-            ] as const
-          ).map((p) => {
-            const active = pets.has(p.id);
-            return (
-              <button
-                key={p.id}
-                onClick={() => togglePet(p.id)}
-                className={cn(
-                  "h-12 rounded-[14px] text-[14px] font-medium transition",
-                  active
-                    ? "bg-forest-700 text-paper"
-                    : "bg-paper ring-1 ring-sage-200 text-forest-800 hover:ring-forest-700/40"
-                )}
-              >
-                {p.label}
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      <OnboardingFooter
-        primaryDisabled={!canContinue}
-        primaryOnClick={onContinue}
-        hint={!plzValid ? "5-stellige PLZ für echte regionale Tipps" : undefined}
-      />
-    </OnboardingLayout>
+function Row({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <span className="text-[14px] font-medium text-forest-900">{label}</span>
+      {children}
+    </div>
   );
 }
