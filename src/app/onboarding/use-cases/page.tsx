@@ -1,115 +1,117 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Leaf, Sprout, Bug, Microscope, Sparkles, Check } from "lucide-react";
-import { OnboardingLayout } from "@/components/features/onboarding/OnboardingLayout";
-import { OnboardingFooter } from "@/components/features/onboarding/OnboardingFooter";
-import { onboardingStorage } from "@/lib/storage/profile";
-import { track } from "@/domain/analytics/tracker";
-import { EVENT } from "@/domain/analytics/events";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Leaf,
+  Sprout,
+  Bug,
+  Stethoscope,
+  Lightbulb,
+  Sparkles,
+} from "lucide-react";
+import { OnboardingShell } from "@/components/features/onboarding/OnboardingShell";
+import { OnboardingHeadline } from "@/components/features/onboarding/OnboardingHeadline";
+import { SelectableCard } from "@/components/features/onboarding/SelectableCard";
+import { useOnboarding } from "@/hooks/useOnboarding";
+import {
+  trackOnboardingStepViewed,
+  trackGoalsSelected,
+} from "@/domain/analytics/onboarding";
 import type { UseCase } from "@/domain/types";
-import { cn } from "@/lib/utils";
 
-const useCases: { id: UseCase; title: string; desc: string; Icon: React.ElementType; accent: string }[] = [
-  { id: "PLANTS", title: "Pflanzen erkennen", desc: "Was wächst da? Wie pflege ich es richtig?", Icon: Leaf, accent: "moss-500" },
-  { id: "WEEDS", title: "Unkraut entfernen", desc: "Ist das nützlich oder weg damit?", Icon: Sprout, accent: "sun-500" },
-  { id: "PESTS", title: "Schädlinge bekämpfen", desc: "Läuse, Schnecken, Käfer – was hilft?", Icon: Bug, accent: "clay-500" },
-  { id: "DISEASES", title: "Krankheiten verstehen", desc: "Flecken, Belag, Welke – was ist das?", Icon: Microscope, accent: "berry-500" },
-  { id: "IMPROVE", title: "Garten verbessern", desc: "Nächste Schritte für einen besseren Garten.", Icon: Sparkles, accent: "sky-400" },
+const OPTIONS: Array<{ id: UseCase; label: string; icon: typeof Leaf }> = [
+  { id: "PLANTS", label: "Pflanzen erkennen", icon: Leaf },
+  { id: "WEEDS", label: "Unkraut", icon: Sprout },
+  { id: "PESTS", label: "Schädlinge", icon: Bug },
+  { id: "DISEASES", label: "Krankheiten", icon: Stethoscope },
+  { id: "IMPROVE", label: "Gartenideen", icon: Lightbulb },
+  { id: "ALL_OF_IT", label: "Alles davon", icon: Sparkles },
 ];
 
 export default function UseCasesPage() {
-  const router = useRouter();
-  const [selected, setSelected] = useState<Set<UseCase>>(new Set());
+  const { advance, state } = useOnboarding();
+  const [selected, setSelected] = useState<UseCase[]>([]);
 
-  const toggle = (id: UseCase) => {
-    const next = new Set(selected);
-    if (next.has(id)) next.delete(id);
-    else next.add(id);
-    setSelected(next);
-  };
+  useEffect(() => {
+    trackOnboardingStepViewed("USE_CASES");
+  }, []);
 
-  const onContinue = () => {
-    const useCases = selected.size > 0 ? Array.from(selected) : (["PLANTS", "WEEDS", "PESTS", "DISEASES", "IMPROVE"] as UseCase[]);
+  useEffect(() => {
+    if (state?.profile.useCases) {
+      setSelected(state.profile.useCases);
+    }
+  }, [state]);
 
-    const existing = onboardingStorage.get();
-    onboardingStorage.set({
-      currentStep: "GARDEN",
-      completedSteps: [...(existing?.completedSteps ?? []), "USE_CASES"],
-      profile: { ...(existing?.profile ?? {}), useCases },
-      startedAt: existing?.startedAt ?? new Date(),
+  function toggle(id: UseCase) {
+    setSelected((prev) => {
+      if (id === "ALL_OF_IT") {
+        return prev.includes("ALL_OF_IT") ? [] : ["ALL_OF_IT"];
+      }
+      const withoutAll = prev.filter((x) => x !== "ALL_OF_IT");
+      return withoutAll.includes(id)
+        ? withoutAll.filter((x) => x !== id)
+        : [...withoutAll, id];
     });
+  }
 
-    track(EVENT.ONBOARDING_STEP_COMPLETED, {
-      step: "use_cases",
-      count: useCases.length,
-    });
+  function onSubmit() {
+    if (selected.length === 0) return;
+    trackGoalsSelected(selected);
+    advance("USE_CASES", { useCases: selected });
+  }
 
-    router.push("/onboarding/garden");
-  };
+  const enabled = selected.length > 0;
 
   return (
-    <OnboardingLayout step={2} totalSteps={6}>
-      <div className="px-5 pt-8">
-        <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-ink-muted mb-2">
-          Schritt 1 von 5
-        </p>
-        <h1 className="font-serif text-[32px] leading-[1.1] tracking-tight text-forest-900 font-normal">
-          Was möchtest du hauptsächlich lösen?
-        </h1>
-        <p className="mt-3 text-[14px] text-ink-muted leading-relaxed">
-          Mehrfachauswahl möglich. Damit personalisieren wir deine Empfehlungen.
-        </p>
-      </div>
-
-      <div className="px-5 pt-8 space-y-3">
-        {useCases.map((uc) => {
-          const active = selected.has(uc.id);
-          return (
-            <button
-              key={uc.id}
-              onClick={() => toggle(uc.id)}
-              className={cn(
-                "w-full flex items-center gap-4 rounded-[18px] p-5 text-left transition-all duration-200",
-                active
-                  ? "bg-paper ring-2 ring-forest-700 shadow-[0_6px_24px_rgba(46,74,56,0.12)]"
-                  : "bg-paper/70 ring-1 ring-sage-200 hover:ring-forest-700/30"
-              )}
+    <OnboardingShell step={2}>
+      <div className="pt-6 flex-1">
+        <OnboardingHeadline
+          title="Wobei brauchst du Hilfe?"
+          subtitle="Mehrfachauswahl möglich. Du kannst später alles ändern."
+        />
+        <motion.div
+          className="grid grid-cols-2 gap-3"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: { transition: { staggerChildren: 0.06 } },
+            hidden: {},
+          }}
+        >
+          {OPTIONS.map((opt) => (
+            <motion.div
+              key={opt.id}
+              variants={{
+                hidden: { opacity: 0, y: 8 },
+                visible: { opacity: 1, y: 0 },
+              }}
             >
-              <span
-                className={cn(
-                  "flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px]",
-                  active ? "bg-forest-700 text-paper" : "bg-sage-100 text-forest-700"
-                )}
-              >
-                <uc.Icon className="h-5 w-5" strokeWidth={1.75} />
-              </span>
-              <span className="flex-1 min-w-0">
-                <span className="block font-serif text-[18px] text-forest-900 leading-tight font-normal">
-                  {uc.title}
-                </span>
-                <span className="block text-[13px] text-ink-muted leading-snug mt-0.5">
-                  {uc.desc}
-                </span>
-              </span>
-              <span
-                className={cn(
-                  "flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition",
-                  active ? "bg-forest-700" : "border-[1.5px] border-sage-300"
-                )}
-              >
-                {active && <Check className="h-3.5 w-3.5 text-paper" strokeWidth={3} />}
-              </span>
-            </button>
-          );
-        })}
+              <SelectableCard
+                icon={opt.icon}
+                label={opt.label}
+                selected={selected.includes(opt.id)}
+                onToggle={() => toggle(opt.id)}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
-
-      <OnboardingFooter
-        primaryLabel={selected.size > 0 ? `Weiter (${selected.size})` : "Überspringen"}
-        primaryOnClick={onContinue}
-      />
-    </OnboardingLayout>
+      <div className="pt-4">
+        <button
+          type="button"
+          onClick={onSubmit}
+          disabled={!enabled}
+          className={`flex w-full items-center justify-center rounded-full text-[15px] font-semibold transition ${
+            enabled
+              ? "bg-clay-500 hover:bg-clay-600 text-paper active:scale-[0.98]"
+              : "bg-sage-200 text-forest-900/40 cursor-not-allowed"
+          }`}
+          style={{ height: 52 }}
+        >
+          Weiter
+        </button>
+      </div>
+    </OnboardingShell>
   );
 }
