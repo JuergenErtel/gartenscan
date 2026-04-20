@@ -42,7 +42,13 @@ export type SolutionStyle = "ORGANIC" | "BALANCED" | "EFFECTIVE";
 
 export type ExperienceLevel = "BEGINNER" | "INTERMEDIATE" | "EXPERT";
 
-export type UseCase = "PLANTS" | "WEEDS" | "PESTS" | "DISEASES" | "IMPROVE";
+export type UseCase =
+  | "PLANTS"
+  | "WEEDS"
+  | "PESTS"
+  | "DISEASES"
+  | "IMPROVE"
+  | "ALL_OF_IT";
 
 export type GardenArea =
   | "GARDEN"
@@ -170,12 +176,14 @@ export interface GardenProfile {
   locationName?: string;
   areas: GardenArea[];
   hasChildren: boolean;
+  hasPets: boolean;
   pets: PetType[];
   solutionStyle: SolutionStyle;
   experience: ExperienceLevel;
   useCases: UseCase[];
   createdAt: Date;
   updatedAt: Date;
+  onboardingCompletedAt?: Date;
 }
 
 // ==================== Onboarding ====================
@@ -184,9 +192,9 @@ export type OnboardingStep =
   | "WELCOME"
   | "USE_CASES"
   | "GARDEN"
-  | "STYLE"
   | "TRUST"
-  | "FIRST_SCAN"
+  | "SCAN"
+  | "PREMIUM"
   | "DONE";
 
 export interface OnboardingState {
