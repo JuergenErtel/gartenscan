@@ -9,10 +9,16 @@ export const EVENT = {
 
   // Onboarding
   ONBOARDING_STARTED: "onboarding_started",
+  ONBOARDING_STEP_VIEWED: "onboarding_step_viewed",
   ONBOARDING_STEP_COMPLETED: "onboarding_step_completed",
+  ONBOARDING_GOAL_SELECTED: "onboarding_goal_selected",
   ONBOARDING_ABANDONED: "onboarding_abandoned",
+  ONBOARDING_BACK_CLICKED: "onboarding_back_clicked",
+  ONBOARDING_SKIP_CLICKED: "onboarding_skip_clicked",
   ONBOARDING_COMPLETED: "onboarding_completed",
   PROFILE_COMPLETED: "profile_completed",
+  FIRST_SCAN_CTA_CLICKED: "first_scan_cta_clicked",
+  PAYWALL_AFTER_VALUE_VIEWED: "paywall_viewed_after_first_value",
 
   // Activation
   FIRST_SCAN_STARTED: "first_scan_started",
