@@ -1,94 +1,90 @@
 "use client";
 
-import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { useEffect } from "react";
-import { Button } from "@/components/ui/Button";
-import { LogoMark } from "@/components/ui/Logo";
-import { track } from "@/domain/analytics/tracker";
-import { EVENT } from "@/domain/analytics/events";
+import { Sparkles } from "lucide-react";
+import { OnboardingShell } from "@/components/features/onboarding/OnboardingShell";
+import {
+  trackOnboardingStarted,
+  trackOnboardingStepViewed,
+} from "@/domain/analytics/onboarding";
+
+const STARTED_FLAG = "gartenscan:onboarding_started_flag";
 
 export default function WelcomePage() {
+  const startedRef = useRef(false);
+
   useEffect(() => {
-    track(EVENT.ONBOARDING_STARTED);
+    trackOnboardingStepViewed("WELCOME");
+    if (!startedRef.current) {
+      const alreadyStarted = sessionStorage.getItem(STARTED_FLAG);
+      if (!alreadyStarted) {
+        trackOnboardingStarted(
+          document.referrer.includes(window.location.host)
+            ? "landing"
+            : "direct"
+        );
+        sessionStorage.setItem(STARTED_FLAG, "1");
+      }
+      startedRef.current = true;
+    }
   }, []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-forest-900">
-      {/* Full-bleed background image */}
-      <div className="absolute inset-0">
-        <Image
-          src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1600&q=85"
-          alt="Garten im warmen Licht"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-forest-900/30 via-forest-900/50 to-forest-900" />
-      </div>
-
-      <div className="relative z-10 flex min-h-screen flex-col px-6 safe-top safe-bottom">
-        {/* Top logo */}
+    <OnboardingShell step={1} hideBack>
+      <div className="flex-1 flex flex-col items-center justify-center pb-10">
         <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="flex items-center gap-3 pt-4"
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="relative mb-10"
         >
-          <LogoMark size={36} className="text-paper" />
-          <span className="font-serif text-[22px] text-paper">
-            garten<span className="font-semibold">scan</span>
-          </span>
+          <HeroVisual />
         </motion.div>
-
-        {/* Spacer */}
-        <div className="flex-1 min-h-[30vh]" />
-
-        {/* Hero text */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.7 }}
+          transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+          className="text-center max-w-md mx-auto"
         >
-          <p className="text-[11px] uppercase tracking-[0.18em] font-semibold text-sage-200 mb-4">
-            Willkommen
-          </p>
-          <h1 className="font-serif text-[44px] md:text-[56px] leading-[1.02] tracking-tight text-paper font-normal">
-            Dein Garten.
-            <br />
-            <span className="text-sage-200">Verstanden.</span>
+          <h1 className="font-serif text-[34px] leading-[1.05] text-forest-900 mb-3 font-normal tracking-tight">
+            Erkenne jedes Gartenproblem in Sekunden.
           </h1>
-          <p className="mt-5 text-[16px] leading-relaxed text-sage-200/90 max-w-[85%]">
-            Mach ein Foto. Wir sagen dir, was es ist, ob du handeln musst, und
-            was genau zu tun ist.
+          <p className="text-[16px] leading-relaxed text-ink-muted">
+            Foto machen. Verstehen. Richtig lösen.
           </p>
         </motion.div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="mt-10 mb-4 space-y-3"
+      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.35, ease: "easeOut" }}
+        className="flex flex-col gap-3"
+      >
+        <Link
+          href="/onboarding/use-cases"
+          className="flex items-center justify-center rounded-full bg-clay-500 hover:bg-clay-600 text-paper text-[15px] font-semibold px-6 active:scale-[0.98] transition"
+          style={{ height: 52 }}
         >
-          <Button
-            href="/onboarding/use-cases"
-            fullWidth
-            size="lg"
-            className="!bg-paper !text-forest-900 hover:!bg-paper/95"
-            iconRight={<ArrowRight className="h-4 w-4" />}
-            onClick={() =>
-              track(EVENT.LANDING_CTA_CLICKED, { source: "welcome" })
-            }
-          >
-            Los geht's
-          </Button>
-          <p className="text-center text-[12px] text-sage-200/70">
-            Kostenlos starten · 7 Tage Premium gratis
-          </p>
-        </motion.div>
+          Los geht's
+        </Link>
+        <span className="text-center text-[12px] text-ink-muted/70 pt-1">
+          Schon Nutzer? Später einloggen
+        </span>
+      </motion.div>
+    </OnboardingShell>
+  );
+}
+
+function HeroVisual() {
+  return (
+    <div className="relative h-44 w-44 flex items-center justify-center">
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-sage-200/60 to-forest-100/40 blur-2xl" />
+      <div className="absolute inset-4 rounded-full border-2 border-forest-700/20" />
+      <div className="absolute inset-8 rounded-full border border-forest-700/10" />
+      <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-paper shadow-[0_6px_24px_rgba(28,42,33,0.12)]">
+        <Sparkles className="h-8 w-8 text-forest-700" strokeWidth={1.5} />
       </div>
     </div>
   );
