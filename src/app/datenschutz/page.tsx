@@ -33,11 +33,13 @@ export default function DatenschutzPage() {
           <p>
             Verantwortlicher im Sinne der DSGVO ist:
             <br />
-            [DEIN VOLLSTÄNDIGER NAME]
+            Coding Brothers UG (haftungsbeschränkt)
             <br />
-            [STRASSE UND HAUSNUMMER]
+            Ottstr. 9
             <br />
-            [PLZ ORT]
+            76744 Wörth
+            <br />
+            Geschäftsführer: Carsten Hater, Jürgen Ertel
             <br />
             E-Mail: [EMAIL-ADRESSE]
           </p>

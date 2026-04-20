@@ -30,14 +30,21 @@ export default function ImpressumPage() {
             Angaben gemäß § 5 TMG
           </h2>
           <p>
-            [DEIN VOLLSTÄNDIGER NAME]
+            Coding Brothers UG (haftungsbeschränkt)
             <br />
-            [STRASSE UND HAUSNUMMER]
+            Ottstr. 9
             <br />
-            [PLZ ORT]
+            76744 Wörth
             <br />
             Deutschland
           </p>
+        </section>
+
+        <section>
+          <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
+            Vertreten durch
+          </h2>
+          <p>Geschäftsführer: Carsten Hater, Jürgen Ertel</p>
         </section>
 
         <section>
@@ -47,7 +54,28 @@ export default function ImpressumPage() {
           <p>
             E-Mail: [EMAIL-ADRESSE]
             <br />
-            Telefon: [TELEFON – optional, sonst Zeile löschen]
+            Web: www.codingbrothers.de
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
+            Registereintrag
+          </h2>
+          <p>
+            Handelsregister: [HRB-NUMMER]
+            <br />
+            Registergericht: [REGISTERGERICHT]
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
+            Umsatzsteuer-ID
+          </h2>
+          <p>
+            Umsatzsteuer-Identifikationsnummer gemäß § 27 a UStG:
+            [DE… – oder diesen Abschnitt löschen, falls nicht vorhanden]
           </p>
         </section>
 
@@ -56,11 +84,11 @@ export default function ImpressumPage() {
             Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
           </h2>
           <p>
-            [DEIN VOLLSTÄNDIGER NAME]
+            Carsten Hater, Jürgen Ertel
             <br />
-            [STRASSE UND HAUSNUMMER]
+            c/o Coding Brothers UG (haftungsbeschränkt)
             <br />
-            [PLZ ORT]
+            Ottstr. 9, 76744 Wörth
           </p>
         </section>
 
