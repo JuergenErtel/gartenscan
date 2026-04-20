@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Fraunces } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 const inter = Inter({
@@ -15,10 +17,49 @@ const fraunces = Fraunces({
   axes: ["opsz"],
 });
 
+const SITE_URL = "https://gartenscan.de";
+const SITE_TITLE = "gartenscan – Pflanzen, Unkraut & Krankheiten erkennen";
+const SITE_DESCRIPTION =
+  "Scanne Pflanzen, Unkraut, Schädlinge und Krankheiten im Garten – und wisse sofort, was zu tun ist.";
+
 export const metadata: Metadata = {
-  title: "gartenscan – Dein persönlicher Gartenexperte",
-  description:
-    "Erkenne Pflanzen, Unkraut, Schädlinge und Krankheiten – und wisse sofort, was zu tun ist.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: "%s · gartenscan",
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: "gartenscan",
+  keywords: [
+    "Garten",
+    "Pflanzenerkennung",
+    "Unkraut",
+    "Schädlinge",
+    "Krankheiten",
+    "Pflanzen-App",
+    "Pflanzenpflege",
+  ],
+  authors: [{ name: "gartenscan" }],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    url: SITE_URL,
+    siteName: "gartenscan",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export const viewport: Viewport = {
@@ -44,6 +85,8 @@ export default function RootLayout({
         }
       >
         {children}
+        <Footer />
+        <Analytics />
       </body>
     </html>
   );
