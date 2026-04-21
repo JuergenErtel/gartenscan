@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
 import { OnboardingShell } from "@/components/features/onboarding/OnboardingShell";
 import {
   trackOnboardingStarted,
@@ -40,22 +39,27 @@ export default function WelcomePage() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="relative mb-10"
         >
-          <HeroVisual />
+          <LiveDrawnMark />
         </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
           className="text-center max-w-md mx-auto"
         >
-          <h1 className="font-serif text-[34px] leading-[1.05] text-forest-900 mb-3 font-normal tracking-tight">
-            Erkenne jedes Gartenproblem in Sekunden.
+          <p className="eyebrow mb-3">Willkommen</p>
+          <h1 className="font-serif text-[40px] leading-[1.05] text-bark-900 font-normal tracking-tight mb-4">
+            Erkennen.{" "}
+            <span className="italic text-clay-800">Verstehen.</span>{" "}
+            Lösen.
           </h1>
-          <p className="text-[16px] leading-relaxed text-ink-muted">
-            Foto machen. Verstehen. Richtig lösen.
+          <p className="text-[15px] leading-relaxed text-ink-muted">
+            Dein Garten in der Hosentasche — vom ersten Foto zur konkreten Antwort in 30 Sekunden.
           </p>
         </motion.div>
       </div>
+
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -64,27 +68,37 @@ export default function WelcomePage() {
       >
         <Link
           href="/onboarding/use-cases"
-          className="flex items-center justify-center rounded-full bg-clay-500 hover:bg-clay-600 text-paper text-[15px] font-semibold px-6 active:scale-[0.98] transition"
+          className="tap-press flex items-center justify-center rounded-[14px] bg-bark-900 hover:bg-clay-800 text-cream text-[15px] font-medium px-6 transition-colors"
           style={{ height: 52 }}
         >
-          Los geht's
+          Los geht&apos;s
         </Link>
         <span className="text-center text-[12px] text-ink-muted/70 pt-1">
-          Schon Nutzer? Später einloggen
+          Schon Konto? Später anmelden
         </span>
       </motion.div>
     </OnboardingShell>
   );
 }
 
-function HeroVisual() {
+function LiveDrawnMark() {
   return (
-    <div className="relative h-44 w-44 flex items-center justify-center">
-      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-sage-200/60 to-forest-100/40 blur-2xl" />
-      <div className="absolute inset-4 rounded-full border-2 border-forest-700/20" />
-      <div className="absolute inset-8 rounded-full border border-forest-700/10" />
-      <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-paper shadow-[0_6px_24px_rgba(28,42,33,0.12)]">
-        <Sparkles className="h-8 w-8 text-forest-700" strokeWidth={1.5} />
+    <div className="relative h-[200px] w-[200px] flex items-center justify-center">
+      <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(168,120,66,0.18)_0%,transparent_65%)] anim-breath" />
+      <div className="relative h-[160px] w-[160px] rounded-full bg-cream border-[1.5px] border-terra-500/70 flex items-center justify-center">
+        <svg
+          viewBox="0 0 100 100"
+          fill="none"
+          stroke="#3a2515"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-[70%] w-[70%]"
+        >
+          <path className="anim-write" d="M50 90 Q50 60 35 40 Q40 30 50 30 Q60 30 65 40 Q50 60 50 90" />
+          <path className="anim-write" style={{ animationDelay: "0.6s" }} d="M50 70 L40 50 M50 70 L60 50 M50 50 L42 35 M50 50 L58 35" />
+          <circle className="anim-bloom" style={{ animationDelay: "2.2s" }} cx="50" cy="22" r="4" fill="#a04030" stroke="none" />
+        </svg>
       </div>
     </div>
   );
