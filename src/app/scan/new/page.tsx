@@ -19,6 +19,7 @@ import { BetaBadge } from "@/components/ui/BetaBadge";
 import type { Category } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
+import { AnalyzingOverlay } from "@/components/features/onboarding/AnalyzingOverlay";
 
 // Feature-Flag: Echte Kamera-/Foto-Upload-UI ist für den Beta-Launch deaktiviert.
 // Wenn der echte Vision-Provider kommt, auf `true` setzen und die Demo-Auswahl entfernen.
@@ -59,52 +60,36 @@ export default function ScanNewPage() {
 function DemoPickerMode() {
   const router = useRouter();
   const [selected, setSelected] = useState<string | null>(null);
-  const [progressStep, setProgressStep] = useState(0);
-
-  const steps = [
-    "Bildstruktur einlesen",
-    "Blattmuster analysieren",
-    "Vergleich mit 12.000 Arten",
-    "Kontext deines Gartens prüfen",
-  ];
 
   useEffect(() => {
     if (!selected) return;
-    const timeouts: ReturnType<typeof setTimeout>[] = [];
-    steps.forEach((_, i) => {
-      timeouts.push(
-        setTimeout(() => setProgressStep(i + 1), (i + 1) * 650)
-      );
-    });
-    timeouts.push(
-      setTimeout(() => {
-        router.push(`/scan/${selected}`);
-      }, steps.length * 650 + 350)
-    );
-    return () => timeouts.forEach(clearTimeout);
+    const t = setTimeout(() => {
+      router.push(`/scan/${selected}`);
+    }, 2800);
+    return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
   return (
-    <main className="min-h-screen bg-sage-50 safe-top">
+    <main className="min-h-screen bg-linen safe-top">
       <header className="flex items-center justify-between gap-3 px-4 h-14">
         <Link
           href="/app"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-paper/80 hover:bg-paper active:scale-95 transition"
+          className="tap-press flex h-10 w-10 items-center justify-center rounded-full bg-cream/80 hover:bg-cream transition"
         >
-          <ArrowLeft className="h-5 w-5 text-forest-700" />
+          <ArrowLeft className="h-5 w-5 text-bark-900" />
         </Link>
         <BetaBadge />
         <div className="h-10 w-10" />
       </header>
 
       <div className="mx-auto max-w-lg px-5 pt-4 pb-12">
-        <h1 className="font-serif text-[28px] leading-tight text-forest-900 mb-1">
+        <p className="eyebrow mb-3">Beispiel-Scan</p>
+        <h1 className="font-serif text-[28px] leading-tight text-bark-900 mb-2 font-normal tracking-tight">
           Wähle ein Beispiel
         </h1>
-        <p className="text-[13px] text-ink-muted mb-6">
-          Echte Bilderkennung folgt in Kürze. Für jetzt zeigen wir dir drei typische
-          Fälle, damit du siehst, wie gartenscan funktioniert.
+        <p className="text-[13px] text-ink-muted mb-7 leading-relaxed">
+          Echte Bilderkennung folgt in Kürze. Für jetzt drei typische Fälle, damit du siehst, wie gartenscan funktioniert.
         </p>
 
         <div className="flex flex-col gap-3">
@@ -114,10 +99,10 @@ function DemoPickerMode() {
               onClick={() => setSelected(entry.id)}
               disabled={selected !== null}
               className={cn(
-                "group relative flex items-center gap-4 rounded-2xl bg-paper p-3 text-left shadow-[0_2px_12px_rgba(28,42,33,0.06)] transition",
+                "tap-press group relative flex items-center gap-4 rounded-2xl bg-cream p-3 text-left shadow-[var(--shadow-editorial)] transition",
                 selected === entry.id
-                  ? "ring-2 ring-forest-700"
-                  : "hover:shadow-[0_4px_16px_rgba(28,42,33,0.08)] active:scale-[0.99]",
+                  ? "ring-2 ring-bark-900"
+                  : "hover:shadow-[0_10px_28px_rgba(58,37,21,0.1)]",
                 selected !== null && selected !== entry.id && "opacity-50"
               )}
             >
@@ -127,18 +112,18 @@ function DemoPickerMode() {
                   alt={entry.label}
                   fill
                   sizes="64px"
-                  className="object-cover"
+                  className="object-cover [filter:contrast(0.92)_saturate(0.85)_sepia(0.12)_brightness(1.02)]"
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[15px] font-semibold text-forest-900 truncate">
+                <p className="text-[15px] font-semibold text-bark-900 truncate">
                   {entry.label}
                 </p>
                 <p className="text-[12px] text-ink-muted truncate">
                   {entry.hint}
                 </p>
               </div>
-              <ArrowRight className="h-4 w-4 text-forest-700 opacity-60 group-hover:opacity-100 transition" />
+              <ArrowRight className="h-4 w-4 text-bark-900 opacity-60 group-hover:opacity-100 transition" />
             </button>
           ))}
         </div>
@@ -146,63 +131,7 @@ function DemoPickerMode() {
 
       <AnimatePresence>
         {selected && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-forest-900/90 backdrop-blur-xl px-8"
-          >
-            <div className="relative flex h-32 w-32 items-center justify-center mb-8">
-              <div className="absolute inset-0 rounded-full border-2 border-paper/20" />
-              <motion.div
-                className="absolute inset-0 rounded-full border-2 border-t-paper border-r-paper/60 border-b-transparent border-l-transparent"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: "linear" }}
-              />
-              <Sparkles className="h-10 w-10 text-paper" strokeWidth={1.5} />
-            </div>
-            <p className="font-serif text-[26px] leading-tight text-paper mb-1 font-normal text-center">
-              Ich analysiere dein Beispiel
-            </p>
-            <p className="text-[13px] text-sage-200/80 mb-10 text-center">
-              Das dauert nur einen Moment
-            </p>
-            <div className="flex flex-col gap-3 w-full max-w-xs">
-              {steps.map((s, i) => (
-                <motion.div
-                  key={s}
-                  initial={{ opacity: 0.3 }}
-                  animate={{ opacity: progressStep > i ? 1 : 0.3 }}
-                  className="flex items-center gap-3 text-[13px]"
-                >
-                  <div
-                    className={cn(
-                      "flex h-5 w-5 items-center justify-center rounded-full transition",
-                      progressStep > i
-                        ? "bg-paper text-forest-900"
-                        : "border border-paper/30"
-                    )}
-                  >
-                    {progressStep > i && (
-                      <svg
-                        className="h-3 w-3"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
-                  </div>
-                  <span className="text-paper/90">{s}</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          <AnalyzingOverlay onComplete={() => router.push(`/scan/${selected}`)} />
         )}
       </AnimatePresence>
     </main>
@@ -301,10 +230,9 @@ function PhotoCaptureMode() {
             <div className="relative h-full w-full max-w-sm">
               <CornerBrackets />
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="rounded-full bg-paper/90 backdrop-blur px-3 py-1.5 text-[11px] font-semibold text-forest-900 flex items-center gap-1.5">
-                  <Sparkles className="h-3 w-3 text-clay-500" />
-                  Pflanze erkannt
-                </div>
+                <span className="rounded-full bg-bark-900/65 backdrop-blur-xl px-3 py-1.5 text-[12px] italic font-serif text-cream">
+                  Ein Blatt mittig im Rahmen
+                </span>
               </div>
             </div>
           </motion.div>
@@ -312,8 +240,8 @@ function PhotoCaptureMode() {
       </AnimatePresence>
 
       {phase === "capture" && (
-        <p className="relative z-10 text-center text-[13px] text-paper/80 mt-6 font-medium">
-          Halte die Kamera ruhig auf das Objekt
+        <p className="relative z-10 text-center text-[12px] italic font-serif text-cream/75 mt-6">
+          Tipp: Sonne im Rücken für klare Farben
         </p>
       )}
 
@@ -445,22 +373,12 @@ function PhotoCaptureMode() {
 function CornerBrackets() {
   return (
     <>
-      {(
-        [
-          "top-0 left-0",
-          "top-0 right-0 rotate-90",
-          "bottom-0 right-0 rotate-180",
-          "bottom-0 left-0 -rotate-90",
-        ] as const
-      ).map((pos) => (
-        <div
-          key={pos}
-          className={cn(
-            "absolute h-8 w-8 border-l-2 border-t-2 border-paper/80 rounded-tl-md",
-            pos
-          )}
-        />
-      ))}
+      {/* Outline frame */}
+      <div className="absolute inset-0 border-2 border-cream/70 rounded-[14px]" />
+      {/* Top-right L */}
+      <div className="absolute top-0 right-0 h-8 w-8 border-t-[3px] border-r-[3px] border-sun-500 rounded-tr-[14px]" />
+      {/* Bottom-left L */}
+      <div className="absolute bottom-0 left-0 h-8 w-8 border-b-[3px] border-l-[3px] border-sun-500 rounded-bl-[14px]" />
     </>
   );
 }
