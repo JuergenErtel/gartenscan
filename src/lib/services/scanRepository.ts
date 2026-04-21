@@ -17,15 +17,14 @@ export async function saveScan(input: SaveScanInput): Promise<void> {
     id: input.scanId,
     user_id: input.userId,
     image_path: input.imagePath,
-    image_meta: input.imageMeta,
-    triage_category: input.outcome.triage?.category,
-    triage_quality: input.outcome.triage?.quality,
+    image_meta: input.imageMeta as never,
+    triage_category: input.outcome.triage?.category ?? null,
+    triage_quality: input.outcome.triage?.quality ?? null,
     triage_reason: input.outcome.triage?.reason ?? null,
     provider: input.outcome.provider ?? null,
-    provider_raw:
-      input.outcome.candidates.length > 0
-        ? { candidates: input.outcome.candidates }
-        : null,
+    provider_raw: (input.outcome.candidates.length > 0
+      ? { candidates: input.outcome.candidates }
+      : null) as never,
     status: input.outcome.status,
     matched_content_id: input.outcome.candidates[0]?.matchedContentId ?? null,
   });
@@ -37,7 +36,7 @@ export async function saveScan(input: SaveScanInput): Promise<void> {
       rank: c.rank,
       scientific_name: c.scientificName,
       common_names: c.commonNames,
-      taxonomy: c.taxonomy ?? null,
+      taxonomy: (c.taxonomy ?? null) as never,
       confidence: c.confidence,
       content_id: c.matchedContentId ?? null,
     }));

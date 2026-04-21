@@ -9,7 +9,7 @@ export function currentYearMonth(now: Date = new Date()): string {
 
 export async function incrementScanUsage(userId: string, now: Date = new Date()): Promise<void> {
   const supabase = createServiceRoleClient();
-  const { error } = await supabase.rpc('increment_scan_usage' as never, {
+  const { error } = await supabase.rpc('increment_scan_usage', {
     p_user_id: userId,
     p_year_month: currentYearMonth(now),
   });
