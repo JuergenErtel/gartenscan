@@ -20,6 +20,7 @@ import { PersonalizedPrimaryAction } from "@/components/features/diagnosis/Perso
 import { CategoryLabel } from "@/components/ui/CategoryIcon";
 import { getContentById } from "@/content";
 import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
+import { cn } from "@/lib/utils";
 
 export default async function ScanResultPage({
   params,
@@ -37,61 +38,72 @@ export default async function ScanResultPage({
 
   return (
     <OnboardingGuard>
-    <div className="min-h-screen bg-sage-50 pb-28">
-      {/* Hero with photo */}
-      <div className="relative h-[55vh] min-h-[400px] w-full overflow-hidden">
+    <div className="min-h-screen bg-linen pb-28">
+      {/* Hero with graded photo */}
+      <div className="relative h-[280px] overflow-hidden">
         <Image
           src={entry.imageUrl}
           alt={entry.name}
           fill
           priority
           sizes="(max-width: 768px) 100vw, 500px"
-          className="object-cover"
+          className="object-cover [filter:contrast(0.92)_saturate(0.85)_sepia(0.12)_brightness(1.02)]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-forest-900/40 via-transparent to-sage-50" />
+        <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_50%,rgba(58,37,21,0.25)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-bark-900/40" />
 
+        {/* Top bar */}
         <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-3">
           <Link
             href="/app"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-paper/80 backdrop-blur-md active:scale-95 transition"
+            className="tap-press flex h-10 w-10 items-center justify-center rounded-full bg-cream/92 backdrop-blur-md transition"
           >
-            <ArrowLeft className="h-5 w-5 text-forest-700" />
+            <ArrowLeft className="h-5 w-5 text-bark-900" />
           </Link>
-          <button className="flex h-10 w-10 items-center justify-center rounded-full bg-paper/80 backdrop-blur-md active:scale-95 transition">
-            <Share2 className="h-4.5 w-4.5 text-forest-700" strokeWidth={1.75} />
+          <button className="tap-press flex h-10 w-10 items-center justify-center rounded-full bg-cream/92 backdrop-blur-md transition">
+            <Share2 className="h-4.5 w-4.5 text-bark-900" strokeWidth={1.75} />
           </button>
         </div>
 
-        <div className="absolute bottom-6 left-5 right-5">
-          <div className="flex items-center gap-2 mb-3 flex-wrap">
-            <Badge
-              tone="outline"
-              className="!bg-paper/85 !backdrop-blur !border-paper/40"
-            >
-              <CategoryLabel category={entry.category} />
+        {/* Confidence pill (top-left under back button) */}
+        <div
+          className="absolute top-[calc(max(env(safe-area-inset-top),1rem)+52px)] left-4 anim-bloom"
+          style={{ animationDelay: "200ms" }}
+        >
+          <span className="inline-flex items-center gap-2 rounded-full bg-cream/92 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-bark-900">
+            <span
+              className={cn(
+                "h-1.5 w-1.5 rounded-full",
+                confidence >= 0.8
+                  ? "bg-moss-500"
+                  : confidence >= 0.5
+                    ? "bg-sun-500"
+                    : "bg-berry-500"
+              )}
+            />
+            {Math.round(confidence * 100)} % sicher
+          </span>
+        </div>
+      </div>
+
+      {/* Editorial sheet sliding over hero */}
+      <div
+        className="relative -mt-7 rounded-t-[28px] bg-cream pt-6 pb-6 px-5 shadow-[0_-8px_24px_rgba(58,37,21,0.06)] anim-bloom"
+        style={{ animationDelay: "400ms" }}
+      >
+        <p className="eyebrow mb-2">
+          <CategoryLabel category={entry.category} />
+        </p>
+        <h1 className="font-serif text-[28px] leading-tight text-bark-900 font-normal tracking-tight mb-1">
+          {entry.name}
+        </h1>
+        <div className="flex items-center gap-2 mt-3 flex-wrap">
+          {entry.safety.toxicToChildren && (
+            <Badge tone="danger" icon={<AlertTriangle className="h-3 w-3" />}>
+              Giftig
             </Badge>
-            {entry.safety.toxicToChildren && (
-              <Badge
-                tone="danger"
-                icon={<AlertTriangle className="h-3 w-3" />}
-              >
-                Giftig
-              </Badge>
-            )}
-            {entry.safety.invasive && (
-              <Badge tone="warning">Invasiv</Badge>
-            )}
-          </div>
-          <h1 className="font-serif text-[32px] leading-[1.1] tracking-tight text-paper drop-shadow-md font-normal">
-            {entry.name}
-          </h1>
-          <p className="italic text-[14px] text-paper/85 mt-1 drop-shadow">
-            {entry.scientificName}
-          </p>
-          <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-paper/90 backdrop-blur px-3 py-1.5">
-            <ConfidenceBar value={confidence} />
-            <span className="text-[11px] text-ink-muted">Sicher erkannt</span>
-          </div>
+          )}
+          <UrgencyIndicator urgency={entry.defaultUrgency} />
         </div>
       </div>
 
