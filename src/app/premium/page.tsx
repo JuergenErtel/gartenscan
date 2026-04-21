@@ -13,7 +13,6 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
-import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
 type Interval = "month" | "year";
 type Tier = "free" | "premium" | "pro";
@@ -89,7 +88,6 @@ export default function PremiumPage() {
     n === 0 ? "0 €" : n.toFixed(2).replace(".", ",") + " €";
 
   return (
-    <OnboardingGuard>
     <div className="min-h-screen bg-linen pb-32">
       {/* Top bar */}
       <header className="sticky top-0 z-30 flex items-center justify-between px-4 h-14 bg-linen/85 backdrop-blur-md safe-top">
@@ -323,6 +321,5 @@ export default function PremiumPage() {
         </div>
       </div>
     </div>
-    </OnboardingGuard>
   );
 }

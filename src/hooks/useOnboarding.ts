@@ -2,8 +2,6 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { onboardingStorage, profileStorage } from "@/lib/storage/profile";
-import { waitlistStorage, extractEmailDomain } from "@/lib/storage/waitlist";
 import {
   trackOnboardingCompleted,
   trackTrialStarted,
@@ -14,14 +12,7 @@ import type {
   OnboardingStep,
 } from "@/domain/types";
 
-const STEP_ORDER: OnboardingStep[] = [
-  "WELCOME",
-  "USE_CASES",
-  "GARDEN",
-  "TRUST",
-  "SCAN",
-  "PREMIUM",
-];
+const STEP_ORDER: OnboardingStep[] = ["WELCOME", "USE_CASES", "GARDEN", "TRUST", "SCAN", "PREMIUM"];
 
 const STEP_ROUTES: Record<OnboardingStep, string> = {
   WELCOME: "/onboarding/welcome",
@@ -40,12 +31,40 @@ function nextStep(current: OnboardingStep): OnboardingStep {
 }
 
 function emptyState(current: OnboardingStep = "WELCOME"): OnboardingState {
-  return {
-    currentStep: current,
-    completedSteps: [],
-    profile: {},
-    startedAt: new Date(),
-  };
+  return { currentStep: current, completedSteps: [], profile: {}, startedAt: new Date() };
+}
+
+const SESSION_KEY = "gartenscan:onboarding:session:v2";
+
+function readSession(): OnboardingState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as OnboardingState;
+    return { ...parsed, startedAt: new Date(parsed.startedAt) };
+  } catch {
+    return null;
+  }
+}
+
+function writeSession(state: OnboardingState) {
+  if (typeof window === "undefined") return;
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(state));
+}
+
+function clearSession() {
+  if (typeof window === "undefined") return;
+  sessionStorage.removeItem(SESSION_KEY);
+}
+
+async function completeOnboarding(profile: Partial<GardenProfile>) {
+  const res = await fetch("/api/onboarding/complete", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ profile }),
+  });
+  if (!res.ok) throw new Error(`onboarding/complete http ${res.status}`);
 }
 
 export interface UseOnboardingResult {
@@ -53,9 +72,7 @@ export interface UseOnboardingResult {
   loading: boolean;
   advance: (currentStep: OnboardingStep, data: Partial<GardenProfile>) => void;
   goBack: () => void;
-  skipToComplete: (
-    pathTaken: "skipped_scan" | "skipped_paywall" | "skipped_both"
-  ) => void;
+  skipToComplete: (pathTaken: "skipped_scan" | "skipped_paywall" | "skipped_both") => void;
   submitPaywall: (email: string) => void;
 }
 
@@ -65,12 +82,12 @@ export function useOnboarding(): UseOnboardingResult {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const existing = onboardingStorage.get();
+    const existing = readSession();
     if (existing) {
       setState(existing);
     } else {
       const fresh = emptyState();
-      onboardingStorage.set(fresh);
+      writeSession(fresh);
       setState(fresh);
     }
     setLoading(false);
@@ -78,47 +95,54 @@ export function useOnboarding(): UseOnboardingResult {
 
   const advance = useCallback(
     (currentStep: OnboardingStep, data: Partial<GardenProfile>) => {
-      const base = onboardingStorage.get() ?? emptyState(currentStep);
+      const base = readSession() ?? emptyState(currentStep);
       const next = nextStep(currentStep);
       const updated: OnboardingState = {
         ...base,
         currentStep: next,
-        completedSteps: Array.from(
-          new Set([...(base.completedSteps ?? []), currentStep])
-        ),
+        completedSteps: Array.from(new Set([...(base.completedSteps ?? []), currentStep])),
         profile: { ...base.profile, ...data },
       };
-      onboardingStorage.set(updated);
+      writeSession(updated);
       setState(updated);
       router.push(STEP_ROUTES[next]);
     },
     [router]
   );
 
-  const goBack = useCallback(() => {
-    router.back();
-  }, [router]);
+  const goBack = useCallback(() => router.back(), [router]);
 
   const skipToComplete = useCallback(
     (pathTaken: "skipped_scan" | "skipped_paywall" | "skipped_both") => {
-      const base = onboardingStorage.get() ?? emptyState();
-      profileStorage.markComplete(base.profile);
-      onboardingStorage.markCompleted();
-      trackOnboardingCompleted(pathTaken);
-      router.replace("/app");
+      const base = readSession() ?? emptyState();
+      completeOnboarding(base.profile)
+        .then(() => {
+          trackOnboardingCompleted(pathTaken);
+          clearSession();
+          router.replace("/app");
+        })
+        .catch((err) => {
+          console.error("onboarding complete failed", err);
+          alert("Onboarding konnte nicht gespeichert werden. Bitte versuch es erneut.");
+        });
     },
     [router]
   );
 
   const submitPaywall = useCallback(
     (email: string) => {
-      const base = onboardingStorage.get() ?? emptyState();
-      waitlistStorage.add(email);
-      trackTrialStarted(extractEmailDomain(email));
-      profileStorage.markComplete(base.profile);
-      onboardingStorage.markCompleted();
-      trackOnboardingCompleted("full");
-      router.replace("/app");
+      const base = readSession() ?? emptyState();
+      completeOnboarding({ ...base.profile })
+        .then(() => {
+          trackTrialStarted(email.split("@")[1] ?? "unknown");
+          trackOnboardingCompleted("full");
+          clearSession();
+          router.replace("/app");
+        })
+        .catch((err) => {
+          console.error("onboarding complete failed", err);
+          alert("Onboarding konnte nicht gespeichert werden. Bitte versuch es erneut.");
+        });
     },
     [router]
   );
