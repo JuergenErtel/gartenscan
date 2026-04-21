@@ -6,9 +6,6 @@ import {
   ArrowLeft,
   Check,
   Sparkles,
-  CloudRain,
-  MessageCircle,
-  Calendar,
   Infinity as InfinityIcon,
   ShieldCheck,
   Zap,
@@ -66,21 +63,21 @@ const plans = {
   },
 } as const;
 
-const valueStories = [
+const PROMISES = [
   {
-    icon: CloudRain,
-    title: "Bevor es kritisch wird",
-    text: "Wetter- und Schädlingswarnungen zwei Tage im Voraus, spezifisch für deine PLZ.",
+    eyebrow: "Versprechen 1",
+    quote: "Unbegrenzte Scans — schick los, was immer dir im Garten begegnet.",
+    foot: "Inklusive aller Detail-Empfehlungen, ohne Soft-Locks.",
   },
   {
-    icon: MessageCircle,
-    title: "Wenn du unsicher bist",
-    text: "Echte Gartenbauer beantworten deine Frage binnen 24 Stunden.",
+    eyebrow: "Versprechen 2",
+    quote: "Wetter, das mitdenkt — Frost, Sturm, Hitze direkt für dein Beet.",
+    foot: "Auf Basis deiner PLZ und der für dich relevanten Pflanzen.",
   },
   {
-    icon: Calendar,
-    title: "Jahr für Jahr",
-    text: "Dein persönliches Gartenjahrbuch dokumentiert jede Entscheidung und jeden Erfolg.",
+    eyebrow: "Versprechen 3",
+    quote: "Eine Stimme, die dir antwortet — Gartencoach mit Kontext deines Beets.",
+    foot: "Persönliche Antworten innerhalb 24 Stunden, sieben Tage die Woche.",
   },
 ];
 
@@ -93,9 +90,9 @@ export default function PremiumPage() {
 
   return (
     <OnboardingGuard>
-    <div className="min-h-screen bg-sage-50 pb-32">
+    <div className="min-h-screen bg-linen pb-32">
       {/* Top bar */}
-      <header className="sticky top-0 z-30 flex items-center justify-between px-4 h-14 bg-sage-50/85 backdrop-blur-md safe-top">
+      <header className="sticky top-0 z-30 flex items-center justify-between px-4 h-14 bg-linen/85 backdrop-blur-md safe-top">
         <Link
           href="/"
           className="flex h-10 w-10 items-center justify-center rounded-full bg-paper active:scale-95 transition"
@@ -131,27 +128,19 @@ export default function PremiumPage() {
         </div>
       </section>
 
-      {/* Value stories */}
-      <section className="px-5 pt-8 space-y-3">
-        {valueStories.map((v) => (
-          <div
-            key={v.title}
-            className="flex items-start gap-4 rounded-[18px] bg-paper p-5 shadow-[0_2px_12px_rgba(28,42,33,0.04)]"
+      {/* Promises */}
+      <div className="space-y-4 my-8 px-5">
+        {PROMISES.map((p) => (
+          <article
+            key={p.eyebrow}
+            className="rounded-2xl bg-cream border border-terra-500/20 p-5 shadow-[var(--shadow-editorial)]"
           >
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sage-100 text-forest-700">
-              <v.icon className="h-5 w-5" strokeWidth={1.75} />
-            </div>
-            <div>
-              <h3 className="font-serif text-[18px] leading-tight text-forest-900 font-normal mb-1">
-                {v.title}
-              </h3>
-              <p className="text-[13px] leading-relaxed text-ink-muted">
-                {v.text}
-              </p>
-            </div>
-          </div>
+            <p className="eyebrow mb-3">{p.eyebrow}</p>
+            <p className="pull-quote">{p.quote}</p>
+            <p className="text-[12px] text-ink-muted mt-3 leading-relaxed">{p.foot}</p>
+          </article>
         ))}
-      </section>
+      </div>
 
       {/* Interval toggle */}
       <section className="px-5 pt-10">
