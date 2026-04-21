@@ -2,31 +2,29 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { Camera, Sparkles, CheckCircle2 } from "lucide-react";
 import { OnboardingShell } from "@/components/features/onboarding/OnboardingShell";
 import { OnboardingHeadline } from "@/components/features/onboarding/OnboardingHeadline";
-import { TrustStepCard } from "@/components/features/onboarding/TrustStepCard";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import { trackOnboardingStepViewed } from "@/domain/analytics/onboarding";
 
-const STEPS = [
+const QUOTES = [
   {
-    number: 1,
-    icon: Camera,
-    title: "Scannen",
-    text: "Du machst ein Foto von deinem Problem.",
+    eyebrow: "Datenschutz",
+    quote:
+      "Deine Fotos verlassen dein Gerät erst, wenn du auf „analysieren“ tippst.",
+    foot: "Speicherung lokal, keine Cloud-Synchronisation ohne Premium.",
   },
   {
-    number: 2,
-    icon: Sparkles,
-    title: "Verstehen",
-    text: "Wir erkennen Pflanze, Ursache und Dringlichkeit.",
+    eyebrow: "Methode",
+    quote:
+      "Wir vergleichen dein Bild mit Tausenden kuratierter Beispiele — und sagen dir, wie sicher wir uns sind.",
+    foot: "Konfidenzwert auf jedem Result, plus Alternativen bei Unsicherheit.",
   },
   {
-    number: 3,
-    icon: CheckCircle2,
-    title: "Lösen",
-    text: "Du bekommst konkrete Schritte — angepasst an deinen Garten.",
+    eyebrow: "Empfehlung",
+    quote:
+      "Jede Maßnahme passt zu deinem Garten — Standort, Bodenart, Saison, was du selbst zur Hand hast.",
+    foot: "Drei Empfehlungstiefen: schnell · ausgewogen · gründlich.",
   },
 ];
 
@@ -41,44 +39,47 @@ export default function TrustPage() {
     <OnboardingShell step={4}>
       <div className="pt-6 flex-1">
         <OnboardingHeadline
-          title="Deine neue Garten-Superkraft."
-          subtitle="In drei Schritten vom Foto zur Lösung."
+          title="Wie wir es ernst meinen."
+          subtitle="Drei Versprechen, die du jederzeit einfordern kannst."
         />
+
         <motion.div
-          className="space-y-3"
+          className="space-y-4 mt-8"
           initial="hidden"
           animate="visible"
           variants={{
-            visible: { transition: { staggerChildren: 0.12 } },
+            visible: { transition: { staggerChildren: 0.15 } },
             hidden: {},
           }}
         >
-          {STEPS.map((s) => (
+          {QUOTES.map((q) => (
             <motion.div
-              key={s.number}
+              key={q.eyebrow}
               variants={{
-                hidden: { opacity: 0, y: 10 },
+                hidden: { opacity: 0, y: 12 },
                 visible: { opacity: 1, y: 0 },
               }}
             >
-              <TrustStepCard
-                number={s.number}
-                icon={s.icon}
-                title={s.title}
-                text={s.text}
-              />
+              <article className="rounded-2xl bg-cream border border-terra-500/20 p-5 shadow-[var(--shadow-editorial)]">
+                <p className="eyebrow mb-3">{q.eyebrow}</p>
+                <p className="pull-quote">{q.quote}</p>
+                <p className="text-[12px] text-ink-muted mt-3 leading-relaxed">
+                  {q.foot}
+                </p>
+              </article>
             </motion.div>
           ))}
         </motion.div>
       </div>
-      <div className="pt-6">
+
+      <div className="pt-8">
         <button
           type="button"
           onClick={() => advance("TRUST", {})}
-          className="flex w-full items-center justify-center rounded-full bg-clay-500 hover:bg-clay-600 text-paper text-[15px] font-semibold transition active:scale-[0.98]"
+          className="tap-press flex w-full items-center justify-center rounded-[14px] bg-bark-900 hover:bg-clay-800 text-cream text-[15px] font-medium transition-colors"
           style={{ height: 52 }}
         >
-          Probier's aus
+          Probier&apos;s aus
         </button>
       </div>
     </OnboardingShell>
