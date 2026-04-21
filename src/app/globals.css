@@ -31,6 +31,13 @@
   --color-sky-300: #8ba7b8;
   --color-sky-100: #dbe5eb;
 
+  /* ===== Editorial Warm Tokens (2026-04 Overhaul) ===== */
+  --color-bark-900: #3a2515;
+  --color-clay-800: #6b3a1f;
+  --color-terra-500: #a87842;
+  --color-cream: #fefaf2;
+  --color-linen: #f4ead8;
+
   /* Ink shortcuts */
   --color-ink: #1c2a21;
   --color-ink-muted: #5c6b60;
@@ -52,6 +59,8 @@
   --shadow-soft: 0 2px 16px rgba(28, 42, 33, 0.06);
   --shadow-card: 0 6px 28px rgba(28, 42, 33, 0.08);
   --shadow-float: 0 12px 40px rgba(28, 42, 33, 0.16);
+  --shadow-editorial: 0 8px 28px rgba(58, 42, 21, 0.08);
+  --shadow-editorial-lg: 0 16px 48px rgba(58, 42, 21, 0.12);
 }
 
 /* ===== Base ===== */
