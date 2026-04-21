@@ -115,11 +115,16 @@ export function useOnboarding(): UseOnboardingResult {
   const skipToComplete = useCallback(
     (pathTaken: "skipped_scan" | "skipped_paywall" | "skipped_both") => {
       const base = readSession() ?? emptyState();
-      void completeOnboarding(base.profile).then(() => {
-        trackOnboardingCompleted(pathTaken);
-        clearSession();
-        router.replace("/app");
-      });
+      completeOnboarding(base.profile)
+        .then(() => {
+          trackOnboardingCompleted(pathTaken);
+          clearSession();
+          router.replace("/app");
+        })
+        .catch((err) => {
+          console.error("onboarding complete failed", err);
+          alert("Onboarding konnte nicht gespeichert werden. Bitte versuch es erneut.");
+        });
     },
     [router]
   );
@@ -127,12 +132,17 @@ export function useOnboarding(): UseOnboardingResult {
   const submitPaywall = useCallback(
     (email: string) => {
       const base = readSession() ?? emptyState();
-      void completeOnboarding({ ...base.profile }).then(() => {
-        trackTrialStarted(email.split("@")[1] ?? "unknown");
-        trackOnboardingCompleted("full");
-        clearSession();
-        router.replace("/app");
-      });
+      completeOnboarding({ ...base.profile })
+        .then(() => {
+          trackTrialStarted(email.split("@")[1] ?? "unknown");
+          trackOnboardingCompleted("full");
+          clearSession();
+          router.replace("/app");
+        })
+        .catch((err) => {
+          console.error("onboarding complete failed", err);
+          alert("Onboarding konnte nicht gespeichert werden. Bitte versuch es erneut.");
+        });
     },
     [router]
   );
