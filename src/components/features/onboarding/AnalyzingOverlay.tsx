@@ -2,95 +2,68 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const STEPS = [
-  "Bildmerkmale erkennen",
-  "Mit 12 000 Arten vergleichen",
-  "Relevanz bewerten",
-  "Passende Empfehlung vorbereiten",
+  "Blatt erkannt",
+  "Muster vergleichen",
+  "Diagnose erstellen",
 ];
 
 interface Props {
   onComplete: () => void;
-  stepDurationMs?: number;
+  /** Gesamtdauer in ms. Default 2800. */
+  totalDurationMs?: number;
 }
 
 export function AnalyzingOverlay({
   onComplete,
-  stepDurationMs = 650,
+  totalDurationMs = 2800,
 }: Props) {
-  const [progressStep, setProgressStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const stepDuration = Math.floor(totalDurationMs / (STEPS.length + 1));
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
     STEPS.forEach((_, i) => {
-      timers.push(
-        setTimeout(() => setProgressStep(i + 1), (i + 1) * stepDurationMs)
-      );
+      timers.push(setTimeout(() => setActiveStep(i), (i + 1) * stepDuration));
     });
-    timers.push(
-      setTimeout(onComplete, STEPS.length * stepDurationMs + 350)
-    );
+    timers.push(setTimeout(onComplete, totalDurationMs));
     return () => timers.forEach(clearTimeout);
-  }, [onComplete, stepDurationMs]);
+  }, [onComplete, stepDuration, totalDurationMs]);
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-forest-900/92 backdrop-blur-xl px-8"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-bark-900/92 backdrop-blur-xl px-8"
     >
-      <div className="relative flex h-32 w-32 items-center justify-center mb-8">
-        <div className="absolute inset-0 rounded-full border-2 border-paper/20" />
+      <div className="relative flex h-[110px] w-[110px] items-center justify-center mb-8">
+        <div className="absolute inset-0 rounded-full border-2 border-cream/15" />
         <motion.div
-          className="absolute inset-0 rounded-full border-2 border-t-paper border-r-paper/60 border-b-transparent border-l-transparent"
+          className="absolute inset-0 rounded-full border-2 border-t-sun-500 border-r-sun-500/40 border-b-transparent border-l-transparent"
           animate={{ rotate: 360 }}
           transition={{ duration: 1.6, repeat: Infinity, ease: "linear" }}
         />
-        <Sparkles className="h-10 w-10 text-paper" strokeWidth={1.5} />
       </div>
-      <p className="font-serif text-[26px] leading-tight text-paper mb-1 font-normal text-center">
-        Ich analysiere dein Beispiel
+
+      <p className="eyebrow text-sun-500 mb-3">
+        Schritt {activeStep + 1} / {STEPS.length}
       </p>
-      <p className="text-[13px] text-sage-200/80 mb-10 text-center">
-        Das dauert nur einen Moment
-      </p>
-      <div className="flex flex-col gap-3 w-full max-w-xs">
+
+      <div className="relative h-[40px] w-full max-w-xs overflow-hidden">
         {STEPS.map((s, i) => (
-          <motion.div
+          <motion.p
             key={s}
-            initial={{ opacity: 0.3 }}
-            animate={{ opacity: progressStep > i ? 1 : 0.3 }}
-            className="flex items-center gap-3 text-[13px]"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{
+              opacity: activeStep === i ? 1 : 0,
+              y: activeStep === i ? 0 : -8,
+            }}
+            transition={{ duration: 0.4 }}
+            className="absolute inset-0 font-serif italic text-[18px] text-cream text-center"
           >
-            <div
-              className={cn(
-                "flex h-5 w-5 items-center justify-center rounded-full transition",
-                progressStep > i
-                  ? "bg-paper text-forest-900"
-                  : "border border-paper/30"
-              )}
-            >
-              {progressStep > i && (
-                <svg
-                  className="h-3 w-3"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              )}
-            </div>
-            <span className="text-paper/90">{s}</span>
-          </motion.div>
+            {s}
+          </motion.p>
         ))}
       </div>
     </motion.div>
