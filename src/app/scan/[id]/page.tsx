@@ -97,7 +97,13 @@ export default async function ScanResultPage({
         <h1 className="font-serif text-[28px] leading-tight text-bark-900 font-normal tracking-tight mb-1">
           {entry.name}
         </h1>
-        <div className="flex items-center gap-2 mt-3 flex-wrap">
+        {entry.scientificName && (
+          <p className="latin-name text-[13px] mb-3">{entry.scientificName}</p>
+        )}
+        {entry.description && (
+          <p className="pull-quote mt-3 mb-2">{entry.description}</p>
+        )}
+        <div className="flex items-center gap-2 mt-4 flex-wrap">
           {entry.safety.toxicToChildren && (
             <Badge tone="danger" icon={<AlertTriangle className="h-3 w-3" />}>
               Giftig
@@ -110,13 +116,6 @@ export default async function ScanResultPage({
       {/* Urgency banner */}
       <section className="px-5 -mt-4 relative z-10">
         <UrgencyIndicator urgency={entry.defaultUrgency} variant="banner" />
-      </section>
-
-      {/* Summary – human-readable description */}
-      <section className="px-5 pt-6">
-        <p className="font-serif text-[19px] leading-[1.45] text-forest-900 font-normal">
-          {entry.description}
-        </p>
       </section>
 
       {/* Tabs */}
