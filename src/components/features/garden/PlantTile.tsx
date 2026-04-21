@@ -29,7 +29,7 @@ export function PlantTile({ plant }: { plant: Plant }) {
           alt={plant.nickname}
           fill
           sizes="(max-width: 768px) 50vw, 240px"
-          className="object-cover transition-transform duration-500 group-hover:scale-105 [filter:contrast(0.92)_saturate(0.85)_sepia(0.12)_brightness(1.02)]"
+          className="object-cover transition-transform duration-500 group-hover:scale-105 photo-graded"
         />
         <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 rounded-full bg-paper/90 backdrop-blur-sm px-2 py-1">
           <span

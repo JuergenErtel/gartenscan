@@ -47,7 +47,7 @@ export default async function ScanResultPage({
           fill
           priority
           sizes="(max-width: 768px) 100vw, 500px"
-          className="object-cover [filter:contrast(0.92)_saturate(0.85)_sepia(0.12)_brightness(1.02)]"
+          className="object-cover photo-graded"
         />
         <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_50%,rgba(58,37,21,0.25)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-bark-900/40" />

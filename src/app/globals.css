@@ -155,6 +155,11 @@ body {
   background: var(--color-paper-dim);
 }
 
+/* ===== Editorial Photo Grading Utility (2026-04 Overhaul) ===== */
+.photo-graded {
+  filter: contrast(0.92) saturate(0.85) sepia(0.12) brightness(1.02);
+}
+
 .grain::before {
   content: "";
   position: absolute;

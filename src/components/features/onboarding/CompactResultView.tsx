@@ -34,7 +34,7 @@ export function CompactResultView({
           alt={entry.name}
           fill
           sizes="(max-width: 640px) 100vw, 512px"
-          className="object-cover [filter:contrast(0.92)_saturate(0.85)_sepia(0.12)_brightness(1.02)]"
+          className="object-cover photo-graded"
         />
         <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_50%,rgba(58,37,21,0.18)_100%)]" />
       </div>

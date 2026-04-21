@@ -112,7 +112,7 @@ function DemoPickerMode() {
                   alt={entry.label}
                   fill
                   sizes="64px"
-                  className="object-cover [filter:contrast(0.92)_saturate(0.85)_sepia(0.12)_brightness(1.02)]"
+                  className="object-cover photo-graded"
                 />
               </div>
               <div className="flex-1 min-w-0">
