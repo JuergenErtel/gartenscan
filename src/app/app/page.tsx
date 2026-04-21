@@ -129,20 +129,20 @@ export default async function DashboardPage() {
       </section>
 
       <section className="mt-10 px-5">
-        <div className="relative overflow-hidden rounded-[24px] bg-gradient-to-br from-moss-500 to-forest-700 p-6 text-paper">
+        <div className="relative overflow-hidden rounded-[24px] bg-gradient-to-br from-bark-900 to-clay-800 p-6 text-paper">
           <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-sage-200/10 blur-2xl" />
           <div className="absolute -right-16 bottom-0 h-32 w-32 rounded-full bg-clay-500/10 blur-2xl" />
           <div className="relative">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-paper/10 backdrop-blur px-3 py-1 mb-4">
-              <Sparkles className="h-3 w-3" />
-              <span className="text-[10px] font-semibold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-cream/10 backdrop-blur px-3 py-1 mb-4">
+              <Sparkles className="h-3 w-3 text-sun-500/90" />
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-sun-500/90">
                 April im Garten
               </span>
             </div>
             <h3 className="font-serif text-[24px] leading-tight tracking-tight mb-2 font-normal">
               Die 5 wichtigsten Arbeiten für diesen Monat
             </h3>
-            <p className="text-[13px] leading-relaxed text-sage-200/90 mb-5 max-w-[90%]">
+            <p className="text-[13px] leading-relaxed text-cream/85 mb-5 max-w-[90%]">
               Von Obstbaumschnitt bis Aussaat der Frühgemüse – was in deiner
               Klimazone jetzt wirklich dran ist.
             </p>
@@ -162,20 +162,20 @@ export default async function DashboardPage() {
       <section className="mt-8 px-5">
         <Link
           href="/premium"
-          className="group flex items-center gap-4 rounded-[18px] bg-paper border border-clay-500/20 p-4 hover:border-clay-500/40 transition"
+          className="tap-press group flex items-center gap-4 rounded-[18px] bg-cream border border-clay-500/30 p-4 hover:border-clay-500/50 transition"
         >
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-clay-500 to-clay-400 text-paper">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-bark-900 to-clay-800 text-cream">
             <Sparkles className="h-5 w-5" strokeWidth={1.75} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[14px] font-semibold text-forest-900">
+            <p className="text-[14px] font-semibold text-bark-900">
               Premium 7 Tage kostenlos
             </p>
             <p className="text-[12px] text-ink-muted">
               Unbegrenzte Scans · Wetterwarnungen · Expertenchat
             </p>
           </div>
-          <ArrowRight className="h-5 w-5 text-clay-500 group-hover:translate-x-0.5 transition" />
+          <ArrowRight className="h-5 w-5 text-clay-800 group-hover:translate-x-0.5 transition" />
         </Link>
       </section>
     </AppShell>
