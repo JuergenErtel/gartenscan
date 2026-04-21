@@ -76,17 +76,19 @@ Alles andere bleibt für diesen Spec außen vor.
 1. Client wählt/fotografiert Bild — clientseitige Validierung (MIME `image/*`, max. 10 MB, min. 512 px längere Kante).
 2. Client komprimiert via Canvas auf max. 1600 px längere Kante, JPEG quality 0,85.
 3. Client ruft Server Action `createScan(file, meta)` auf.
-4. Server stellt Supabase-Session sicher (signiert anonym ein, falls nicht vorhanden — idempotent).
+4. Server stellt Supabase-Session sicher. Anonymous-Sign-In passiert über das `@supabase/ssr`-Middleware-Muster beim ersten App-Route-Zugriff (nicht Landing): fehlt ein Cookie, ruft die Middleware `supabase.auth.signInAnonymously()` und setzt das Session-Cookie. Die `createScan`-Action kann daher auf eine vorhandene Session vertrauen.
+
+   **Konsequenz:** Löscht der Nutzer Cookies oder wechselt den Browser, verliert er seine History. Der Upgrade-Pfad (Anonymous → Email via `linkIdentity`) kommt mit einem späteren Spec, nicht hier.
 5. Server lädt Bild in Bucket `scan-images`, Pfad `{userId}/{scanId}.jpg`.
 6. Server erzeugt signed URL (24 h TTL) für Provider-Call.
 7. Server ruft `analyzeImageService.run(imageUrl, userId, scanId)`:
    - `ClaudeVisionTriageProvider.classify(imageUrl)` → `{ category, quality, reason }`
    - Wenn `quality !== 'acceptable'` → `status = 'low_quality'`, speichern, Exit.
    - Wenn `category !== 'plant'` → `status = 'category_unsupported'`, speichern, Exit.
-   - Sonst `PlantNetProvider.identify(imageUrl)` → Kandidaten.
+   - Sonst `PlantNetProvider.identify(imageUrl)` → Kandidaten (Pl@ntNet-Project `weurope`, westeuropäische Flora).
    - Wenn `candidates.length === 0` oder `maxConfidence < 0.25` → `status = 'no_match'`.
    - Sonst `status = 'ok'`.
-8. Server speichert `scans`-Row + `scan_candidates`-Rows + inkrementiert `scan_usage`.
+8. Server speichert `scans`-Row + `scan_candidates`-Rows + inkrementiert `scan_usage`. **`matched_content_id`** wird gesetzt, wenn der `scientific_name` des Top-Kandidaten einem Eintrag in `src/content` entspricht (Lookup via Map über alle `ContentEntry.scientificName`-Felder — Seed-Content bleibt Quelle der Wahrheit für redaktionelle Beschreibungen).
 9. Server gibt `scanId` zurück.
 10. Client navigiert auf `/scan/[id]` (Server Component lädt Daten frisch).
 
@@ -257,6 +259,7 @@ NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...           # nur server
 PLANTNET_API_KEY=                       # leer ok → provider_error-State
+PLANTNET_PROJECT=weurope                # Default: westeuropäische Flora
 ANTHROPIC_API_KEY=...
 ```
 
