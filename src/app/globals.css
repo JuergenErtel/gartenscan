@@ -118,6 +118,35 @@ body {
   text-transform: uppercase;
 }
 
+/* ===== Editorial Typography (2026-04 Overhaul) ===== */
+.pull-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--color-bark-900);
+  background: var(--color-linen);
+  border-left: 3px solid var(--color-clay-800);
+  border-radius: 0 8px 8px 0;
+  padding: 0.75rem 0.875rem;
+}
+
+.eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-terra-500);
+}
+
+.latin-name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-clay-800);
+}
+
 /* ===== Background textures ===== */
 .bg-paper {
   background: var(--color-paper);
