@@ -41,7 +41,7 @@ export function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
       <div className="mx-auto max-w-lg px-4 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-2">
-        <div className="pointer-events-auto relative flex items-end justify-between rounded-[28px] bg-paper/95 backdrop-blur-xl px-3 py-2 shadow-[0_12px_40px_rgba(28,42,33,0.12)] border border-sage-200/60">
+        <div className="pointer-events-auto relative flex items-end justify-between rounded-[28px] bg-cream/95 backdrop-blur-xl px-3 py-2 shadow-[0_12px_40px_rgba(58,37,21,0.12)] border border-terra-500/20">
           {tabs.slice(0, 2).map((t) => (
             <NavItem
               key={t.href}
@@ -54,7 +54,7 @@ export function BottomNav() {
             className="group relative -mt-8 shrink-0"
             aria-label="Scan starten"
           >
-            <span className="absolute inset-0 rounded-full bg-forest-700/20 blur-xl group-hover:bg-forest-700/30 transition" />
+            <span className="absolute inset-0 rounded-full bg-clay-500/30 blur-xl group-hover:bg-clay-500/40 transition" />
             <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-forest-700 to-moss-500 shadow-[0_10px_24px_rgba(46,74,56,0.35)] ring-[3px] ring-paper group-active:scale-95 transition-transform duration-150">
               <Camera className="h-7 w-7 text-paper" strokeWidth={1.75} />
             </span>
@@ -87,8 +87,8 @@ function NavItem({
     <Link
       href={href}
       className={cn(
-        "flex flex-1 flex-col items-center justify-center gap-1 rounded-2xl py-2 transition-colors",
-        active ? "text-forest-700" : "text-ink-soft hover:text-forest-700"
+        "relative flex flex-1 flex-col items-center justify-center gap-1 rounded-2xl py-2 transition-colors",
+        active ? "text-bark-900" : "text-ink-soft hover:text-bark-900"
       )}
     >
       <Icon
@@ -103,6 +103,12 @@ function NavItem({
       >
         {label}
       </span>
+      {active && (
+        <span
+          aria-hidden
+          className="absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-bark-900"
+        />
+      )}
     </Link>
   );
 }
