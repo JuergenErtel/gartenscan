@@ -7,19 +7,25 @@ import { PlantTile } from "@/components/features/garden/PlantTile";
 import { Button } from "@/components/ui/Button";
 import { MOCK_PLANTS, MOCK_TASKS } from "@/lib/mock/garden";
 import { fetchWeatherForPLZ } from "@/lib/weather/openmeteo";
-import { USER_PROFILE } from "@/lib/profile";
+import { createClient } from "@/lib/supabase/server";
+import { getProfile } from "@/lib/services/profileRepository";
 import { Sparkles, ArrowRight, Bell } from "lucide-react";
 import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
-export const revalidate = 1800; // refresh weather every 30 min
+export const revalidate = 0; // per-user, don't cache
 
 export default async function DashboardPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const profileRow = user ? await getProfile(user.id) : null;
+  const displayName = profileRow?.email?.split("@")[0] ?? "Gärtner:in";
+
   const heroTask = MOCK_TASKS[0];
   const heroPlant = MOCK_PLANTS.find((p) => p.id === heroTask.plantId);
   const otherTasks = MOCK_TASKS.slice(1);
   const attentionPlants = MOCK_PLANTS.slice(0, 6);
 
-  const weather = await fetchWeatherForPLZ(USER_PROFILE.postalCode);
+  const weather = await fetchWeatherForPLZ("80331");
 
   const now = new Date();
   const hour = now.getHours();
@@ -34,7 +40,7 @@ export default async function DashboardPage() {
           <div>
             <p className="text-[13px] text-ink-muted mb-1">{greeting},</p>
             <h1 className="font-serif text-[32px] leading-tight tracking-tight text-forest-900 font-normal">
-              {USER_PROFILE.name}
+              {displayName}
             </h1>
           </div>
           <button className="relative flex h-10 w-10 items-center justify-center rounded-full bg-paper shadow-[0_2px_10px_rgba(28,42,33,0.05)] active:scale-95 transition">
