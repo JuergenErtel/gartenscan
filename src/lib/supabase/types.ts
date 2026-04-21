@@ -466,6 +466,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      increment_scan_usage: {
+        Args: { p_user_id: string; p_year_month: string }
+        Returns: undefined
+      }
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
