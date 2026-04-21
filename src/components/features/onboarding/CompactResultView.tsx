@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Lock, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import type { ContentEntry, TreatmentMethod } from "@/domain/types";
 
 interface Props {
@@ -55,14 +56,9 @@ export function CompactResultView({
         ))}
       </div>
 
-      <button
-        type="button"
-        onClick={onPrimaryCta}
-        className="tap-press flex w-full items-center justify-center rounded-[14px] bg-bark-900 hover:bg-clay-800 text-cream text-[15px] font-medium transition-colors"
-        style={{ height: 52 }}
-      >
+      <Button onClick={onPrimaryCta} variant="editorial" size="lg" fullWidth>
         Alle Maßnahmen ansehen
-      </button>
+      </Button>
       <button
         type="button"
         onClick={onSkip}

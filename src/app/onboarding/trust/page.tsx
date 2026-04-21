@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/Button";
 import { OnboardingShell } from "@/components/features/onboarding/OnboardingShell";
 import { OnboardingHeadline } from "@/components/features/onboarding/OnboardingHeadline";
 import { useOnboarding } from "@/hooks/useOnboarding";
@@ -73,14 +74,14 @@ export default function TrustPage() {
       </div>
 
       <div className="pt-8">
-        <button
-          type="button"
+        <Button
           onClick={() => advance("TRUST", {})}
-          className="tap-press flex w-full items-center justify-center rounded-[14px] bg-bark-900 hover:bg-clay-800 text-cream text-[15px] font-medium transition-colors"
-          style={{ height: 52 }}
+          variant="editorial"
+          size="lg"
+          fullWidth
         >
           Probier&apos;s aus
-        </button>
+        </Button>
       </div>
     </OnboardingShell>
   );

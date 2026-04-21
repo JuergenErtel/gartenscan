@@ -1,6 +1,6 @@
 import * as React from "react";
-import Link from "next/link";
 import { BotanicalIcon } from "@/components/ui/BotanicalIcon";
+import { Button } from "@/components/ui/Button";
 import type { BotanicalName } from "@/components/icons/botanical";
 import { cn } from "@/lib/utils";
 
@@ -34,21 +34,14 @@ export function EmptyState({
       <h3 className="display-m mt-6 mb-2 text-bark-900">{title}</h3>
       <p className="text-[14px] leading-relaxed text-ink-muted mb-6">{body}</p>
       {ctaLabel && ctaHref && (
-        <Link
-          href={ctaHref}
-          className="tap-press inline-flex items-center justify-center rounded-[14px] bg-bark-900 px-6 h-12 text-cream text-[14px] font-medium hover:bg-clay-800 transition-colors"
-        >
+        <Button href={ctaHref} variant="editorial" size="md">
           {ctaLabel}
-        </Link>
+        </Button>
       )}
       {ctaLabel && onCta && !ctaHref && (
-        <button
-          type="button"
-          onClick={onCta}
-          className="tap-press inline-flex items-center justify-center rounded-[14px] bg-bark-900 px-6 h-12 text-cream text-[14px] font-medium hover:bg-clay-800 transition-colors"
-        >
+        <Button onClick={onCta} variant="editorial" size="md">
           {ctaLabel}
-        </button>
+        </Button>
       )}
     </div>
   );

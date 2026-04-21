@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { OnboardingShell } from "@/components/features/onboarding/OnboardingShell";
+import { Button } from "@/components/ui/Button";
 import {
   trackOnboardingStarted,
   trackOnboardingStepViewed,
@@ -66,13 +66,9 @@ export default function WelcomePage() {
         transition={{ duration: 0.4, delay: 0.35, ease: "easeOut" }}
         className="flex flex-col gap-3"
       >
-        <Link
-          href="/onboarding/use-cases"
-          className="tap-press flex items-center justify-center rounded-[14px] bg-bark-900 hover:bg-clay-800 text-cream text-[15px] font-medium px-6 transition-colors"
-          style={{ height: 52 }}
-        >
+        <Button href="/onboarding/use-cases" variant="editorial" size="lg" fullWidth>
           Los geht&apos;s
-        </Link>
+        </Button>
         <span className="text-center text-[12px] text-ink-muted/70 pt-1">
           Schon Konto? Später anmelden
         </span>
