@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "tertiary" | "ghost" | "destructive";
+type Variant = "primary" | "secondary" | "tertiary" | "ghost" | "destructive" | "editorial";
 type Size = "sm" | "md" | "lg";
 
 interface ButtonBaseProps {
@@ -34,15 +34,17 @@ type ButtonProps = ButtonAsButtonProps | ButtonAsLinkProps;
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    "bg-forest-700 text-paper hover:bg-forest-800 active:scale-[0.98] shadow-[0_4px_12px_rgba(28,42,33,0.08)]",
+    "bg-forest-700 text-paper hover:bg-forest-800 shadow-[0_4px_12px_rgba(28,42,33,0.08)]",
   secondary:
-    "bg-transparent text-forest-700 border-[1.5px] border-forest-700 hover:bg-forest-700 hover:text-paper active:scale-[0.98]",
+    "bg-transparent text-forest-700 border-[1.5px] border-forest-700 hover:bg-forest-700 hover:text-paper",
   tertiary:
     "bg-transparent text-forest-700 underline-offset-4 hover:underline",
   ghost:
-    "bg-sage-100 text-forest-800 hover:bg-sage-200 active:scale-[0.98]",
+    "bg-sage-100 text-forest-800 hover:bg-sage-200",
   destructive:
-    "bg-berry-500 text-paper hover:bg-berry-600 active:scale-[0.98]",
+    "bg-berry-500 text-paper hover:bg-berry-600",
+  editorial:
+    "bg-bark-900 text-cream hover:bg-clay-800 shadow-[0_4px_14px_rgba(58,37,21,0.15)]",
 };
 
 const sizeClasses: Record<Size, string> = {
@@ -52,8 +54,9 @@ const sizeClasses: Record<Size, string> = {
 };
 
 const baseClasses = cn(
-  "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 ease-out select-none",
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-sage-50",
+  "inline-flex items-center justify-center gap-2 font-medium select-none",
+  "transition-all duration-200 ease-out active:scale-[0.96]",
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream",
   "disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100",
   "touch-manipulation"
 );
