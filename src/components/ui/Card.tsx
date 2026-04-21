@@ -2,16 +2,18 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "default" | "flat" | "outlined" | "premium";
+  variant?: "default" | "flat" | "outlined" | "premium" | "editorial";
   interactive?: boolean;
 }
 
 const variantClasses = {
-  default: "bg-paper shadow-[0_2px_16px_rgba(28,42,33,0.06)]",
-  flat: "bg-paper",
-  outlined: "bg-paper border border-sage-200",
+  default: "bg-cream shadow-[var(--shadow-editorial)]",
+  flat: "bg-cream",
+  outlined: "bg-cream border border-sage-200",
   premium:
-    "bg-paper shadow-[0_6px_28px_rgba(28,42,33,0.08)] ring-[1.5px] ring-clay-500/30",
+    "bg-cream shadow-[var(--shadow-editorial-lg)] ring-[1.5px] ring-clay-500/30",
+  editorial:
+    "bg-linen border-l-[3px] border-clay-800 shadow-[var(--shadow-editorial)]",
 };
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
@@ -42,5 +44,5 @@ export function CardBody({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-5", className)} {...props} />;
+  return <div className={cn("p-[22px]", className)} {...props} />;
 }
