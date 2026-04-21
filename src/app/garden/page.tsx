@@ -4,6 +4,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { PlantTile } from "@/components/features/garden/PlantTile";
 import { MOCK_PLANTS } from "@/lib/mock/garden";
 import { Button } from "@/components/ui/Button";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
 export default function GardenPage() {
@@ -32,54 +33,68 @@ export default function GardenPage() {
         </div>
       </div>
 
-      {critical.length > 0 && (
+      {MOCK_PLANTS.length === 0 ? (
         <section className="px-5 pt-8">
-          <h2 className="text-[11px] uppercase tracking-[0.12em] font-semibold text-berry-500 mb-3">
-            Brauchen heute Hilfe · {critical.length}
-          </h2>
-          <div className="grid grid-cols-2 gap-3">
-            {critical.map((p) => (
-              <PlantTile key={p.id} plant={p} />
-            ))}
-          </div>
+          <EmptyState
+            mark="seedling"
+            title="Dein Garten ist noch leer"
+            body="Scanne deine erste Pflanze, um sie hier zu sehen."
+            ctaLabel="Erste Pflanze scannen"
+            ctaHref="/scan/new"
+          />
         </section>
+      ) : (
+        <>
+          {critical.length > 0 && (
+            <section className="px-5 pt-8">
+              <h2 className="text-[11px] uppercase tracking-[0.12em] font-semibold text-berry-500 mb-3">
+                Brauchen heute Hilfe · {critical.length}
+              </h2>
+              <div className="grid grid-cols-2 gap-3">
+                {critical.map((p) => (
+                  <PlantTile key={p.id} plant={p} />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {attention.length > 0 && (
+            <section className="px-5 pt-8">
+              <h2 className="text-[11px] uppercase tracking-[0.12em] font-semibold text-sun-500 mb-3">
+                Beobachten · {attention.length}
+              </h2>
+              <div className="grid grid-cols-2 gap-3">
+                {attention.map((p) => (
+                  <PlantTile key={p.id} plant={p} />
+                ))}
+              </div>
+            </section>
+          )}
+
+          <section className="px-5 pt-8">
+            <h2 className="text-[11px] uppercase tracking-[0.12em] font-semibold text-moss-600 mb-3">
+              Gesund · {healthy.length}
+            </h2>
+            <div className="grid grid-cols-2 gap-3">
+              {healthy.map((p) => (
+                <PlantTile key={p.id} plant={p} />
+              ))}
+            </div>
+          </section>
+
+          <section className="px-5 pt-8">
+            <Button
+              href="/scan/new"
+              variant="secondary"
+              fullWidth
+              size="lg"
+              iconLeft={<Plus className="h-5 w-5" />}
+            >
+              Pflanze hinzufügen
+            </Button>
+          </section>
+        </>
       )}
-
-      {attention.length > 0 && (
-        <section className="px-5 pt-8">
-          <h2 className="text-[11px] uppercase tracking-[0.12em] font-semibold text-sun-500 mb-3">
-            Beobachten · {attention.length}
-          </h2>
-          <div className="grid grid-cols-2 gap-3">
-            {attention.map((p) => (
-              <PlantTile key={p.id} plant={p} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      <section className="px-5 pt-8">
-        <h2 className="text-[11px] uppercase tracking-[0.12em] font-semibold text-moss-600 mb-3">
-          Gesund · {healthy.length}
-        </h2>
-        <div className="grid grid-cols-2 gap-3">
-          {healthy.map((p) => (
-            <PlantTile key={p.id} plant={p} />
-          ))}
-        </div>
-      </section>
-
-      <section className="px-5 pt-8">
-        <Button
-          href="/scan/new"
-          variant="secondary"
-          fullWidth
-          size="lg"
-          iconLeft={<Plus className="h-5 w-5" />}
-        >
-          Pflanze hinzufügen
-        </Button>
-      </section>
     </AppShell>
     </OnboardingGuard>
   );
