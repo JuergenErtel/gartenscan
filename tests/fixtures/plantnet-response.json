@@ -1,0 +1,29 @@
+{
+  "query": { "project": "weurope", "images": ["..."], "organs": ["auto"] },
+  "results": [
+    {
+      "score": 0.8912,
+      "species": {
+        "scientificNameWithoutAuthor": "Solanum lycopersicum",
+        "scientificNameAuthorship": "L.",
+        "scientificName": "Solanum lycopersicum L.",
+        "genus": { "scientificNameWithoutAuthor": "Solanum" },
+        "family": { "scientificNameWithoutAuthor": "Solanaceae" },
+        "commonNames": ["Tomate", "Garden Tomato"]
+      },
+      "gbif": { "id": "2930139" }
+    },
+    {
+      "score": 0.0412,
+      "species": {
+        "scientificNameWithoutAuthor": "Solanum melongena",
+        "scientificName": "Solanum melongena L.",
+        "genus": { "scientificNameWithoutAuthor": "Solanum" },
+        "family": { "scientificNameWithoutAuthor": "Solanaceae" },
+        "commonNames": ["Aubergine"]
+      }
+    }
+  ],
+  "version": "2023-11-20 (7.3)",
+  "remainingIdentificationRequests": 499
+}
