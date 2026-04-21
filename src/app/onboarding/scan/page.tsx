@@ -135,7 +135,7 @@ export default function ScanPage() {
                 ))}
               </div>
               <p className="mt-6 text-center text-[12px] text-ink-muted/80">
-                Echte Foto-Erkennung startet in Kürze.
+                Beispiel-Scan. Deinen eigenen machst du gleich in der App.
               </p>
               <button
                 type="button"
