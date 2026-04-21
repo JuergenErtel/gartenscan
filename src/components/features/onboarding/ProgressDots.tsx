@@ -26,10 +26,10 @@ export function ProgressDots({ total = 6, active, className }: Props) {
             className={cn(
               "h-1.5 rounded-full transition-all duration-300",
               isActive
-                ? "w-6 bg-forest-700"
+                ? "w-6 bg-bark-900"
                 : index < active
-                ? "w-1.5 bg-forest-700/40"
-                : "w-1.5 bg-forest-700/15"
+                ? "w-1.5 bg-terra-500"
+                : "w-1.5 bg-terra-500/30"
             )}
           />
         );

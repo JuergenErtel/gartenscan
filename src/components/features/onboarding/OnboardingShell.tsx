@@ -28,7 +28,7 @@ export function OnboardingShell({
   return (
     <div
       className={cn(
-        "min-h-[100dvh] bg-sage-50 flex flex-col safe-top",
+        "min-h-[100dvh] bg-linen flex flex-col safe-top",
         className
       )}
     >
@@ -38,18 +38,18 @@ export function OnboardingShell({
             (backHref ? (
               <Link
                 href={backHref}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-paper/80 hover:bg-paper active:scale-95 transition"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-cream/80 hover:bg-cream active:scale-95 transition"
                 aria-label="Zurück"
               >
-                <ArrowLeft className="h-5 w-5 text-forest-700" />
+                <ArrowLeft className="h-5 w-5 text-bark-900" />
               </Link>
             ) : (
               <button
                 onClick={() => router.back()}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-paper/80 hover:bg-paper active:scale-95 transition"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-cream/80 hover:bg-cream active:scale-95 transition"
                 aria-label="Zurück"
               >
-                <ArrowLeft className="h-5 w-5 text-forest-700" />
+                <ArrowLeft className="h-5 w-5 text-bark-900" />
               </button>
             ))}
         </div>
