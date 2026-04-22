@@ -51,3 +51,18 @@ export interface StoredScan {
   outcome: ScanOutcome;
   matchedContentId?: string;
 }
+
+export type FollowUpStatus =
+  | 'OPEN'
+  | 'MONITORING'
+  | 'DONE'
+  | 'ESCALATED';
+
+export interface ScanFollowUp {
+  scanId: string;
+  userId: string;
+  status: FollowUpStatus;
+  nextCheckAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}

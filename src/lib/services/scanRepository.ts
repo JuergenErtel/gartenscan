@@ -129,6 +129,14 @@ export async function listScansForUser(userId: string, limit = 50): Promise<Stor
       outcome: {
         status: scan.status as ScanOutcome['status'],
         provider: scan.provider ?? undefined,
+        triage: scan.triage_category
+          ? {
+              category: scan.triage_category as NonNullable<ScanOutcome['triage']>['category'],
+              quality: (scan.triage_quality ?? 'acceptable') as NonNullable<ScanOutcome['triage']>['quality'],
+              reason: scan.triage_reason ?? undefined,
+            }
+          : undefined,
+        reason: scan.triage_reason ?? undefined,
         candidates: topCand
           ? [{
               rank: 1,

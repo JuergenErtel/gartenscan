@@ -3,29 +3,29 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
-import { OnboardingShell } from "@/components/features/onboarding/OnboardingShell";
 import { OnboardingHeadline } from "@/components/features/onboarding/OnboardingHeadline";
+import { OnboardingShell } from "@/components/features/onboarding/OnboardingShell";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import { trackOnboardingStepViewed } from "@/domain/analytics/onboarding";
 
 const QUOTES = [
   {
-    eyebrow: "Datenschutz",
+    eyebrow: "Ehrlichkeit",
     quote:
-      "Deine Fotos verlassen dein Gerät erst, wenn du auf „analysieren“ tippst.",
-    foot: "Speicherung lokal, keine Cloud-Synchronisation ohne Premium.",
+      "Wenn wir unsicher sind, sagen wir es. Ein Fake-sicheres Ergebnis ist schlimmer als ein offenes Vielleicht.",
+    foot: "Konfidenz, Alternativen und Wiederholungs-Hinweise gehoeren zum Produktkern.",
   },
   {
-    eyebrow: "Methode",
+    eyebrow: "Scope",
     quote:
-      "Wir vergleichen dein Bild mit Tausenden kuratierter Beispiele — und sagen dir, wie sicher wir uns sind.",
-    foot: "Konfidenzwert auf jedem Result, plus Alternativen bei Unsicherheit.",
+      "Heute sind wir im Live-Scan am staerksten bei Pflanzen und klaren Einzelmotiven. Andere Problemklassen bauen wir sichtbar aus.",
+    foot: "Lieber ehrlicher Fokus als eine ueberdehnte Alleskann-App.",
   },
   {
-    eyebrow: "Empfehlung",
+    eyebrow: "Nutzen",
     quote:
-      "Jede Maßnahme passt zu deinem Garten — Standort, Bodenart, Saison, was du selbst zur Hand hast.",
-    foot: "Drei Empfehlungstiefen: schnell · ausgewogen · gründlich.",
+      "Ein Ergebnis ist erst dann gut, wenn du danach weisst, ob du handeln musst und womit du anfangen solltest.",
+    foot: "Genau deshalb priorisieren wir Relevanz und Massnahmen vor Lexikon-Wissen.",
   },
 ];
 
@@ -38,14 +38,14 @@ export default function TrustPage() {
 
   return (
     <OnboardingShell step={4}>
-      <div className="pt-6 flex-1">
+      <div className="flex-1 pt-6">
         <OnboardingHeadline
-          title="Wie wir es ernst meinen."
-          subtitle="Drei Versprechen, die du jederzeit einfordern kannst."
+          title="Wie wir Vertrauen verdienen."
+          subtitle="Nicht mit Marketing-Saetzen, sondern mit klaren Grenzen und brauchbaren Antworten."
         />
 
         <motion.div
-          className="space-y-4 mt-8"
+          className="mt-8 space-y-4"
           initial="hidden"
           animate="visible"
           variants={{
@@ -53,19 +53,19 @@ export default function TrustPage() {
             hidden: {},
           }}
         >
-          {QUOTES.map((q) => (
+          {QUOTES.map((quote) => (
             <motion.div
-              key={q.eyebrow}
+              key={quote.eyebrow}
               variants={{
                 hidden: { opacity: 0, y: 12 },
                 visible: { opacity: 1, y: 0 },
               }}
             >
-              <article className="rounded-2xl bg-cream border border-terra-500/20 p-5 shadow-[var(--shadow-editorial)]">
-                <p className="eyebrow mb-3">{q.eyebrow}</p>
-                <p className="pull-quote">{q.quote}</p>
-                <p className="text-[12px] text-ink-muted mt-3 leading-relaxed">
-                  {q.foot}
+              <article className="rounded-2xl border border-terra-500/20 bg-cream p-5 shadow-[var(--shadow-editorial)]">
+                <p className="eyebrow mb-3">{quote.eyebrow}</p>
+                <p className="pull-quote">{quote.quote}</p>
+                <p className="mt-3 text-[12px] leading-relaxed text-ink-muted">
+                  {quote.foot}
                 </p>
               </article>
             </motion.div>
@@ -80,7 +80,7 @@ export default function TrustPage() {
           size="lg"
           fullWidth
         >
-          Probier&apos;s aus
+          Weiter zum ersten echten Wertmoment
         </Button>
       </div>
     </OnboardingShell>

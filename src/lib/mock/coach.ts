@@ -1,12 +1,12 @@
 import type { CoachMessage } from "@/lib/types";
 
 export const COACH_SUGGESTIONS = [
-  "Was blüht gerade im April?",
-  "Welcher Dünger für meine Rosen?",
-  "Schnelle Schatten-Ideen für die Terrasse",
-  "Ist mein Boden zu sauer?",
-  "Wann Tomaten rausstellen?",
-  "Giftige Pflanzen für Kinder",
+  "Stell mir einen 7-Tage-Plan fuer Rose und Hortensie zusammen",
+  "Welche Loesung ist bio und haustierfreundlich?",
+  "Was sollte ich heute sofort kontrollieren?",
+  "Welche Massnahme ist am schnellsten wirksam?",
+  "Woran erkenne ich, dass es schlimmer wird?",
+  "Welche Fehler sollte ich jetzt vermeiden?",
 ];
 
 export const COACH_INITIAL: CoachMessage[] = [
@@ -14,51 +14,52 @@ export const COACH_INITIAL: CoachMessage[] = [
     id: "m0",
     role: "assistant",
     content:
-      "Guten Morgen, Jürgen. Ich sehe, deine Rose kämpft gerade mit Blattläusen und deine Hortensie zeigt erste Mehltau-Zeichen. Soll ich dir einen Plan für die nächsten 7 Tage zusammenstellen – oder hast du eine andere Frage?",
+      "Ich sehe zwei offene Themen: Blattlaeuse an deiner Rose und erste Mehltau-Zeichen an der Hortensie. Wenn du willst, priorisiere ich dir jetzt die naechsten 7 Tage nach Wirkung, Aufwand und Haustierfreundlichkeit.",
     createdAt: new Date(),
     citations: ["plant_rose", "plant_hortensie"],
   },
 ];
 
-// Pre-scripted mock responses keyed by loose keyword matching
 export const COACH_RESPONSES: { keywords: string[]; response: string }[] = [
   {
-    keywords: ["blüht", "april", "jahreszeit"],
+    keywords: ["7-tage-plan", "7 tage", "plan", "priorisiere"],
     response:
-      "Im April blühen bei dir im Münchner Raum typischerweise: Forsythie (bereits am Ende), Magnolien (Hochsaison), Zierkirschen, Narzissen, Tulpen und die ersten Flieder-Sorten. Deine Hortensie braucht noch 6–8 Wochen. Wenn du Farbe willst: Vergissmeinnicht und Stiefmütterchen sind jetzt perfekt zum Pflanzen.",
+      "So wuerde ich priorisieren: 1. Heute die Rose abspritzen und junge Triebe kontrollieren. 2. Morgen befallene Hortensienblaetter entfernen. 3. In 2 bis 3 Tagen beide Pflanzen nachkontrollieren. 4. Diese Woche nur eine Folgemassnahme nachlegen, nicht wahllos mischen. Wenn du willst, breche ich dir das noch auf Morgen, Wochenende und naechste Woche runter.",
   },
   {
-    keywords: ["dünger", "rose", "düngen"],
+    keywords: ["bio", "haustier", "haustierfreundlich", "kinder"],
     response:
-      "Für deine Edelrose 'Nostalgie' empfehle ich einen organischen Rosendünger, dreimal pro Saison: Anfang April (jetzt!), Mitte Juni nach der ersten Blüte, und Ende Juli. Wichtig: Ab Mitte August nicht mehr düngen – die Pflanze muss für den Winter aushärten. Hornspäne sind eine günstige Dauerdüngung für den Unterbau.",
+      "Dann faellt alles raus, was fuer Tiere oder Kinder unruhig macht. Fuer Blattlaeuse zuerst Wasserstrahl, danach Schmierseife. Fuer Mehltau zuerst befallene Blaetter entfernen, danach Milch-Wasser-Loesung. Neem oder staerkere Mittel nur, wenn der Befall weiter steigt und der Bereich sicher abgesperrt werden kann.",
   },
   {
-    keywords: ["schatten", "terrasse"],
+    keywords: ["heute", "sofort", "kontrollieren"],
     response:
-      "Schnelle Schatten-Ideen für deine Terrasse: 1) Segeltuchsonnensegel (3×4m, ca. 80€, aufhängen in 30 Min), 2) Kletterpflanzen an Rankhilfen – Clematis oder Waldrebe wachsen schnell und blühen, 3) Kübel mit Fächerahorn als lebender Schattenspender. Willst du permanente oder temporäre Lösung?",
+      "Heute wuerde ich drei Dinge anschauen: 1. Blattunterseiten und Knospen an den Rosen. 2. Frische weisse Belaege an jungen Hortensienblaettern. 3. Wetter fuer die kommenden 48 Stunden, weil Feuchte und Temperatur entscheiden, ob du nur beobachtest oder sofort nachlegst.",
   },
   {
-    keywords: ["boden", "sauer", "ph"],
+    keywords: ["schnell", "wirksam", "schnellsten"],
     response:
-      "Um das herauszufinden: Kauf einen pH-Teststreifen (ca. 8€, Baumarkt). Misch eine Bodenprobe mit destilliertem Wasser, warte 1 Stunde, teste. Für deine Hortensie wäre pH 5,5 perfekt (sauer = blaue Blüten), für Rosen eher 6,5 (neutral). Ich kann dir auch anbieten, die Analyse mit einem Foto der Bodenprobe zu versuchen – interessiert?",
+      "Die schnellste Wirkung bringt meist die mechanische Sofortmassnahme: Wasserstrahl bei Blattlaeusen, Entfernen befallener Blaetter bei Mehltau, Ausstechen bei Loewenzahn. Das wirkt nicht immer vollstaendig, aber es reduziert den Druck sofort. Danach entscheidest du erst, ob eine zweite Runde noetig ist.",
   },
   {
-    keywords: ["tomate", "rausstellen", "pflanzen"],
+    keywords: ["schlimmer", "eskaliert", "warnzeichen"],
     response:
-      "Klassische Gärtnerregel: Nach den Eisheiligen (11.–15. Mai). Da du in einer Zone 8a wohnst, kannst du es ab 10. Mai riskieren – aber halte eine Vlieshaube bereit. Ich warne dich, falls Nachtfrost kommt. Deine Harzfeuer ist robust, aber unter 5°C nachts leidet sie.",
+      "Warnzeichen fuer Eskalation sind: neuer Befall an frischen Trieben, klebriger Honigtau, ausbreitende Belaege, eingerollte Blaetter oder sichtbarer Schaden trotz erster Massnahme. Sobald du merkst, dass es in 2 bis 4 Tagen nicht stagniert, brauchst du Stufe zwei statt nur Beobachtung.",
   },
   {
-    keywords: ["giftig", "kinder", "haustier"],
+    keywords: ["fehler", "vermeiden"],
     response:
-      "Wichtige Warnung: In deinem Garten solltest du im Blick haben – Hortensie (leicht giftig bei Verzehr größerer Mengen), später Eibe falls vorhanden (sehr giftig, Nadeln und Samen). Relativ sicher sind dagegen Lavendel, Rosen (Stacheln!), Basilikum, Apfelbaum. Ich zeige dir gern eine vollständige Karte für deinen Garten – Premium-Feature.",
+      "Die typischen Fehler sind immer dieselben: zu spaet handeln, drei Mittel gleichzeitig mischen, in praller Sonne spruehen, Folgekontrolle vergessen und aus Bequemlichkeit zu aggressiv werden. Der beste Weg ist meistens: erst Druck rausnehmen, dann eine klare zweite Option waehlen.",
   },
 ];
 
 export function findCoachResponse(query: string): string {
   const lower = query.toLowerCase();
-  const match = COACH_RESPONSES.find((r) =>
-    r.keywords.some((k) => lower.includes(k))
+  const match = COACH_RESPONSES.find((response) =>
+    response.keywords.some((keyword) => lower.includes(keyword))
   );
+
   if (match) return match.response;
-  return "Das ist eine gute Frage. Ich brauche dafür etwas mehr Kontext – kannst du mir ein Foto schicken oder sagen, um welche Pflanze es konkret geht? Dann kann ich dir eine fundierte Antwort geben.";
+
+  return "Dafuer brauche ich etwas mehr Kontext. Sag mir, welche Pflanze betroffen ist, wie stark das Problem schon ist und ob du eher bio, schnell oder haustierfreundlich vorgehen willst. Dann antworte ich deutlich konkreter.";
 }

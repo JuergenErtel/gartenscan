@@ -371,6 +371,41 @@ export type Database = {
           },
         ]
       }
+      scan_followups: {
+        Row: {
+          created_at: string
+          next_check_at: string | null
+          scan_id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          next_check_at?: string | null
+          scan_id: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          next_check_at?: string | null
+          scan_id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scan_followups_scan_id_fkey"
+            columns: ["scan_id"]
+            isOneToOne: true
+            referencedRelation: "scans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       scan_usage: {
         Row: {
           scans_used: number

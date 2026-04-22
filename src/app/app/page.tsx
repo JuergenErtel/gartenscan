@@ -1,29 +1,59 @@
 import Link from "next/link";
-import { AppShell } from "@/components/layout/AppShell";
+import {
+  ArrowRight,
+  Bell,
+  CloudRain,
+  ScanLine,
+  ShieldCheck,
+  Snowflake,
+  Sparkles,
+  SunMedium,
+  Wind,
+} from "lucide-react";
 import { TodayHero } from "@/components/features/dashboard/TodayHero";
 import { TaskCard } from "@/components/features/dashboard/TaskCard";
-import { WeatherChip } from "@/components/features/dashboard/WeatherChip";
 import { PlantTile } from "@/components/features/garden/PlantTile";
+import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
+import { AppShell } from "@/components/layout/AppShell";
+import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { UrgencyIndicator } from "@/components/ui/UrgencyIndicator";
+import { WeatherChip } from "@/components/features/dashboard/WeatherChip";
+import { listHistory } from "@/lib/services/historyService";
+import { getScanCaseSummary } from "@/lib/scan/caseSummary";
+import { getProfile } from "@/lib/services/profileRepository";
+import { createClient } from "@/lib/supabase/server";
 import { MOCK_PLANTS, MOCK_TASKS } from "@/lib/mock/garden";
 import { fetchWeatherForPLZ } from "@/lib/weather/openmeteo";
-import { createClient } from "@/lib/supabase/server";
-import { getProfile } from "@/lib/services/profileRepository";
-import { Sparkles, ArrowRight, Bell } from "lucide-react";
-import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 
-export const revalidate = 0; // per-user, don't cache
+export const revalidate = 0;
 
 export default async function DashboardPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const profileRow = user ? await getProfile(user.id) : null;
-  const displayName = profileRow?.email?.split("@")[0] ?? "Gärtner:in";
+  const displayName = profileRow?.email?.split("@")[0] ?? "Gaertner:in";
+  const history = user ? await listHistory(user.id, 6) : [];
 
   const heroTask = MOCK_TASKS[0];
-  const heroPlant = MOCK_PLANTS.find((p) => p.id === heroTask.plantId);
+  const heroPlant = MOCK_PLANTS.find((plant) => plant.id === heroTask.plantId);
   const otherTasks = MOCK_TASKS.slice(1);
   const attentionPlants = MOCK_PLANTS.slice(0, 6);
+
+  const summarizedHistory = history.map((item) => ({
+    item,
+    summary: getScanCaseSummary(item.scan, item.matchedEntry, item.followUp),
+  }));
+  const actionableHistory = summarizedHistory.filter(
+    ({ summary }) => summary.actionable
+  );
+  const urgentHistory = summarizedHistory.filter(
+    ({ summary }) => summary.urgency === "IMMEDIATE"
+  );
+  const recentCases = history.slice(0, 3);
 
   const weather = await fetchWeatherForPLZ("80331");
 
@@ -35,156 +65,303 @@ export default async function DashboardPage() {
   return (
     <OnboardingGuard>
       <AppShell>
-      <div className="px-5 pt-6 pb-2 safe-top">
-        <div className="flex items-start justify-between mb-1">
-          <div>
-            <p className="text-[13px] text-ink-muted mb-1">{greeting},</p>
-            <h1 className="font-serif text-[32px] leading-tight tracking-tight text-forest-900 font-normal">
-              {displayName}
-            </h1>
+        <div className="safe-top px-5 pt-6 pb-2">
+          <div className="mb-1 flex items-start justify-between">
+            <div>
+              <p className="mb-1 text-[13px] text-ink-muted">{greeting},</p>
+              <h1 className="font-serif text-[32px] leading-tight tracking-tight text-forest-900 font-normal">
+                {displayName}
+              </h1>
+            </div>
+            <button className="relative flex h-10 w-10 items-center justify-center rounded-full bg-paper shadow-[0_2px_10px_rgba(28,42,33,0.05)] active:scale-95 transition">
+              <Bell className="h-4.5 w-4.5 text-forest-700" strokeWidth={1.75} />
+              <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-berry-500 ring-2 ring-paper" />
+            </button>
           </div>
-          <button className="relative flex h-10 w-10 items-center justify-center rounded-full bg-paper shadow-[0_2px_10px_rgba(28,42,33,0.05)] active:scale-95 transition">
-            <Bell className="h-4.5 w-4.5 text-forest-700" strokeWidth={1.75} />
-            <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-berry-500 ring-2 ring-paper" />
-          </button>
+          {weather && (
+            <div className="mt-3">
+              <WeatherChip weather={weather} />
+            </div>
+          )}
         </div>
-        {weather && (
-          <div className="mt-3">
-            <WeatherChip weather={weather} />
+
+        <section className="px-5 mt-5">
+          <div className="relative overflow-hidden rounded-[26px] bg-gradient-to-br from-bark-900 via-clay-800 to-bark-900 p-6 text-cream shadow-[var(--shadow-editorial-lg)]">
+            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-sage-200/10 blur-2xl" />
+            <div className="absolute -left-6 bottom-0 h-24 w-24 rounded-full bg-clay-500/10 blur-2xl" />
+            <div className="relative">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-paper/10 px-3 py-1">
+                <Sparkles className="h-3 w-3 text-sun-500/90" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-sun-500/90">
+                  Soforthilfe
+                </span>
+              </div>
+              <h2 className="mt-4 font-serif text-[30px] leading-[1.05] tracking-tight">
+                Foto rein. Antwort und Massnahme raus.
+              </h2>
+              <p className="mt-3 max-w-[34ch] text-[14px] leading-relaxed text-cream/82">
+                Der Wert der App ist nicht die Erkennung. Der Wert ist, dass du
+                schneller weisst, ob du handeln musst und womit du anfangen
+                solltest.
+              </p>
+
+              <div className="mt-5 grid grid-cols-3 gap-2.5">
+                <HomeMetric
+                  label="Offene Faelle"
+                  value={String(actionableHistory.length || 2)}
+                />
+                <HomeMetric
+                  label="Akut heute"
+                  value={String(urgentHistory.length || 1)}
+                />
+                <HomeMetric
+                  label="Scans im Journal"
+                  value={String(history.length)}
+                />
+              </div>
+
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <Button
+                  href="/scan/new"
+                  size="lg"
+                  className="sm:flex-1 !bg-paper !text-bark-900 hover:!bg-paper/90"
+                  iconLeft={<ScanLine className="h-4 w-4" />}
+                >
+                  Jetzt Problem scannen
+                </Button>
+                <Button
+                  href="/history"
+                  size="lg"
+                  variant="ghost"
+                  className="sm:flex-1 !bg-paper/10 !text-paper hover:!bg-paper/15"
+                >
+                  Verlauf mit naechstem Schritt
+                </Button>
+              </div>
+            </div>
           </div>
-        )}
-      </div>
+        </section>
 
-      {weather?.alert && (
-        <div className="mx-5 mt-4 flex items-center gap-3 rounded-[16px] bg-gradient-to-br from-sky-100 to-paper border border-sky-300/40 px-4 py-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-300/30">
-            <span className="text-base">
-              {weather.alert.type === "frost"
-                ? "❄"
-                : weather.alert.type === "storm"
-                  ? "🌬"
-                  : weather.alert.type === "heat"
-                    ? "☀"
-                    : "☔"}
-            </span>
-          </div>
-          <div className="flex-1">
-            <p className="text-[13px] font-semibold text-forest-900 leading-snug">
-              {weather.alert.message}
-            </p>
-            <p className="text-[11px] text-ink-muted">
-              in ~{weather.alert.inHours} Std.
-              {weather.location && ` · ${weather.location}`}
-            </p>
-          </div>
-          <Link
-            href="/coach"
-            className="text-[12px] font-semibold text-forest-700 shrink-0"
-          >
-            Plan ansehen
-          </Link>
-        </div>
-      )}
-
-      <section className="px-5 mt-6">
-        <TodayHero task={heroTask} plant={heroPlant} />
-      </section>
-
-      <section className="mt-8">
-        <div className="px-5 flex items-center justify-between mb-3">
-          <h2 className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted">
-            Diese Woche · {otherTasks.length}
-          </h2>
-          <Link
-            href="/history"
-            className="text-[12px] font-semibold text-forest-700 flex items-center gap-0.5"
-          >
-            Alle <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-        <div className="flex gap-3 overflow-x-auto scroll-hidden px-5 pb-2">
-          {otherTasks.map((t) => (
-            <TaskCard key={t.id} task={t} />
-          ))}
-          <div className="min-w-[20px]" />
-        </div>
-      </section>
-
-      <section className="mt-10 px-5">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="font-serif text-[22px] leading-tight text-forest-900">
-              Mein Garten
-            </h2>
-            <p className="text-[12px] text-ink-muted mt-0.5">
-              {MOCK_PLANTS.length} Pflanzen · 2 brauchen Aufmerksamkeit
-            </p>
-          </div>
-          <Link
-            href="/garden"
-            className="text-[12px] font-semibold text-forest-700 flex items-center gap-0.5"
-          >
-            Alle <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          {attentionPlants.map((p) => (
-            <PlantTile key={p.id} plant={p} />
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-10 px-5">
-        <div className="relative overflow-hidden rounded-[24px] bg-gradient-to-br from-bark-900 to-clay-800 p-6 text-paper">
-          <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-sage-200/10 blur-2xl" />
-          <div className="absolute -right-16 bottom-0 h-32 w-32 rounded-full bg-clay-500/10 blur-2xl" />
-          <div className="relative">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-cream/10 backdrop-blur px-3 py-1 mb-4">
-              <Sparkles className="h-3 w-3 text-sun-500/90" />
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-sun-500/90">
-                April im Garten
+        {weather?.alert && (
+          <div className="mx-5 mt-4 flex items-center gap-3 rounded-[16px] border border-sky-300/40 bg-gradient-to-br from-sky-100 to-paper px-4 py-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-300/30">
+              <span className="text-base text-forest-700">
+                {weather.alert.type === "frost"
+                  ? <Snowflake className="h-4.5 w-4.5" />
+                  : weather.alert.type === "storm"
+                    ? <Wind className="h-4.5 w-4.5" />
+                    : weather.alert.type === "heat"
+                      ? <SunMedium className="h-4.5 w-4.5" />
+                      : <CloudRain className="h-4.5 w-4.5" />}
               </span>
             </div>
-            <h3 className="font-serif text-[24px] leading-tight tracking-tight mb-2 font-normal">
-              Die 5 wichtigsten Arbeiten für diesen Monat
-            </h3>
-            <p className="text-[13px] leading-relaxed text-cream/85 mb-5 max-w-[90%]">
-              Von Obstbaumschnitt bis Aussaat der Frühgemüse – was in deiner
-              Klimazone jetzt wirklich dran ist.
-            </p>
-            <Button
+            <div className="flex-1">
+              <p className="text-[13px] font-semibold leading-snug text-forest-900">
+                {weather.alert.message}
+              </p>
+              <p className="text-[11px] text-ink-muted">
+                in ca. {weather.alert.inHours} Std.
+                {weather.location ? ` - ${weather.location}` : ""}
+              </p>
+            </div>
+            <Link
               href="/coach"
-              variant="ghost"
-              size="sm"
-              className="!bg-paper !text-forest-900 hover:!bg-paper/90"
-              iconRight={<ArrowRight className="h-4 w-4" />}
+              className="shrink-0 text-[12px] font-semibold text-forest-700"
             >
-              Lesen
-            </Button>
+              Plan ansehen
+            </Link>
           </div>
-        </div>
-      </section>
+        )}
 
-      <section className="mt-8 px-5">
-        <Link
-          href="/premium"
-          className="tap-press group flex items-center gap-4 rounded-[18px] bg-cream border border-clay-500/30 p-4 hover:border-clay-500/50 transition"
-        >
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-bark-900 to-clay-800 text-cream">
-            <Sparkles className="h-5 w-5" strokeWidth={1.75} />
+        <section className="mt-6 px-5">
+          <TodayHero task={heroTask} plant={heroPlant} />
+        </section>
+
+        <section className="mt-8 px-5">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="font-serif text-[24px] leading-tight text-forest-900">
+                Zuletzt erkannt
+              </h2>
+              <p className="mt-1 text-[12px] text-ink-muted">
+                Nicht nur Historie. Dein naechster sinnvoller Schritt.
+              </p>
+            </div>
+            <Link
+              href="/history"
+              className="flex items-center gap-0.5 text-[12px] font-semibold text-forest-700"
+            >
+              Alles <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[14px] font-semibold text-bark-900">
-              Premium 7 Tage kostenlos
-            </p>
-            <p className="text-[12px] text-ink-muted">
-              Unbegrenzte Scans · Wetterwarnungen · Expertenchat
-            </p>
+
+          {recentCases.length > 0 ? (
+            <div className="space-y-3">
+              {recentCases.map((item) => {
+                const summary = getScanCaseSummary(
+                  item.scan,
+                  item.matchedEntry,
+                  item.followUp
+                );
+
+                return (
+                  <Link
+                    key={item.scan.id}
+                    href={`/scan/${item.scan.id}`}
+                    className="block rounded-[20px] bg-paper p-5 shadow-[var(--shadow-soft)] transition hover:shadow-[var(--shadow-card)]"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                          Letzter Fall
+                        </p>
+                        <h3 className="mt-1 text-[18px] font-semibold text-bark-900">
+                          {summary.title}
+                        </h3>
+                        <p className="mt-1 text-[12px] text-ink-muted">
+                          {summary.subtitle}
+                        </p>
+                        <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">
+                          Naechster Schritt: {summary.nextStep}
+                        </p>
+                      </div>
+                      <UrgencyIndicator urgency={summary.urgency} />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="rounded-[20px] border border-sage-200/70 bg-paper p-5">
+              <p className="text-[13px] leading-relaxed text-bark-900">
+                Dein Journal ist noch leer. Genau deshalb wirkt das Produkt noch
+                nicht unverzichtbar. Nach dem ersten echten Fall beginnt hier der
+                Wiederkehrnutzen.
+              </p>
+              <div className="mt-4">
+                <Button href="/scan/new" size="md">
+                  Ersten Problemfall festhalten
+                </Button>
+              </div>
+            </div>
+          )}
+        </section>
+
+        <section className="mt-8">
+          <div className="mb-3 flex items-center justify-between px-5">
+            <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+              Diese Woche - {otherTasks.length}
+            </h2>
+            <Link
+              href="/coach"
+              className="flex items-center gap-0.5 text-[12px] font-semibold text-forest-700"
+            >
+              Coach <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
-          <ArrowRight className="h-5 w-5 text-clay-800 group-hover:translate-x-0.5 transition" />
-        </Link>
-      </section>
-    </AppShell>
+          <div className="flex gap-3 overflow-x-auto scroll-hidden px-5 pb-2">
+            {otherTasks.map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))}
+            <div className="min-w-[20px]" />
+          </div>
+        </section>
+
+        <section className="mt-10 px-5">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="font-serif text-[22px] leading-tight text-forest-900">
+                Mein Garten
+              </h2>
+              <p className="mt-0.5 text-[12px] text-ink-muted">
+                {MOCK_PLANTS.length} Pflanzen - 2 brauchen Aufmerksamkeit
+              </p>
+            </div>
+            <Link
+              href="/garden"
+              className="flex items-center gap-0.5 text-[12px] font-semibold text-forest-700"
+            >
+              Alle <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {attentionPlants.map((plant) => (
+              <PlantTile key={plant.id} plant={plant} />
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-10 px-5">
+          <div className="rounded-[24px] border border-sage-200/70 bg-paper p-6">
+            <div className="flex items-start gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sage-100">
+                <ShieldCheck className="h-5 w-5 text-moss-600" strokeWidth={1.75} />
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                  Coach mit echtem Grund
+                </p>
+                <h3 className="mt-1 font-serif text-[24px] leading-tight text-bark-900">
+                  Bio, schnell oder haustierfreundlich?
+                </h3>
+                <p className="mt-2 max-w-[34ch] text-[14px] leading-relaxed text-ink-muted">
+                  Genau an diesen Abwaegungen wird die App im Alltag wertvoll. Der
+                  Coach muss helfen, nicht nur texten.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Badge tone="outline">7-Tage-Plan</Badge>
+                  <Badge tone="outline">Bio zuerst</Badge>
+                  <Badge tone="outline">Haustiere beachten</Badge>
+                </div>
+                <div className="mt-5">
+                  <Button href="/coach" size="md" iconRight={<ArrowRight className="h-4 w-4" />}>
+                    Coach oeffnen
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-8 px-5">
+          <Link
+            href="/premium"
+            className="tap-press group flex items-center gap-4 rounded-[18px] border border-clay-500/30 bg-cream p-4 transition hover:border-clay-500/50"
+          >
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-bark-900 to-clay-800 text-cream">
+              <Sparkles className="h-5 w-5" strokeWidth={1.75} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-[14px] font-semibold text-bark-900">
+                Premium: aus Erkennung wird Begleitung
+              </p>
+              <p className="text-[12px] text-ink-muted">
+                Mehr Verlauf, mehr Folgeaufgaben, mehr konkrete Hilfe bei echten Faellen
+              </p>
+            </div>
+            <ArrowRight className="h-5 w-5 text-clay-800 transition group-hover:translate-x-0.5" />
+          </Link>
+        </section>
+      </AppShell>
     </OnboardingGuard>
+  );
+}
+
+function HomeMetric({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-[18px] bg-paper/10 p-4">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-sage-100/70">
+        {label}
+      </p>
+      <p className="mt-1 font-serif text-[24px] leading-tight text-paper">
+        {value}
+      </p>
+    </div>
   );
 }

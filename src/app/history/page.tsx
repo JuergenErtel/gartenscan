@@ -1,25 +1,30 @@
 import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
-import { EmptyState } from "@/components/ui/EmptyState";
 import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
-import { createClient } from "@/lib/supabase/server";
-import { listHistory } from "@/lib/services/historyService";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { UrgencyIndicator } from "@/components/ui/UrgencyIndicator";
 import { createSignedReadUrl } from "@/lib/services/imageStorageService";
+import { listHistory } from "@/lib/services/historyService";
+import { getScanCaseSummary } from "@/lib/scan/caseSummary";
+import { createClient } from "@/lib/supabase/server";
 
 export const revalidate = 0;
 
 export default async function HistoryPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) {
     return (
       <OnboardingGuard>
         <AppShell>
-          <div className="px-5 pt-8 safe-top">
+          <div className="safe-top px-5 pt-8">
             <EmptyState
               mark="journal"
               title="Noch keine Scans"
-              body="Hier siehst du, was du erkannt hast — und wann."
+              body="Hier siehst du spaeter nicht nur, was erkannt wurde, sondern auch was du als Naechstes tun solltest."
               ctaLabel="Jetzt scannen"
               ctaHref="/scan/new"
             />
@@ -30,41 +35,59 @@ export default async function HistoryPage() {
   }
 
   const items = await listHistory(user.id, 100);
+  const summaries = items.map((item) => ({
+    item,
+    summary: getScanCaseSummary(item.scan, item.matchedEntry, item.followUp),
+  }));
+  const actionable = summaries.filter(({ summary }) => summary.actionable);
+  const urgent = summaries.filter(({ summary }) => summary.urgency === "IMMEDIATE");
 
   const grouped = new Map<string, typeof items>();
-  for (const it of items) {
-    const key = it.scan.createdAt.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
+  for (const item of items) {
+    const key = item.scan.createdAt.toLocaleDateString("de-DE", {
+      month: "long",
+      year: "numeric",
+    });
     if (!grouped.has(key)) grouped.set(key, []);
-    grouped.get(key)!.push(it);
+    grouped.get(key)!.push(item);
   }
 
   const withUrls = await Promise.all(
-    items.map(async (it) => ({
-      ...it,
-      signedImageUrl: await createSignedReadUrl(it.scan.imagePath, 3600),
+    items.map(async (item) => ({
+      ...item,
+      signedImageUrl: await createSignedReadUrl(item.scan.imagePath, 3600),
     }))
   );
-  const urlById = new Map(withUrls.map((u) => [u.scan.id, u.signedImageUrl]));
+  const urlById = new Map(withUrls.map((item) => [item.scan.id, item.signedImageUrl]));
 
   return (
     <OnboardingGuard>
       <AppShell>
-        <div className="px-5 pt-8 safe-top">
-          <p className="eyebrow mb-2">Mein Verlauf</p>
+        <div className="safe-top px-5 pt-8">
+          <p className="eyebrow mb-2">Verlauf</p>
           <h1 className="font-serif text-[32px] leading-tight tracking-tight text-bark-900">
-            {items.length === 0
-              ? "Noch keine Scans"
-              : `${items.length} ${items.length === 1 ? "Scan" : "Scans"}`}
+            Gartenjournal statt Ablage
           </h1>
-          <p className="text-[14px] text-ink-muted mt-2">Dein Gartenjahr in Fotos und Entscheidungen</p>
+          <p className="mt-2 text-[14px] text-ink-muted">
+            Hier entscheidet sich, ob aus einem Scan ein einmaliger Moment oder
+            ein dauerhaft nuetzliches Werkzeug wird.
+          </p>
         </div>
+
+        <section className="px-5 pt-6">
+          <div className="grid grid-cols-3 gap-2 rounded-[18px] bg-paper p-1">
+            <JournalStat label="Scans" value={String(items.length)} />
+            <JournalStat label="Offen" value={String(actionable.length)} />
+            <JournalStat label="Akut" value={String(urgent.length)} />
+          </div>
+        </section>
 
         {items.length === 0 ? (
           <section className="px-5 pt-8">
             <EmptyState
               mark="journal"
-              title="Hier wird's dein Journal."
-              body="Jeder Scan landet hier — mit Foto, Datum und was wir erkannt haben."
+              title="Hier wird dein Journal."
+              body="Jeder Fall landet hier mit Foto, Dringlichkeit und naechstem Schritt."
               ctaLabel="Ersten Scan machen"
               ctaHref="/scan/new"
             />
@@ -73,36 +96,47 @@ export default async function HistoryPage() {
           <section className="px-5 pt-8 space-y-8">
             {Array.from(grouped.entries()).map(([month, scans]) => (
               <div key={month}>
-                <h2 className="font-serif text-[20px] leading-tight text-bark-900 mb-3 capitalize">{month}</h2>
-                <div className="space-y-2.5">
-                  {scans.map(({ scan, matchedEntry }) => {
-                    const top = scan.outcome.candidates[0];
-                    const title = matchedEntry?.name ?? top?.commonNames[0] ?? top?.scientificName ?? "Unbekannt";
-                    const subtitle =
-                      scan.outcome.status === "ok" ? top ? `${Math.round(top.confidence * 100)} % sicher` : ""
-                      : scan.outcome.status === "low_quality" ? "Bild zu unscharf"
-                      : scan.outcome.status === "category_unsupported" ? "Kategorie noch nicht unterstützt"
-                      : scan.outcome.status === "no_match" ? "Nicht zuordenbar"
-                      : "Erkennung pausiert";
+                <h2 className="mb-3 font-serif text-[20px] leading-tight capitalize text-bark-900">
+                  {month}
+                </h2>
+                <div className="space-y-3">
+                  {scans.map(({ scan, matchedEntry, followUp }) => {
+                    const summary = getScanCaseSummary(scan, matchedEntry, followUp);
 
                     return (
                       <Link
                         key={scan.id}
                         href={`/scan/${scan.id}`}
-                        className="flex items-center gap-3 rounded-[14px] bg-cream px-4 py-3 border border-clay-800/10 tap-press"
+                        className="flex gap-3 rounded-[18px] bg-paper p-4 shadow-[var(--shadow-soft)] tap-press"
                       >
                         <div
-                          className="h-14 w-14 shrink-0 rounded-[10px] bg-cover bg-center photo-graded"
+                          className="h-16 w-16 shrink-0 rounded-[12px] bg-cover bg-center photo-graded"
                           style={{ backgroundImage: `url(${urlById.get(scan.id)})` }}
                           aria-hidden
                         />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-[14px] font-semibold text-bark-900 truncate">{title}</p>
-                          <p className="text-[12px] text-ink-muted truncate">{subtitle}</p>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                              <p className="truncate text-[15px] font-semibold text-bark-900">
+                                {summary.title}
+                              </p>
+                              <p className="mt-0.5 text-[12px] text-ink-muted">
+                                {summary.subtitle}
+                              </p>
+                            </div>
+                            <UrgencyIndicator urgency={summary.urgency} />
+                          </div>
+                          <p className="mt-2 text-[13px] leading-relaxed text-bark-900">
+                            Naechster Schritt: {summary.nextStep}
+                          </p>
+                          <p className="mt-2 text-[11px] text-ink-muted">
+                            {scan.createdAt.toLocaleDateString("de-DE", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </p>
                         </div>
-                        <span className="text-[11px] text-ink-muted shrink-0">
-                          {scan.createdAt.toLocaleDateString("de-DE", { day: "2-digit", month: "short" })}
-                        </span>
                       </Link>
                     );
                   })}
@@ -113,5 +147,24 @@ export default async function HistoryPage() {
         )}
       </AppShell>
     </OnboardingGuard>
+  );
+}
+
+function JournalStat({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-[14px] bg-sage-50 py-3 text-center">
+      <p className="font-serif text-[18px] leading-none text-bark-900">
+        {value}
+      </p>
+      <p className="mt-1 text-[10px] font-medium uppercase tracking-wider text-ink-muted">
+        {label}
+      </p>
+    </div>
   );
 }
