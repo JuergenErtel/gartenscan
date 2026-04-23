@@ -10,6 +10,10 @@ export interface SaveScanInput {
   outcome: ScanOutcome;
 }
 
+export function getStoredOutcomeReason(outcome: ScanOutcome): string | null {
+  return outcome.reason ?? outcome.triage?.reason ?? null;
+}
+
 export async function saveScan(input: SaveScanInput): Promise<void> {
   const supabase = createServiceRoleClient();
 
@@ -20,7 +24,7 @@ export async function saveScan(input: SaveScanInput): Promise<void> {
     image_meta: input.imageMeta as never,
     triage_category: input.outcome.triage?.category ?? null,
     triage_quality: input.outcome.triage?.quality ?? null,
-    triage_reason: input.outcome.triage?.reason ?? null,
+    triage_reason: getStoredOutcomeReason(input.outcome),
     provider: input.outcome.provider ?? null,
     provider_raw: (input.outcome.candidates.length > 0
       ? { candidates: input.outcome.candidates }
