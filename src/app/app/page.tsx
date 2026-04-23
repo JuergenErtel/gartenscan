@@ -3,6 +3,7 @@ import {
   ArrowRight,
   Bell,
   CloudRain,
+  Clock3,
   ScanLine,
   ShieldCheck,
   Snowflake,
@@ -10,9 +11,6 @@ import {
   SunMedium,
   Wind,
 } from "lucide-react";
-import { TodayHero } from "@/components/features/dashboard/TodayHero";
-import { TaskCard } from "@/components/features/dashboard/TaskCard";
-import { PlantTile } from "@/components/features/garden/PlantTile";
 import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
@@ -23,7 +21,6 @@ import { listHistory } from "@/lib/services/historyService";
 import { getScanCaseSummary } from "@/lib/scan/caseSummary";
 import { getProfile } from "@/lib/services/profileRepository";
 import { createClient } from "@/lib/supabase/server";
-import { MOCK_PLANTS, MOCK_TASKS } from "@/lib/mock/garden";
 import { fetchWeatherForPLZ } from "@/lib/weather/openmeteo";
 
 export const revalidate = 0;
@@ -38,11 +35,6 @@ export default async function DashboardPage() {
   const displayName = profileRow?.email?.split("@")[0] ?? "Gaertner:in";
   const history = user ? await listHistory(user.id, 6) : [];
 
-  const heroTask = MOCK_TASKS[0];
-  const heroPlant = MOCK_PLANTS.find((plant) => plant.id === heroTask.plantId);
-  const otherTasks = MOCK_TASKS.slice(1);
-  const attentionPlants = MOCK_PLANTS.slice(0, 6);
-
   const summarizedHistory = history.map((item) => ({
     item,
     summary: getScanCaseSummary(item.scan, item.matchedEntry, item.followUp),
@@ -53,6 +45,7 @@ export default async function DashboardPage() {
   const urgentHistory = summarizedHistory.filter(
     ({ summary }) => summary.urgency === "IMMEDIATE"
   );
+  const primaryOpenCase = actionableHistory[0];
   const recentCases = history.slice(0, 3);
 
   const weather = await fetchWeatherForPLZ("80331");
@@ -108,11 +101,11 @@ export default async function DashboardPage() {
               <div className="mt-5 grid grid-cols-3 gap-2.5">
                 <HomeMetric
                   label="Offene Faelle"
-                  value={String(actionableHistory.length || 2)}
+                  value={String(actionableHistory.length)}
                 />
                 <HomeMetric
                   label="Akut heute"
-                  value={String(urgentHistory.length || 1)}
+                  value={String(urgentHistory.length)}
                 />
                 <HomeMetric
                   label="Scans im Journal"
@@ -174,7 +167,83 @@ export default async function DashboardPage() {
         )}
 
         <section className="mt-6 px-5">
-          <TodayHero task={heroTask} plant={heroPlant} />
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="font-serif text-[24px] leading-tight text-forest-900">
+                Jetzt relevant
+              </h2>
+              <p className="mt-1 text-[12px] text-ink-muted">
+                Nur echte Faelle aus deinem Verlauf. Keine eingebauten Muster.
+              </p>
+            </div>
+            {primaryOpenCase && (
+              <Link
+                href="/history"
+                className="flex items-center gap-0.5 text-[12px] font-semibold text-forest-700"
+              >
+                Verlauf <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            )}
+          </div>
+
+          {primaryOpenCase ? (
+            <Link
+              href={`/scan/${primaryOpenCase.item.scan.id}`}
+              className="group block overflow-hidden rounded-[24px] bg-forest-900 p-6 text-paper shadow-[0_12px_40px_rgba(28,42,33,0.2)]"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-sage-200/90">
+                    Offener Fall
+                  </p>
+                  <h3 className="mt-2 font-serif text-[28px] leading-[1.08] tracking-tight">
+                    {primaryOpenCase.summary.title}
+                  </h3>
+                  <p className="mt-2 text-[14px] leading-relaxed text-sage-200/80">
+                    {primaryOpenCase.summary.subtitle}
+                  </p>
+                </div>
+                <UrgencyIndicator
+                  urgency={primaryOpenCase.summary.urgency}
+                  className="!bg-paper/12 !text-paper"
+                />
+              </div>
+
+              <div className="mt-5 rounded-[18px] bg-paper/10 p-4">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-paper/10">
+                    <Clock3 className="h-4.5 w-4.5 text-sun-500/90" />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-sage-200/70">
+                      Naechster Schritt
+                    </p>
+                    <p className="mt-1 text-[14px] leading-relaxed text-paper">
+                      {primaryOpenCase.summary.nextStep}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-paper">
+                Fall oeffnen
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </div>
+            </Link>
+          ) : (
+            <div className="rounded-[20px] border border-sage-200/70 bg-paper p-5">
+              <p className="text-[13px] leading-relaxed text-bark-900">
+                Solange noch keine echten Scans vorliegen, bleibt dieser Bereich
+                bewusst leer. Das Dashboard zeigt hier keine Beispiel- oder
+                Demo-Faelle.
+              </p>
+              <div className="mt-4">
+                <Button href="/scan/new" size="md">
+                  Ersten echten Fall scannen
+                </Button>
+              </div>
+            </div>
+          )}
         </section>
 
         <section className="mt-8 px-5">
@@ -245,50 +314,6 @@ export default async function DashboardPage() {
               </div>
             </div>
           )}
-        </section>
-
-        <section className="mt-8">
-          <div className="mb-3 flex items-center justify-between px-5">
-            <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
-              Diese Woche - {otherTasks.length}
-            </h2>
-            <Link
-              href="/coach"
-              className="flex items-center gap-0.5 text-[12px] font-semibold text-forest-700"
-            >
-              Coach <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-          <div className="flex gap-3 overflow-x-auto scroll-hidden px-5 pb-2">
-            {otherTasks.map((task) => (
-              <TaskCard key={task.id} task={task} />
-            ))}
-            <div className="min-w-[20px]" />
-          </div>
-        </section>
-
-        <section className="mt-10 px-5">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <h2 className="font-serif text-[22px] leading-tight text-forest-900">
-                Mein Garten
-              </h2>
-              <p className="mt-0.5 text-[12px] text-ink-muted">
-                {MOCK_PLANTS.length} Pflanzen - 2 brauchen Aufmerksamkeit
-              </p>
-            </div>
-            <Link
-              href="/garden"
-              className="flex items-center gap-0.5 text-[12px] font-semibold text-forest-700"
-            >
-              Alle <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            {attentionPlants.map((plant) => (
-              <PlantTile key={plant.id} plant={plant} />
-            ))}
-          </div>
         </section>
 
         <section className="mt-10 px-5">
