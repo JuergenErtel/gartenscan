@@ -48,27 +48,27 @@ const features = [
 const categories = [
   {
     title: "Pflanzen",
-    text: "Live heute am staerksten",
+    text: "Zimmer-, Beet- und Gartenpflanzen schneller zuordnen",
     img: "https://upload.wikimedia.org/wikipedia/commons/7/7f/Hydrangea_macrophylla_01.jpg",
   },
   {
     title: "Unkraut",
-    text: "Gut bei klaren Einzelpflanzen",
+    text: "Typische Beikraeuter erkennen und besser unterscheiden",
     img: "https://upload.wikimedia.org/wikipedia/commons/4/4f/DandelionFlower.jpg",
   },
   {
     title: "Insekten",
-    text: "Noch im Ausbau",
+    text: "Nuezlinge und Gartenbesucher leichter einordnen",
     img: "https://upload.wikimedia.org/wikipedia/commons/6/60/Coccinella.7-punctata.adult.jpg",
   },
   {
     title: "Krankheiten",
-    text: "Redaktionell vorhanden, live noch nicht durchgaengig stark",
+    text: "Blaetter, Triebe und Schadbilder gezielter bewerten",
     img: "https://upload.wikimedia.org/wikipedia/commons/9/92/Phytophtora_infestans-effects.jpg",
   },
   {
     title: "Schaedlinge",
-    text: "Wichtiger Ausbaupfad",
+    text: "Haeufige Problemfaelle schneller erkennen und handeln",
     img: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Arion_vulgaris_3.jpg",
   },
 ] as const;
@@ -76,23 +76,23 @@ const categories = [
 const trust = [
   {
     icon: BrainCircuit,
-    title: "Nicht fake-sicher",
-    text: "Unsicherheit wird sichtbar gemacht, nicht kaschiert.",
+    title: "Klare Einschaetzung",
+    text: "Du bekommst eine verstaendliche Einordnung statt nur eines Namens.",
   },
   {
     icon: ShieldCheck,
-    title: "Problemfokus",
-    text: "Ergebnis und naechste Massnahme stehen vor Lexikontext.",
+    title: "Konkrete Hilfe",
+    text: "Naechste Schritte stehen im Vordergrund, nicht endlose Fachtexte.",
   },
   {
     icon: Lock,
-    title: "Sauberer Umgang",
-    text: "Fotos nur fuer Analyse, nicht als Marketing-Futter.",
+    title: "Sorgfaeltiger Umgang",
+    text: "Deine Fotos werden fuer die Analyse genutzt, nicht fuer Showeffekte.",
   },
   {
     icon: Heart,
-    title: "Alltag statt Demo",
-    text: "Bio, schnell, nachhaltig und haustierfreundlich werden mitgedacht.",
+    title: "Fuer den Alltag",
+    text: "Praktisch fuer Beete, Balkon, Zimmerpflanzen und spontane Problemfaelle.",
   },
 ] as const;
 
@@ -116,7 +116,7 @@ export default function LandingPage() {
             Produkt
           </a>
           <a href="#scope" className="transition hover:text-forest-700">
-            Scope
+            Bereiche
           </a>
           <Link href="/premium" className="transition hover:text-forest-700">
             Premium
@@ -139,18 +139,18 @@ export default function LandingPage() {
             <span className="text-moss-500">Handeln.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed text-forest-800/80 md:text-[19px]">
-            gartenscan soll nicht nur sagen, was etwas ist. Die App soll sagen,
-            ob es relevant ist, ob du handeln musst und womit du am besten
-            anfingst.
+            gartenscan hilft dir, Pflanzen, Schaeden und Problemfaelle im
+            Garten schneller zu verstehen und direkt den passenden naechsten
+            Schritt zu finden.
           </p>
 
           <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-2 rounded-full bg-paper/80 px-4 py-2 text-[12px] text-forest-800 shadow-[0_6px_24px_rgba(28,42,33,0.06)]">
-            <span className="font-semibold">Heute stark:</span>
+            <span className="font-semibold">Schneller im Bild:</span>
             <span>Pflanzen</span>
             <span className="opacity-30">•</span>
-            <span>klare Einzelmotive</span>
+            <span>Unkraut</span>
             <span className="opacity-30">•</span>
-            <span>handlungsorientierte Ergebnisse</span>
+            <span>erste Handlungsempfehlungen</span>
           </div>
 
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -171,7 +171,7 @@ export default function LandingPage() {
               className="sm:!w-auto"
               iconLeft={<Sparkles className="h-4 w-4" />}
             >
-              Demo-Wertmoment ansehen
+              So funktioniert&apos;s
             </Button>
           </div>
 
@@ -199,9 +199,9 @@ export default function LandingPage() {
             className="order-3 flex flex-col gap-5 md:pt-4 md:pl-2"
           >
             <h2 className="mb-1 text-center font-serif text-[22px] leading-tight tracking-tight text-forest-900 font-normal md:text-left md:text-[24px]">
-              <span className="block text-forest-700">Ein echtes Produkt</span>
-              <span className="block">braucht ehrlichen Scope.</span>
-              <span className="block">Sonst wirkt es wie Demo.</span>
+              <span className="block text-forest-700">Wobei dir gartenscan</span>
+              <span className="block">im Garten helfen kann</span>
+              <span className="block">und was du fotografieren kannst</span>
             </h2>
             <ol className="relative flex flex-col gap-5">
               <span
@@ -245,12 +245,12 @@ export default function LandingPage() {
       <section className="relative z-10 mx-auto max-w-3xl px-6 py-16 text-center md:px-10 md:py-24">
         <LogoMark size={48} className="mx-auto mb-6 text-forest-700" />
         <h2 className="font-serif text-[32px] leading-[1.1] tracking-tight text-forest-900 font-normal md:text-[44px]">
-          Starte heute. Aber mit einer ehrlichen Erwartung.
+          Starte mit dem naechsten Problemfall in deinem Garten.
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-[15px] text-forest-800/80 md:text-[17px]">
-          Wenn die App in der ersten Minute konkrete Hilfe liefert, bleibt sie.
-          Wenn sie nur beeindruckt, aber nicht fuehrt, war es nur ein kurzer
-          Effekt.
+          Ob Blatt, Bluete, Schaedling oder Schadbild: Ein gutes Foto reicht
+          oft, um schneller zu verstehen, was los ist und was du als Naechstes
+          tun solltest.
         </p>
         <div className="mt-8 flex justify-center">
           <Button
