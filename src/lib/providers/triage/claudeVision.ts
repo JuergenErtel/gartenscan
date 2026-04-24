@@ -88,7 +88,7 @@ export class ClaudeVisionTriageProvider implements TriageProvider {
 
     let parsed: { category?: string; quality?: string; reason?: string | null };
     try {
-      parsed = JSON.parse(textBlock.text);
+      parsed = JSON.parse(stripCodeFences(textBlock.text));
     } catch {
       throw new ProviderError('upstream_error', this.name, `non-JSON response: ${textBlock.text.slice(0, 80)}`);
     }
@@ -106,4 +106,10 @@ export class ClaudeVisionTriageProvider implements TriageProvider {
       reason: parsed.reason ?? undefined,
     };
   }
+}
+
+function stripCodeFences(text: string): string {
+  const trimmed = text.trim();
+  const match = trimmed.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?\s*```$/);
+  return match ? match[1].trim() : trimmed;
 }

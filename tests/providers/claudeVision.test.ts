@@ -64,4 +64,43 @@ describe('ClaudeVisionTriageProvider', () => {
       provider.classify({ imageUrl: 'x', locale: 'de' })
     ).rejects.toMatchObject({ kind: 'upstream_error' });
   });
+
+  it('parses JSON wrapped in ```json markdown fences', async () => {
+    createMock.mockResolvedValueOnce({
+      content: [
+        {
+          type: 'text',
+          text: '```json\n{\n  "category": "plant",\n  "quality": "acceptable",\n  "reason": null\n}\n```',
+        },
+      ],
+    });
+
+    const provider = new ClaudeVisionTriageProvider({ apiKey: 'k' });
+    const result = await provider.classify({
+      imageUrl: 'https://example.com/plant.jpg',
+      locale: 'de',
+    });
+
+    expect(result.category).toBe('plant');
+    expect(result.quality).toBe('acceptable');
+  });
+
+  it('parses JSON wrapped in bare ``` fences', async () => {
+    createMock.mockResolvedValueOnce({
+      content: [
+        {
+          type: 'text',
+          text: '```\n{"category":"insect","quality":"acceptable"}\n```',
+        },
+      ],
+    });
+
+    const provider = new ClaudeVisionTriageProvider({ apiKey: 'k' });
+    const result = await provider.classify({
+      imageUrl: 'https://example.com/bug.jpg',
+      locale: 'de',
+    });
+
+    expect(result.category).toBe('insect');
+  });
 });
