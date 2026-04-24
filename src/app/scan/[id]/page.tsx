@@ -18,6 +18,7 @@ import {
   NoMatchState,
   ProviderErrorState,
 } from "@/components/features/scan/ScanResultStates";
+import { UncertainMatchState } from "@/components/features/scan/UncertainMatchState";
 import { Badge } from "@/components/ui/Badge";
 import { CategoryLabel } from "@/components/ui/CategoryIcon";
 import { Button } from "@/components/ui/Button";
@@ -63,6 +64,20 @@ export default async function ScanResultPage({
     return (
       <OnboardingGuard>
         <NoMatchState />
+      </OnboardingGuard>
+    );
+  }
+  if (scan.outcome.status === "uncertain_match") {
+    const primary = scan.outcome.candidates[0];
+    if (!primary) return notFound();
+    const signedImageUrl = await createSignedReadUrl(scan.imagePath, 3600);
+    return (
+      <OnboardingGuard>
+        <UncertainMatchState
+          scanId={scan.id}
+          candidate={primary}
+          imageUrl={signedImageUrl}
+        />
       </OnboardingGuard>
     );
   }
