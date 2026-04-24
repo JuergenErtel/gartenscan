@@ -3,7 +3,8 @@ import type { IdentificationProvider } from '@/lib/providers/identification/type
 import type { TriageProvider } from '@/lib/providers/triage/types';
 import type { ScanOutcome } from '@/domain/scan/ScanOutcome';
 
-const MIN_CONFIDENCE = 0.25;
+const AUTO_OK_CONFIDENCE = 0.25;
+const UNCERTAIN_MIN_CONFIDENCE = 0.10;
 
 export interface AnalyzeImageInput {
   imageUrl: string;
@@ -55,20 +56,31 @@ export async function analyzeImage(input: AnalyzeImageInput): Promise<ScanOutcom
     return providerErrorOutcome(err, input.identification.name, triage);
   }
 
-  const qualified = ident.candidates.filter((c) => c.confidence >= MIN_CONFIDENCE);
-  if (qualified.length === 0) {
+  const sorted = [...ident.candidates].sort((a, b) => b.confidence - a.confidence);
+  const top = sorted[0];
+
+  if (top && top.confidence >= AUTO_OK_CONFIDENCE) {
     return {
-      status: 'no_match',
+      status: 'ok',
       triage,
-      candidates: [],
+      candidates: sorted.filter((c) => c.confidence >= AUTO_OK_CONFIDENCE).slice(0, 3),
+      provider: input.identification.name,
+    };
+  }
+
+  if (top && top.confidence >= UNCERTAIN_MIN_CONFIDENCE) {
+    return {
+      status: 'uncertain_match',
+      triage,
+      candidates: [top],
       provider: input.identification.name,
     };
   }
 
   return {
-    status: 'ok',
+    status: 'no_match',
     triage,
-    candidates: qualified,
+    candidates: [],
     provider: input.identification.name,
   };
 }

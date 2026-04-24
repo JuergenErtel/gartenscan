@@ -66,10 +66,10 @@ describe('analyzeImageService', () => {
     expect(outcome.status).toBe('no_match');
   });
 
-  it('no_match: max confidence below 0.25', async () => {
+  it('no_match: max confidence below 0.10', async () => {
     const triage = makeTriage({ category: 'plant', quality: 'acceptable' });
     const id = makeId({
-      candidates: [{ rank: 1, scientificName: 'Rosa', commonNames: [], confidence: 0.2 }],
+      candidates: [{ rank: 1, scientificName: 'Rosa', commonNames: [], confidence: 0.05 }],
       providerRaw: {},
     });
 
@@ -77,6 +77,47 @@ describe('analyzeImageService', () => {
 
     expect(outcome.status).toBe('no_match');
     expect(outcome.candidates).toHaveLength(0);
+  });
+
+  it('uncertain_match: top confidence between 0.10 and 0.25 keeps only top candidate', async () => {
+    const triage = makeTriage({ category: 'plant', quality: 'acceptable' });
+    const id = makeId({
+      candidates: [
+        { rank: 1, scientificName: 'Pilosella officinarum', commonNames: ['Kleines Habichtskraut'], confidence: 0.15 },
+        { rank: 2, scientificName: 'Plantago media', commonNames: [], confidence: 0.08 },
+      ],
+      providerRaw: {},
+    });
+
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+
+    expect(outcome.status).toBe('uncertain_match');
+    expect(outcome.candidates).toHaveLength(1);
+    expect(outcome.candidates[0].scientificName).toBe('Pilosella officinarum');
+  });
+
+  it('uncertain_match: exactly at lower bound 0.10 is inclusive', async () => {
+    const triage = makeTriage({ category: 'plant', quality: 'acceptable' });
+    const id = makeId({
+      candidates: [{ rank: 1, scientificName: 'X', commonNames: [], confidence: 0.10 }],
+      providerRaw: {},
+    });
+
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+
+    expect(outcome.status).toBe('uncertain_match');
+  });
+
+  it('ok: exactly at upper bound 0.25 is inclusive', async () => {
+    const triage = makeTriage({ category: 'plant', quality: 'acceptable' });
+    const id = makeId({
+      candidates: [{ rank: 1, scientificName: 'X', commonNames: [], confidence: 0.25 }],
+      providerRaw: {},
+    });
+
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+
+    expect(outcome.status).toBe('ok');
   });
 
   it('provider_error: triage throws not_configured', async () => {
