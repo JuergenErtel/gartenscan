@@ -74,6 +74,15 @@ export function getScanCaseSummary(
         urgency: "MONITOR",
         actionable: true,
       };
+    case "uncertain_match":
+      return {
+        title: "Bestätigung offen",
+        subtitle: "Wartet auf deine Rückmeldung",
+        nextStep:
+          "Scan antippen und den Vorschlag bestätigen oder verwerfen",
+        urgency: "MONITOR",
+        actionable: true,
+      };
     case "provider_error":
       return {
         title: "Scan pausiert",

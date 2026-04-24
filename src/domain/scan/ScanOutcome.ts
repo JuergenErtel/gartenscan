@@ -8,6 +8,7 @@ export type ScanStatus =
   | 'low_quality'
   | 'category_unsupported'
   | 'no_match'
+  | 'uncertain_match'
   | 'provider_error';
 
 export type TriageCategory = 'plant' | 'insect' | 'disease' | 'unclear';
