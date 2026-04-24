@@ -155,3 +155,25 @@ export async function listScansForUser(userId: string, limit = 50): Promise<Stor
     };
   });
 }
+
+export async function updateScanStatus(
+  scanId: string,
+  userId: string,
+  newStatus: 'ok' | 'no_match'
+): Promise<StoredScan | null> {
+  const supabase = createServiceRoleClient();
+
+  const { data, error } = await supabase
+    .from('scans')
+    .update({ status: newStatus })
+    .eq('id', scanId)
+    .eq('user_id', userId)
+    .eq('status', 'uncertain_match')
+    .select('id')
+    .maybeSingle();
+
+  if (error) throw new Error(`updateScanStatus: ${error.message}`);
+  if (!data) return null;
+
+  return getScanById(scanId, userId);
+}
