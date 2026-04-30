@@ -51,6 +51,7 @@ export interface StoredScan {
   imageMeta?: { width?: number; height?: number; bytes?: number; mime?: string };
   outcome: ScanOutcome;
   matchedContentId?: string;
+  plantId?: string;
 }
 
 export type FollowUpStatus =
