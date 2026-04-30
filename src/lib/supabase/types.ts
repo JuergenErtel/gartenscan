@@ -108,6 +108,45 @@ export type Database = {
         }
         Relationships: []
       }
+      plants: {
+        Row: {
+          id: string
+          user_id: string
+          created_at: string
+          nickname: string
+          species: string
+          latin_name: string | null
+          matched_content_id: string | null
+          cover_image_path: string
+          zone_label: string | null
+          origin_scan_id: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          created_at?: string
+          nickname: string
+          species: string
+          latin_name?: string | null
+          matched_content_id?: string | null
+          cover_image_path: string
+          zone_label?: string | null
+          origin_scan_id?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          created_at?: string
+          nickname?: string
+          species?: string
+          latin_name?: string | null
+          matched_content_id?: string | null
+          cover_image_path?: string
+          zone_label?: string | null
+          origin_scan_id?: string | null
+        }
+        Relationships: []
+      }
       project_activity_logs: {
         Row: {
           created_at: string
