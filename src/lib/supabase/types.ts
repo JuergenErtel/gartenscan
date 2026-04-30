@@ -431,6 +431,7 @@ export type Database = {
           image_meta: Json | null
           image_path: string
           matched_content_id: string | null
+          plant_id: string | null
           provider: string | null
           provider_raw: Json | null
           status: string
@@ -445,6 +446,7 @@ export type Database = {
           image_meta?: Json | null
           image_path: string
           matched_content_id?: string | null
+          plant_id?: string | null
           provider?: string | null
           provider_raw?: Json | null
           status: string
@@ -459,6 +461,7 @@ export type Database = {
           image_meta?: Json | null
           image_path?: string
           matched_content_id?: string | null
+          plant_id?: string | null
           provider?: string | null
           provider_raw?: Json | null
           status?: string

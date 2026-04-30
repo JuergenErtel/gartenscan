@@ -76,6 +76,7 @@ export async function getScanById(scanId: string, userId: string): Promise<Store
     imagePath: scan.image_path,
     imageMeta: (scan.image_meta ?? undefined) as StoredScan['imageMeta'],
     matchedContentId: scan.matched_content_id ?? undefined,
+    plantId: scan.plant_id ?? undefined,
     outcome: {
       status: scan.status as ScanOutcome['status'],
       provider: scan.provider ?? undefined,
@@ -130,6 +131,68 @@ export async function listScansForUser(userId: string, limit = 50): Promise<Stor
       imagePath: scan.image_path,
       imageMeta: (scan.image_meta ?? undefined) as StoredScan['imageMeta'],
       matchedContentId: scan.matched_content_id ?? undefined,
+      plantId: scan.plant_id ?? undefined,
+      outcome: {
+        status: scan.status as ScanOutcome['status'],
+        provider: scan.provider ?? undefined,
+        triage: scan.triage_category
+          ? {
+              category: scan.triage_category as NonNullable<ScanOutcome['triage']>['category'],
+              quality: (scan.triage_quality ?? 'acceptable') as NonNullable<ScanOutcome['triage']>['quality'],
+              reason: scan.triage_reason ?? undefined,
+            }
+          : undefined,
+        reason: scan.triage_reason ?? undefined,
+        candidates: topCand
+          ? [{
+              rank: 1,
+              scientificName: topCand.scientific_name,
+              commonNames: topCand.common_names,
+              taxonomy: (topCand.taxonomy ?? undefined) as { family?: string; genus?: string; species?: string } | undefined,
+              confidence: Number(topCand.confidence),
+              matchedContentId: topCand.content_id ?? undefined,
+            }]
+          : [],
+      },
+    };
+  });
+}
+
+export async function listScansForPlant(
+  plantId: string,
+  userId: string
+): Promise<StoredScan[]> {
+  const supabase = createServiceRoleClient();
+
+  const { data: scans, error } = await supabase
+    .from('scans')
+    .select('*')
+    .eq('plant_id', plantId)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) throw new Error(`listScansForPlant: ${error.message}`);
+  if (!scans || scans.length === 0) return [];
+
+  const scanIds = scans.map((s) => s.id);
+  const { data: topCands } = await supabase
+    .from('scan_candidates')
+    .select('*')
+    .in('scan_id', scanIds)
+    .eq('rank', 1);
+
+  const topByScan = new Map((topCands ?? []).map((c) => [c.scan_id, c]));
+
+  return scans.map((scan) => {
+    const topCand = topByScan.get(scan.id);
+    return {
+      id: scan.id,
+      userId: scan.user_id,
+      createdAt: new Date(scan.created_at),
+      imagePath: scan.image_path,
+      imageMeta: (scan.image_meta ?? undefined) as StoredScan['imageMeta'],
+      matchedContentId: scan.matched_content_id ?? undefined,
+      plantId: scan.plant_id ?? undefined,
       outcome: {
         status: scan.status as ScanOutcome['status'],
         provider: scan.provider ?? undefined,
