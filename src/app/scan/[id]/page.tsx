@@ -19,6 +19,7 @@ import {
   ProviderErrorState,
 } from "@/components/features/scan/ScanResultStates";
 import { UncertainMatchState } from "@/components/features/scan/UncertainMatchState";
+import { SavePlantPrompt } from "@/components/features/plant/SavePlantPrompt";
 import { Badge } from "@/components/ui/Badge";
 import { CategoryLabel } from "@/components/ui/CategoryIcon";
 import { Button } from "@/components/ui/Button";
@@ -196,6 +197,7 @@ export default async function ScanResultPage({
 
             <ActionDecisionPanel entry={matchedEntry} scanId={scan.id} />
             <FollowUpActions scanId={scan.id} initialFollowUp={followUp} />
+            {!scan.plantId && <SavePlantPrompt scanId={scan.id} />}
 
             <section className="px-5 pt-8">
               <div className="rounded-[22px] border border-sage-200/70 bg-paper p-5">
