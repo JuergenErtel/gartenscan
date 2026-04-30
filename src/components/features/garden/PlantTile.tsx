@@ -1,7 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
-import type { Plant } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+interface Plant {
+  id: string;
+  nickname: string;
+  species: string;
+  latinName?: string;
+  photoUrl: string;
+  addedAt: Date;
+  zoneLabel: string;
+  healthStatus: "HEALTHY" | "ATTENTION" | "CRITICAL" | "RECOVERING";
+  lastScanAt?: Date;
+  scanCount: number;
+}
 
 const statusDot = {
   HEALTHY: "bg-moss-500",

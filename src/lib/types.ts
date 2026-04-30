@@ -40,34 +40,6 @@ export interface Recommendation {
   completed?: boolean;
 }
 
-/** Legacy plant card used on dashboard/garden tiles. */
-export interface Plant {
-  id: string;
-  nickname: string;
-  species: string;
-  latinName?: string;
-  photoUrl: string;
-  addedAt: Date;
-  zoneLabel: string;
-  healthStatus: "HEALTHY" | "ATTENTION" | "CRITICAL" | "RECOVERING";
-  lastScanAt?: Date;
-  scanCount: number;
-}
-
-/** Legacy daily task used on dashboard. */
-export interface DailyTask {
-  id: string;
-  title: string;
-  description: string;
-  plantId?: string;
-  plantName?: string;
-  effort: EffortLevel;
-  durationMin: number;
-  urgency: Urgency;
-  source: "SCAN" | "WEATHER" | "SEASONAL" | "USER";
-  completed?: boolean;
-}
-
 export interface WeatherSnapshot {
   tempC: number;
   condition: string;
