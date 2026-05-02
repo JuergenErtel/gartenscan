@@ -52,6 +52,7 @@ export default async function ScanResultPage({
     return (
       <OnboardingGuard>
         <LowQualityState reason={scan.outcome.reason} />
+        <ScanFooterActions scanId={scan.id} />
       </OnboardingGuard>
     );
   }
@@ -59,6 +60,7 @@ export default async function ScanResultPage({
     return (
       <OnboardingGuard>
         <CategoryUnsupportedState category={scan.outcome.triage?.category} />
+        <ScanFooterActions scanId={scan.id} />
       </OnboardingGuard>
     );
   }
@@ -66,6 +68,7 @@ export default async function ScanResultPage({
     return (
       <OnboardingGuard>
         <NoMatchState />
+        <ScanFooterActions scanId={scan.id} />
       </OnboardingGuard>
     );
   }
@@ -80,6 +83,7 @@ export default async function ScanResultPage({
           candidate={primary}
           imageUrl={signedImageUrl}
         />
+        <ScanFooterActions scanId={scan.id} />
       </OnboardingGuard>
     );
   }
@@ -87,6 +91,7 @@ export default async function ScanResultPage({
     return (
       <OnboardingGuard>
         <ProviderErrorState reason={scan.outcome.reason} />
+        <ScanFooterActions scanId={scan.id} />
       </OnboardingGuard>
     );
   }
