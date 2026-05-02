@@ -57,11 +57,12 @@ export function DeletePlantSheet({
       <div
         role="dialog"
         aria-modal="true"
+        aria-labelledby="delete-plant-dialog-title"
         className="fixed bottom-0 left-0 right-0 z-50 rounded-t-[24px] bg-paper px-5 pt-3 pb-[max(env(safe-area-inset-bottom),1.25rem)] shadow-[0_-8px_32px_rgba(28,42,33,0.18)] animate-in slide-in-from-bottom duration-300"
       >
         <div className="mx-auto h-1 w-10 rounded-full bg-sage-200" aria-hidden />
 
-        <h2 className="mt-5 font-serif text-[22px] leading-tight text-forest-900">
+        <h2 id="delete-plant-dialog-title" className="mt-5 font-serif text-[22px] leading-tight text-forest-900">
           {plantNickname} löschen?
         </h2>
         <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">
