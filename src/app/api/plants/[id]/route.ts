@@ -5,9 +5,9 @@ import { deletePlantCascade } from '@/lib/services/plantRepository';
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  ctx: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
+  const { id } = await ctx.params;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
