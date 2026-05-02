@@ -20,6 +20,7 @@ import {
 } from "@/components/features/scan/ScanResultStates";
 import { UncertainMatchState } from "@/components/features/scan/UncertainMatchState";
 import { SavePlantPrompt } from "@/components/features/plant/SavePlantPrompt";
+import { ScanFooterActions } from "@/components/features/scan/ScanFooterActions";
 import { Badge } from "@/components/ui/Badge";
 import { CategoryLabel } from "@/components/ui/CategoryIcon";
 import { Button } from "@/components/ui/Button";
@@ -320,6 +321,8 @@ export default async function ScanResultPage({
             </div>
           </section>
         )}
+
+        <ScanFooterActions scanId={scan.id} />
 
         <div className="fixed bottom-0 left-0 right-0 z-30 px-5 pb-[max(env(safe-area-inset-bottom),1rem)] pt-3 bg-gradient-to-t from-linen via-linen/95 to-transparent">
           <div className="mx-auto max-w-lg">
