@@ -43,3 +43,12 @@ export async function createSignedReadUrl(path: string, expiresInSeconds: number
   }
   return data.signedUrl;
 }
+
+export async function deleteImages(paths: string[]): Promise<void> {
+  if (paths.length === 0) return;
+  const supabase = createServiceRoleClient();
+  const { error } = await supabase.storage.from(BUCKET).remove(paths);
+  if (error) {
+    console.error(`storage delete failed for ${paths.length} path(s): ${error.message}`);
+  }
+}
