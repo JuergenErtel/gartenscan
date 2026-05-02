@@ -1,5 +1,7 @@
 import 'server-only';
 import { createServiceRoleClient } from '@/lib/supabase/service-role';
+import { deleteImages } from '@/lib/services/imageStorageService';
+import { collectUniqueImagePaths } from '@/lib/services/imageStoragePaths';
 
 export interface Plant {
   id: string;
@@ -256,4 +258,51 @@ export async function listPlantsForAssignment(
     if (a.sameSpecies !== b.sameSpecies) return a.sameSpecies ? -1 : 1;
     return 0;
   });
+}
+
+export async function deletePlantCascade(
+  plantId: string,
+  userId: string
+): Promise<void> {
+  const plant = await getPlantById(plantId, userId);
+  if (!plant) throw new Error('plant not found');
+
+  const supabase = createServiceRoleClient();
+
+  const { data: scanRows, error: scanFetchErr } = await supabase
+    .from('scans')
+    .select('id, image_path')
+    .eq('plant_id', plantId)
+    .eq('user_id', userId);
+
+  if (scanFetchErr) {
+    throw new Error(`deletePlantCascade scan-fetch: ${scanFetchErr.message}`);
+  }
+
+  const scanImagePaths = (scanRows ?? [])
+    .map((r) => r.image_path as string)
+    .filter((p) => typeof p === 'string' && p.length > 0);
+
+  const { error: scanDelErr } = await supabase
+    .from('scans')
+    .delete()
+    .eq('plant_id', plantId)
+    .eq('user_id', userId);
+
+  if (scanDelErr) {
+    throw new Error(`deletePlantCascade scan-delete: ${scanDelErr.message}`);
+  }
+
+  const { error: plantDelErr } = await supabase
+    .from('plants')
+    .delete()
+    .eq('id', plantId)
+    .eq('user_id', userId);
+
+  if (plantDelErr) {
+    throw new Error(`deletePlantCascade plant-delete: ${plantDelErr.message}`);
+  }
+
+  const allPaths = collectUniqueImagePaths(scanImagePaths, plant.coverImagePath);
+  await deleteImages(allPaths);
 }
