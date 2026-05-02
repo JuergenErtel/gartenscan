@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound, redirect } from 'next/navigation';
-import { ArrowLeft, CalendarDays, Leaf, Camera } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { ArrowLeft, CalendarDays, Leaf } from 'lucide-react';
 import { UrgencyIndicator } from '@/components/ui/UrgencyIndicator';
+import { PlantActions } from '@/components/features/garden/PlantActions';
 import { formatRelativeDate } from '@/lib/utils';
 import { OnboardingGuard } from '@/components/features/onboarding/OnboardingGuard';
 import { createClient } from '@/lib/supabase/server';
@@ -140,16 +140,11 @@ export default async function PlantDetailPage({
           </section>
         )}
 
-        <section className="px-5 pt-8">
-          <Button
-            href="/scan/new"
-            fullWidth
-            size="lg"
-            iconLeft={<Camera className="h-5 w-5" />}
-          >
-            Neuen Scan machen
-          </Button>
-        </section>
+        <PlantActions
+          plantId={plant.id}
+          plantNickname={plant.nickname}
+          scanCount={scans.length}
+        />
       </div>
     </OnboardingGuard>
   );
