@@ -1,5 +1,6 @@
 import 'server-only';
 import { createServiceRoleClient } from '@/lib/supabase/service-role';
+import { deleteImages } from '@/lib/services/imageStorageService';
 import type { ScanOutcome, StoredScan } from '@/domain/scan/ScanOutcome';
 
 export interface SaveScanInput {
@@ -239,4 +240,41 @@ export async function updateScanStatus(
   if (!data) return null;
 
   return getScanById(scanId, userId);
+}
+
+export async function deleteScan(scanId: string, userId: string): Promise<void> {
+  const scan = await getScanById(scanId, userId);
+  if (!scan) throw new Error('scan not found');
+
+  const supabase = createServiceRoleClient();
+
+  const { data: coverPlants, error: coverErr } = await supabase
+    .from('plants')
+    .select('nickname')
+    .eq('cover_image_path', scan.imagePath)
+    .eq('user_id', userId)
+    .limit(1);
+
+  if (coverErr) {
+    throw new Error(`deleteScan cover-check: ${coverErr.message}`);
+  }
+
+  if (coverPlants && coverPlants.length > 0) {
+    const nickname = coverPlants[0].nickname;
+    throw new Error(`scan is plant cover:${nickname}`);
+  }
+
+  const { error: scanDelErr } = await supabase
+    .from('scans')
+    .delete()
+    .eq('id', scanId)
+    .eq('user_id', userId);
+
+  if (scanDelErr) {
+    throw new Error(`deleteScan scan-delete: ${scanDelErr.message}`);
+  }
+
+  if (scan.imagePath) {
+    await deleteImages([scan.imagePath]);
+  }
 }
