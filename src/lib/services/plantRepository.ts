@@ -280,8 +280,8 @@ export async function deletePlantCascade(
   }
 
   const scanImagePaths = (scanRows ?? [])
-    .map((r) => r.image_path as string)
-    .filter((p) => typeof p === 'string' && p.length > 0);
+    .map((r) => r.image_path)
+    .filter((p): p is string => typeof p === 'string' && p.length > 0);
 
   const { error: scanDelErr } = await supabase
     .from('scans')
