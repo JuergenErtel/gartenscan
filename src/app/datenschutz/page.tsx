@@ -75,7 +75,66 @@ export default function DatenschutzPage() {
 
         <section>
           <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
-            4. Wetterdaten (Open-Meteo)
+            4. Nutzer-Konto und Datenbank (Supabase)
+          </h2>
+          <p>
+            Damit du deine Scans, Pflanzen und deinen Verlauf wiederfindest, legen wir
+            beim ersten Aufruf der App automatisch ein anonymes Konto bei Supabase Inc.
+            an. Es enthält keine personenbezogenen Angaben von dir, sondern nur eine
+            zufällige Konto-ID. In dieser Datenbank speichern wir deine Scan-Ergebnisse,
+            angelegten Pflanzen und Verlaufseinträge. Supabase-Server stehen in der EU
+            (Frankfurt). Verarbeiter ist Supabase Inc. (USA) auf Basis eines
+            Auftragsverarbeitungsvertrags und EU-Standardvertragsklauseln. Rechtsgrundlage
+            ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung – die App funktioniert
+            ohne dieses Konto nicht).
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
+            5. Foto-Upload und Bildspeicherung
+          </h2>
+          <p>
+            Wenn du ein Foto scannst, laden wir es in einen privaten Speicher
+            (Supabase Storage) hoch und ordnen es deinem anonymen Konto zu. Das Bild
+            ist nur über kurzlebige, signierte Links zugänglich. Wir speichern Fotos so
+            lange, wie der zugehörige Scan in deinem Verlauf existiert. Wenn du einen
+            Scan oder eine Pflanze löschst, werden auch die zugehörigen Bilder entfernt.
+            Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
+            6. Bild-Triage (Anthropic)
+          </h2>
+          <p>
+            Zur Vorab-Einordnung deines Bildes (Pflanze vs. Sonstiges, Bildqualität)
+            übermitteln wir den signierten Foto-Link an die API von Anthropic, PBC
+            (USA). Anthropic verarbeitet das Bild für die Dauer der Anfrage und nutzt
+            es laut Vertrag nicht zum Training. Übertragung in die USA auf Basis von
+            EU-Standardvertragsklauseln. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO
+            (Erbringung der Scan-Funktion).
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
+            7. Pflanzen-Identifikation (Pl@ntNet)
+          </h2>
+          <p>
+            Zur Bestimmung der Pflanze übermitteln wir den signierten Foto-Link an die
+            API von Pl@ntNet (Cirad / INRIA, Frankreich). Pl@ntNet verarbeitet das Bild
+            zur Erkennung der Art und kann es laut Nutzungsbedingungen für die
+            Verbesserung des öffentlichen Datenbestands nutzen. Wenn du das nicht
+            möchtest, lade keine Fotos hoch, auf denen du persönlich identifizierbar
+            bist. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
+            8. Wetterdaten (Open-Meteo)
           </h2>
           <p>
             Zur Anzeige lokaler Wetterdaten rufen wir die API von Open-Meteo
@@ -88,7 +147,7 @@ export default function DatenschutzPage() {
 
         <section>
           <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
-            5. Bilder von Wikimedia Commons
+            9. Bilder von Wikimedia Commons
           </h2>
           <p>
             Pflanzenfotos werden von Wikimedia Commons (upload.wikimedia.org)
@@ -101,20 +160,32 @@ export default function DatenschutzPage() {
 
         <section>
           <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
-            6. Lokale Speicherung (LocalStorage)
+            10. Lokale Speicherung (LocalStorage)
           </h2>
           <p>
-            Nach Abschluss des Onboardings speichern wir dein Nutzerprofil (PLZ,
-            Garten-Parameter, Präferenzen) ausschließlich lokal in deinem Browser im
-            sogenannten LocalStorage. Diese Daten verlassen dein Gerät nicht und werden
-            nicht an uns übertragen. Du kannst sie jederzeit über die
-            Browser-Einstellungen löschen.
+            Zusätzlich speichern wir dein Onboarding-Profil (PLZ, Garten-Parameter,
+            Präferenzen) lokal in deinem Browser im sogenannten LocalStorage. Diese
+            Angaben verbleiben auf deinem Gerät und werden nicht an unsere Server
+            übertragen. Du kannst sie jederzeit über die Browser-Einstellungen löschen.
           </p>
         </section>
 
         <section>
           <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
-            7. Deine Rechte
+            11. Speicherdauer und Löschung
+          </h2>
+          <p>
+            Scans, Pflanzen und Bilder bleiben gespeichert, solange dein anonymes Konto
+            besteht oder du sie nicht selbst löschst. Du kannst einzelne Scans und
+            Pflanzen in der App löschen; zugehörige Bilder werden dabei mit entfernt.
+            Auf Anfrage löschen wir auch das gesamte anonyme Konto inklusive aller
+            zugehörigen Daten.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
+            12. Deine Rechte
           </h2>
           <p>
             Du hast jederzeit das Recht auf Auskunft, Berichtigung, Löschung,
@@ -127,7 +198,7 @@ export default function DatenschutzPage() {
 
         <section>
           <h2 className="font-semibold text-forest-900 text-[15px] mb-1">
-            8. Änderungen
+            13. Änderungen
           </h2>
           <p>
             Wir passen diese Datenschutzerklärung an, wenn sich rechtliche oder

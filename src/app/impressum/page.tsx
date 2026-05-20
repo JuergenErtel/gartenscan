@@ -63,9 +63,8 @@ export default function ImpressumPage() {
             Registereintrag
           </h2>
           <p>
-            Handelsregister: [HRB-NUMMER]
-            <br />
-            Registergericht: [REGISTERGERICHT]
+            Eintragung im Handelsregister wird ergänzt. Aktuelle Daten erhältst du
+            auf Anfrage per E-Mail.
           </p>
         </section>
 
@@ -74,8 +73,8 @@ export default function ImpressumPage() {
             Umsatzsteuer-ID
           </h2>
           <p>
-            Umsatzsteuer-Identifikationsnummer gemäß § 27 a UStG:
-            [DE… – oder diesen Abschnitt löschen, falls nicht vorhanden]
+            Eine Umsatzsteuer-Identifikationsnummer gemäß § 27 a UStG wird – sofern
+            vorhanden – an dieser Stelle ergänzt.
           </p>
         </section>
 
