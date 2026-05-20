@@ -30,6 +30,23 @@ const CONTENT_BY_SCIENTIFIC_NAME = new Map(
   CONTENT_REGISTRY.map((c) => [c.scientificName.toLowerCase(), c.id])
 );
 
+// Genus-Fallback: erstes Wort des scientificName → content.id.
+// Greift, wenn Pl@ntNet eine andere Spezies derselben Gattung liefert
+// (z. B. Hedera hibernica statt Hedera helix). Letzter Eintrag im Registry
+// pro Gattung gewinnt — wir gehen davon aus, dass pro Gattung nur ein
+// generischer Eintrag existiert.
+const CONTENT_BY_GENUS = new Map(
+  CONTENT_REGISTRY.map((c) => [c.scientificName.split(' ')[0].toLowerCase(), c.id])
+);
+
+function matchContentId(scientificName: string): string | undefined {
+  const lower = scientificName.toLowerCase();
+  const exact = CONTENT_BY_SCIENTIFIC_NAME.get(lower);
+  if (exact) return exact;
+  const genus = lower.split(' ')[0];
+  return CONTENT_BY_GENUS.get(genus);
+}
+
 export class PlantNetProvider implements IdentificationProvider {
   readonly name = 'plantnet';
 
@@ -47,7 +64,7 @@ export class PlantNetProvider implements IdentificationProvider {
     url.searchParams.set('lang', input.locale);
 
     const controller = new AbortController();
-    const timeoutMs = this.opts.timeoutMs ?? 8000;
+    const timeoutMs = this.opts.timeoutMs ?? 15000;
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
     let res: Response;
@@ -94,7 +111,7 @@ export class PlantNetProvider implements IdentificationProvider {
             species: sciName,
           },
           confidence: r.score,
-          matchedContentId: CONTENT_BY_SCIENTIFIC_NAME.get(sciName.toLowerCase()),
+          matchedContentId: matchContentId(sciName),
         };
       });
 
