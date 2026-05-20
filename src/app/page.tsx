@@ -176,7 +176,7 @@ export default function LandingPage() {
           </div>
 
           <p className="mt-4 text-[12px] text-ink-muted">
-            Kostenlos starten • 7 Tage Premium gratis • Ohne Kreditkarte
+            Kostenlos starten • Ohne Anmeldung • Ohne Kreditkarte
           </p>
         </div>
 

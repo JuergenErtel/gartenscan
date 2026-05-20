@@ -285,33 +285,11 @@ export default function PremiumPage() {
       </section>
 
       <section className="px-5 pt-8">
-        <figure className="rounded-[20px] bg-paper-dim p-6">
-          <blockquote className="font-serif text-[18px] leading-[1.45] text-forest-900 italic font-normal">
-            "Der Unterschied ist nicht, dass die App mehr weiss. Der Unterschied
-            ist, dass ich schneller die richtige Entscheidung treffe."
-          </blockquote>
-          <figcaption className="mt-5 flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-moss-500 to-forest-700 text-[13px] font-semibold text-paper">
-              AS
-            </div>
-            <div>
-              <p className="text-[13px] font-semibold text-forest-900">
-                Anna Schaefer
-              </p>
-              <p className="text-[11px] text-ink-muted">
-                Premium-Nutzerin - Berlin
-              </p>
-            </div>
-          </figcaption>
-        </figure>
-      </section>
-
-      <section className="px-5 pt-8">
         <div className="flex items-center justify-around">
           {[
             { icon: ShieldCheck, label: "Keine Abofallen" },
             { icon: Zap, label: "Jederzeit kuendbar" },
-            { icon: InfinityIcon, label: "14 Tage Rueckgabe" },
+            { icon: InfinityIcon, label: "Fairer Wechsel" },
           ].map((trust) => (
             <div key={trust.label} className="flex flex-col items-center gap-1.5">
               <trust.icon className="h-5 w-5 text-forest-700" strokeWidth={1.5} />
@@ -325,13 +303,17 @@ export default function PremiumPage() {
 
       <div className="fixed bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-sage-50 via-sage-50/95 to-transparent px-5 pt-4 pb-[max(env(safe-area-inset-bottom),1rem)]">
         <div className="mx-auto max-w-lg space-y-2">
-          <Button fullWidth size="lg">
+          <Button
+            fullWidth
+            size="lg"
+            href={selected === "free" ? "/app" : "mailto:info@codingbrothers.de?subject=gartenscan%20Premium%20Warteliste"}
+          >
             {selected === "free"
               ? "Weiter mit Free"
-              : `7 Tage ${plans[selected].name} kostenlos testen`}
+              : `${plans[selected].name} vormerken (Warteliste)`}
           </Button>
           <p className="text-center text-[11px] text-ink-muted">
-            Keine Belastung bis zum Testende. Jederzeit kuendbar.
+            Premium ist noch nicht buchbar. Wir informieren dich, sobald es so weit ist.
           </p>
         </div>
       </div>
