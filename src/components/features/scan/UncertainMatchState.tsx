@@ -6,32 +6,38 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ArrowLeft, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { cn } from '@/lib/utils';
 import type { DetectionCandidate } from '@/domain/scan/ScanOutcome';
 
 interface Props {
   scanId: string;
-  candidate: DetectionCandidate;
+  candidates: DetectionCandidate[];
   imageUrl: string;
 }
 
-type PendingAction = 'confirm' | 'reject' | null;
+type Pending = { action: 'confirm'; rank: number } | { action: 'reject' } | null;
 
-export function UncertainMatchState({ scanId, candidate, imageUrl }: Props) {
+export function UncertainMatchState({ scanId, candidates, imageUrl }: Props) {
   const router = useRouter();
-  const [pending, setPending] = useState<PendingAction>(null);
+  const [pending, setPending] = useState<Pending>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const heroName = candidate.commonNames[0] ?? candidate.scientificName;
-  const confidencePct = Math.round(candidate.confidence * 100);
+  const top = candidates[0];
+  const topName = top?.commonNames[0] ?? top?.scientificName ?? '';
+  const topConfidencePct = top ? Math.round(top.confidence * 100) : 0;
 
-  async function submit(action: 'confirm' | 'reject') {
-    setPending(action);
+  async function submit(payload: { action: 'confirm'; rank: number } | { action: 'reject' }) {
+    setPending(payload);
     setError(null);
     try {
       const res = await fetch(`/api/scans/${scanId}/status`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ action }),
+        body: JSON.stringify(
+          payload.action === 'confirm'
+            ? { action: 'confirm', selectedRank: payload.rank }
+            : { action: 'reject' }
+        ),
       });
 
       if (res.status === 409) {
@@ -59,7 +65,7 @@ export function UncertainMatchState({ scanId, candidate, imageUrl }: Props) {
       <div className="relative h-[280px] overflow-hidden">
         <Image
           src={imageUrl}
-          alt={heroName}
+          alt={topName}
           fill
           priority
           unoptimized
@@ -81,50 +87,90 @@ export function UncertainMatchState({ scanId, candidate, imageUrl }: Props) {
         <div className="absolute top-[calc(max(env(safe-area-inset-top),1rem)+52px)] left-4">
           <span className="inline-flex items-center gap-2 rounded-full bg-cream/92 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-bark-900">
             <span className="h-1.5 w-1.5 rounded-full bg-berry-500" />
-            Nur {confidencePct} % sicher
+            Nur {topConfidencePct} % sicher
           </span>
         </div>
       </div>
 
-      <div className="relative -mt-7 rounded-t-[28px] bg-cream pt-6 pb-6 px-5 shadow-[0_-8px_24px_rgba(58,37,21,0.06)]">
+      <div className="relative -mt-7 rounded-t-[28px] bg-cream pt-6 pb-4 px-5 shadow-[0_-8px_24px_rgba(58,37,21,0.06)]">
         <p className="eyebrow mb-2">Vermutung, nicht bestätigt</p>
         <h1 className="font-serif text-[28px] leading-tight text-bark-900 mb-1">
-          {heroName}
+          Welche Pflanze passt am ehesten?
         </h1>
-        <p className="latin-name text-[13px] mb-3">{candidate.scientificName}</p>
-        <p className="pull-quote mt-3 mb-2">
-          Unsere Erkennung ist hier nicht sicher genug für ein Urteil. Deine Bestätigung hilft, den nächsten Scan besser zu führen.
+        <p className="pull-quote mt-3 mb-1">
+          Unsere Erkennung ist nicht sicher genug für ein Urteil. Wähl den passenden Kandidaten — oder verwirf den Vorschlag.
         </p>
       </div>
 
-      <div className="px-5 pt-6">
-        <div className="rounded-[18px] border border-clay-800/15 bg-paper p-5">
-          <p className="mb-4 text-[13px] leading-relaxed text-bark-900">
-            Ist das die Pflanze, die du fotografiert hast?
-          </p>
-          <div className="flex gap-3">
-            <Button
-              onClick={() => submit('confirm')}
-              disabled={pending !== null}
-              fullWidth
-              iconLeft={<Check className="h-4 w-4" />}
-            >
-              {pending === 'confirm' ? 'Speichert ...' : 'Das ist es'}
-            </Button>
-            <Button
-              onClick={() => submit('reject')}
-              disabled={pending !== null}
-              variant="secondary"
-              fullWidth
-              iconLeft={<X className="h-4 w-4" />}
-            >
-              {pending === 'reject' ? 'Speichert ...' : 'Stimmt nicht'}
-            </Button>
-          </div>
-          {error && (
-            <p className="mt-3 text-[12px] text-berry-700">{error}</p>
-          )}
+      <div className="px-5 pt-4">
+        <div className="space-y-2.5">
+          {candidates.map((cand) => {
+            const isPending =
+              pending?.action === 'confirm' && pending.rank === cand.rank;
+            const otherPending = pending !== null && !isPending;
+            const label = cand.commonNames[0] ?? cand.scientificName;
+            return (
+              <button
+                key={cand.rank}
+                type="button"
+                onClick={() => submit({ action: 'confirm', rank: cand.rank })}
+                disabled={pending !== null}
+                className={cn(
+                  'tap-press w-full rounded-[18px] border bg-paper px-4 py-4 text-left transition',
+                  isPending
+                    ? 'border-forest-700 ring-2 ring-forest-700/30'
+                    : 'border-clay-800/15 hover:border-forest-700/40',
+                  otherPending && 'opacity-50'
+                )}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[15px] font-semibold text-bark-900">
+                      {label}
+                    </p>
+                    <p className="latin-name text-[12px] mt-0.5">
+                      {cand.scientificName}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2">
+                    <span className="text-[12px] font-semibold text-ink-muted tabular-nums">
+                      {Math.round(cand.confidence * 100)} %
+                    </span>
+                    <span
+                      className={cn(
+                        'flex h-8 w-8 items-center justify-center rounded-full',
+                        isPending
+                          ? 'bg-forest-700 text-paper'
+                          : 'bg-sage-100 text-forest-700'
+                      )}
+                    >
+                      <Check className="h-4 w-4" strokeWidth={2.25} />
+                    </span>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
         </div>
+
+        <div className="mt-4 rounded-[18px] border border-clay-800/15 bg-cream p-4">
+          <p className="mb-3 text-[13px] leading-relaxed text-bark-900">
+            Keine davon passt?
+          </p>
+          <Button
+            onClick={() => submit({ action: 'reject' })}
+            disabled={pending !== null}
+            variant="secondary"
+            fullWidth
+            iconLeft={<X className="h-4 w-4" />}
+          >
+            {pending?.action === 'reject' ? 'Speichert ...' : 'Vorschlag verwerfen'}
+          </Button>
+        </div>
+
+        {error && (
+          <p className="mt-3 text-[12px] text-berry-700">{error}</p>
+        )}
       </div>
     </div>
   );

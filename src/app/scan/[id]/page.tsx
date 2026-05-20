@@ -73,14 +73,13 @@ export default async function ScanResultPage({
     );
   }
   if (scan.outcome.status === "uncertain_match") {
-    const primary = scan.outcome.candidates[0];
-    if (!primary) return notFound();
+    if (scan.outcome.candidates.length === 0) return notFound();
     const signedImageUrl = await createSignedReadUrl(scan.imagePath, 3600);
     return (
       <OnboardingGuard>
         <UncertainMatchState
           scanId={scan.id}
-          candidate={primary}
+          candidates={scan.outcome.candidates}
           imageUrl={signedImageUrl}
         />
         <ScanFooterActions scanId={scan.id} />

@@ -223,13 +223,65 @@ export async function listScansForPlant(
 export async function updateScanStatus(
   scanId: string,
   userId: string,
-  newStatus: 'ok' | 'no_match'
+  newStatus: 'ok' | 'no_match',
+  selectedRank: number = 1
 ): Promise<StoredScan | null> {
   const supabase = createServiceRoleClient();
 
+  // Bei confirm mit anderem Kandidaten als rank=1: erst die Kandidaten umsortieren,
+  // damit der gewählte rank=1 wird und auch matched_content_id stimmt.
+  let chosenContentId: string | null = null;
+  if (newStatus === 'ok' && selectedRank !== 1) {
+    const { data: cands, error: candErr } = await supabase
+      .from('scan_candidates')
+      .select('id, rank, content_id')
+      .eq('scan_id', scanId)
+      .order('rank', { ascending: true });
+    if (candErr) throw new Error(`updateScanStatus candidates: ${candErr.message}`);
+
+    const chosen = cands?.find((c) => c.rank === selectedRank);
+    if (!chosen) return null;
+    chosenContentId = chosen.content_id ?? null;
+
+    const old1 = cands?.find((c) => c.rank === 1);
+    if (old1) {
+      // 3-stufiges Rerank, damit ein (scan_id, rank)-Unique-Index nicht stört.
+      const { error: parkErr } = await supabase
+        .from('scan_candidates')
+        .update({ rank: 99 })
+        .eq('id', old1.id);
+      if (parkErr) throw new Error(`updateScanStatus park: ${parkErr.message}`);
+
+      const { error: promoteErr } = await supabase
+        .from('scan_candidates')
+        .update({ rank: 1 })
+        .eq('id', chosen.id);
+      if (promoteErr) throw new Error(`updateScanStatus promote: ${promoteErr.message}`);
+
+      const { error: demoteErr } = await supabase
+        .from('scan_candidates')
+        .update({ rank: selectedRank })
+        .eq('id', old1.id);
+      if (demoteErr) throw new Error(`updateScanStatus demote: ${demoteErr.message}`);
+    }
+  } else if (newStatus === 'ok') {
+    const { data: top } = await supabase
+      .from('scan_candidates')
+      .select('content_id')
+      .eq('scan_id', scanId)
+      .eq('rank', 1)
+      .maybeSingle();
+    chosenContentId = top?.content_id ?? null;
+  }
+
+  const update: { status: string; matched_content_id?: string | null } = {
+    status: newStatus,
+  };
+  if (newStatus === 'ok') update.matched_content_id = chosenContentId;
+
   const { data, error } = await supabase
     .from('scans')
-    .update({ status: newStatus })
+    .update(update)
     .eq('id', scanId)
     .eq('user_id', userId)
     .eq('status', 'uncertain_match')

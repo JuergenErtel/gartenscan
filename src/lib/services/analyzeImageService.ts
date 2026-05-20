@@ -4,7 +4,7 @@ import type { TriageProvider } from '@/lib/providers/triage/types';
 import type { ScanOutcome } from '@/domain/scan/ScanOutcome';
 
 const AUTO_OK_CONFIDENCE = 0.25;
-const UNCERTAIN_MIN_CONFIDENCE = 0.10;
+const UNCERTAIN_MIN_CONFIDENCE = 0.05;
 
 export interface AnalyzeImageInput {
   imageUrl: string;
@@ -72,7 +72,9 @@ export async function analyzeImage(input: AnalyzeImageInput): Promise<ScanOutcom
     return {
       status: 'uncertain_match',
       triage,
-      candidates: [top],
+      candidates: sorted
+        .filter((c) => c.confidence >= UNCERTAIN_MIN_CONFIDENCE)
+        .slice(0, 3),
       provider: input.identification.name,
     };
   }

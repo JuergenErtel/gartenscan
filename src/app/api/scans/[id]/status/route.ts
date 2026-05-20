@@ -22,8 +22,14 @@ export async function POST(
     return NextResponse.json({ error: 'invalid action' }, { status: 400 });
   }
 
+  const rawRank = body?.selectedRank;
+  const selectedRank =
+    typeof rawRank === 'number' && Number.isInteger(rawRank) && rawRank >= 1 && rawRank <= 3
+      ? rawRank
+      : 1;
+
   const newStatus = action === 'confirm' ? 'ok' : 'no_match';
-  const updated = await updateScanStatus(id, user.id, newStatus);
+  const updated = await updateScanStatus(id, user.id, newStatus, selectedRank);
 
   if (!updated) {
     return NextResponse.json(
