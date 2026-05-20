@@ -21,6 +21,9 @@ import { rosenrost } from "./diseases/rosenrost";
 import { hortensie } from "./plants/hortensie";
 import { rose } from "./plants/rose";
 import { tomate } from "./plants/tomate";
+import { efeu } from "./plants/efeu";
+import { ahorn } from "./plants/ahorn";
+import { hasenglocken } from "./plants/hasenglocken";
 
 /**
  * Central content registry. In production this would be replaced by a CMS
@@ -44,6 +47,9 @@ export const CONTENT_REGISTRY: ContentEntry[] = [
   hortensie,
   rose,
   tomate,
+  efeu,
+  ahorn,
+  hasenglocken,
 ];
 
 const CONTENT_BY_ID = new Map(CONTENT_REGISTRY.map((c) => [c.id, c]));
