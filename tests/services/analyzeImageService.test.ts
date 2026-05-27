@@ -147,4 +147,61 @@ describe('analyzeImageService', () => {
     expect(outcome.status).toBe('provider_error');
     expect(outcome.reason).toContain('timeout');
   });
+
+  it('routing: insect calls identificationFor with insect category', async () => {
+    const triage = makeTriage({ category: 'insect', quality: 'acceptable' });
+    const id = makeId({
+      candidates: [{ rank: 1, scientificName: 'Aphidoidea', commonNames: ['Blattlaeuse'], confidence: 0.7, matchedContentId: 'pest_blattlaeuse' }],
+      providerRaw: {},
+    });
+    const factory = vi.fn((_cat) => id);
+
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: factory });
+
+    expect(factory).toHaveBeenCalledWith('insect');
+    expect(outcome.status).toBe('ok');
+    expect(outcome.candidates[0].matchedContentId).toBe('pest_blattlaeuse');
+  });
+
+  it('routing: beneficial calls identificationFor with beneficial category', async () => {
+    const triage = makeTriage({ category: 'beneficial', quality: 'acceptable' });
+    const id = makeId({
+      candidates: [{ rank: 1, scientificName: 'Coccinellidae', commonNames: ['Marienkaefer'], confidence: 0.9, matchedContentId: 'beneficial_marienkaefer' }],
+      providerRaw: {},
+    });
+    const factory = vi.fn((_cat) => id);
+
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: factory });
+
+    expect(factory).toHaveBeenCalledWith('beneficial');
+    expect(outcome.status).toBe('ok');
+  });
+
+  it('routing: disease calls identificationFor with disease category', async () => {
+    const triage = makeTriage({ category: 'disease', quality: 'acceptable' });
+    const id = makeId({
+      candidates: [{ rank: 1, scientificName: 'Erysiphales', commonNames: ['Mehltau'], confidence: 0.6, matchedContentId: 'disease_echter_mehltau' }],
+      providerRaw: {},
+    });
+    const factory = vi.fn((_cat) => id);
+
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: factory });
+
+    expect(factory).toHaveBeenCalledWith('disease');
+    expect(outcome.status).toBe('ok');
+  });
+
+  it('routing: damage calls identificationFor with damage category', async () => {
+    const triage = makeTriage({ category: 'damage', quality: 'acceptable' });
+    const id = makeId({
+      candidates: [],
+      providerRaw: {},
+    });
+    const factory = vi.fn((_cat) => id);
+
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: factory });
+
+    expect(factory).toHaveBeenCalledWith('damage');
+    expect(outcome.status).toBe('no_match');
+  });
 });
