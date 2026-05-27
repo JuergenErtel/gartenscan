@@ -29,54 +29,32 @@ export function LowQualityState({ reason }: { reason?: string }) {
   );
 }
 
-export function CategoryUnsupportedState({ category }: { category?: string }) {
-  const label =
-    category === "insect"
-      ? "Dieses Insekt"
-      : category === "disease"
-        ? "Dieses Schadbild"
-        : "Dieses Motiv";
-
+export function CategoryUnsupportedState({ category: _category }: { category?: string }) {
   const coachPrompt =
-    category === "insect"
-      ? "Ich habe ein Insekt oder Tier im Garten fotografiert. Hilf mir bei Einordnung, Risiko und naechstem Schritt."
-      : category === "disease"
-        ? "Ich habe ein Schadbild an einer Pflanze fotografiert. Hilf mir bei Ursache, Dringlichkeit und erster Massnahme."
-        : "Ich habe einen unklaren Gartenfall fotografiert. Hilf mir bei Einordnung und naechstem sinnvollen Schritt.";
+    "Ich habe einen unklaren Gartenfall fotografiert. Hilf mir bei Einordnung und naechstem sinnvollen Schritt.";
 
   return (
     <GenericErrorFrame
-      eyebrow="Noch nicht stark genug"
-      title={`${label} tragen wir im Live-Scan noch nicht sauber genug.`}
-      body="Heute ist die App im Live-Scan am staerksten bei Pflanzen. Genau solche Grenzfaelle muessen trotzdem mit einer brauchbaren Zwischenhilfe enden, nicht in einer Sackgasse."
-      mark="insect"
+      eyebrow="Motiv unklar"
+      title="Wir konnten weder Pflanze noch Tier noch Schaden klar genug erkennen."
+      body="So bleibt der Scan ohne Substanz. Mit einem zweiten Foto, das ein Subjekt deutlich zeigt, kommt die App fast immer ans Ziel."
+      mark="compass"
       tips={[
-        "Wenn du ein Blatt oder die betroffene Pflanze isoliert fotografierst, steigt die Chance auf eine brauchbare Einordnung.",
-        "Wenn du vor allem eine Entscheidung brauchst, nutze den Coach statt auf perfekte Erkennung zu warten.",
+        "Naeher ran an genau ein Motiv: Pflanze, Tier oder Schadstelle.",
+        "Wenn du nicht weisst, was du vor dir hast, nutze den Coach mit einer kurzen Beschreibung.",
       ]}
       quickPlan={{
-        title:
-          category === "insect"
-            ? "Was du jetzt trotzdem sofort tun kannst"
-            : "Vorlaeufig sinnvoller Plan",
-        steps:
-          category === "insect"
-            ? [
-                "Einzelfoto plus Foto der betroffenen Pflanze machen.",
-                "Pruefen, ob Schaden sichtbar ist oder es auch ein Nuetzling sein koennte.",
-                "Bis zur Klaerung keine pauschalen Mittel einsetzen.",
-              ]
-            : [
-                "Befallene oder auffaellige Stellen lokal begrenzen und beobachten.",
-                "Nicht mehrere Mittel gleichzeitig ausprobieren.",
-                "Mit Coach oder zweitem Foto Ursache eingrenzen.",
-              ],
+        title: "Naechster Versuch, der eher klappt",
+        steps: [
+          "Ein klares Hauptmotiv mittig ins Bild ruecken.",
+          "Hintergrund ruhig halten, naeher rangehen.",
+          "Tageslicht statt Blitz.",
+        ],
       }}
       secondaryCta={{
         href: `/coach?q=${encodeURIComponent(coachPrompt)}`,
         label: "Coach mit Kontext oeffnen",
       }}
-      supportNote="Live stark bei Pflanzen. Weitere Problemklassen werden noch ausgebaut."
     />
   );
 }
