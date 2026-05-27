@@ -8,6 +8,11 @@ import { brennnessel } from "./weeds/brennnessel";
 // Pests
 import { blattlaeuse } from "./pests/blattlaeuse";
 import { schnecken } from "./pests/schnecken";
+import { spinnmilben } from "./pests/spinnmilben";
+import { buchsbaumzuensler } from "./pests/buchsbaumzuensler";
+import { trauermuecken } from "./pests/trauermuecken";
+import { wolllaeuse } from "./pests/wolllaeuse";
+import { dickmaulruessler } from "./pests/dickmaulruessler";
 
 // Beneficials
 import { marienkaefer } from "./beneficials/marienkaefer";
@@ -37,6 +42,11 @@ export const CONTENT_REGISTRY: ContentEntry[] = [
   // Pests
   blattlaeuse,
   schnecken,
+  spinnmilben,
+  buchsbaumzuensler,
+  trauermuecken,
+  wolllaeuse,
+  dickmaulruessler,
   // Beneficials
   marienkaefer,
   // Diseases
