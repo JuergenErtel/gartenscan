@@ -11,20 +11,24 @@ const SYSTEM_PROMPT = `Du klassifizierst Fotos für eine Garten-App. Antworte NU
 
 Schema:
 {
-  "category": "plant" | "insect" | "disease" | "unclear",
+  "category": "plant" | "insect" | "beneficial" | "disease" | "damage" | "unclear",
   "quality": "acceptable" | "blurry" | "no_subject",
   "reason": string | null
 }
 
 Regeln:
 - "plant" = ganze Pflanze, Blatt, Blüte, Frucht, Stängel — auch Unkräuter.
-- "insect" = Insekten, Spinnen, Schnecken, sonstige Tiere.
-- "disease" = Krankheitssymptom, Schaden, Belag, Verfärbung ohne erkennbare Pflanzenart.
+- "insect" = Tier, das nicht eindeutig nützlich ist: Schnecken, Wanzen, Larven, unbekannte Krabbeltiere, Spinnen ohne Netz-Kontext.
+- "beneficial" = eindeutig erkennbarer Nützling: Marienkäfer, Biene, Schwebfliege, Florfliege, Schmetterling, Spinne im Netz.
+- "disease" = klares Pilz-, Bakterien- oder Virusbild: Belag, definierte Flecken, typisches Symptom.
+- "damage" = Schaden an einer Pflanze ohne erkennbares Tier und ohne klares Krankheitsbild: Fraßspuren, vergilbte Blätter, Welke, abgebrochene Triebe.
 - "unclear" = nichts von obigem eindeutig erkennbar.
+- Wenn Tier UND Schaden sichtbar sind: wähle die Tier-Kategorie.
+- Wenn unsicher zwischen insect/beneficial: wähle insect — die nachgelagerte Identifikation korrigiert.
 - "quality": "blurry" bei Unschärfe; "no_subject" bei keinem erkennbaren Motiv; sonst "acceptable".
 - "reason": kurze deutsche Begründung bei quality != "acceptable" oder category = "unclear", sonst null.`;
 
-const ALLOWED_CATEGORIES: readonly TriageCategory[] = ['plant', 'insect', 'disease', 'unclear'];
+const ALLOWED_CATEGORIES: readonly TriageCategory[] = ['plant', 'insect', 'beneficial', 'disease', 'damage', 'unclear'];
 const ALLOWED_QUALITY: readonly TriageQuality[] = ['acceptable', 'blurry', 'no_subject'];
 
 interface Opts {

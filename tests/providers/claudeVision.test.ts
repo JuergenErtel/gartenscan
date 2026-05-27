@@ -103,4 +103,32 @@ describe('ClaudeVisionTriageProvider', () => {
 
     expect(result.category).toBe('insect');
   });
+
+  it('parses beneficial category', async () => {
+    createMock.mockResolvedValueOnce({
+      content: [{ type: 'text', text: '{"category":"beneficial","quality":"acceptable"}' }],
+    });
+
+    const provider = new ClaudeVisionTriageProvider({ apiKey: 'k' });
+    const result = await provider.classify({
+      imageUrl: 'https://example.com/ladybug.jpg',
+      locale: 'de',
+    });
+
+    expect(result.category).toBe('beneficial');
+  });
+
+  it('parses damage category', async () => {
+    createMock.mockResolvedValueOnce({
+      content: [{ type: 'text', text: '{"category":"damage","quality":"acceptable"}' }],
+    });
+
+    const provider = new ClaudeVisionTriageProvider({ apiKey: 'k' });
+    const result = await provider.classify({
+      imageUrl: 'https://example.com/damage.jpg',
+      locale: 'de',
+    });
+
+    expect(result.category).toBe('damage');
+  });
 });
