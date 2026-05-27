@@ -6,7 +6,7 @@ export const wolllaeuse: ContentEntry = {
   category: "PEST",
   name: "Wollläuse",
   scientificName: "Pseudococcidae",
-  aliases: ["Schmierlläuse"],
+  aliases: ["Schmierlaeuse"],
   description:
     "Wollläuse sind 3–6 mm große, mit weißem Wachswolle überzogene Schildläuse. Sie sitzen in Blattachseln, an Triebspitzen und am Wurzelhals und saugen Pflanzensaft. Wie Blattläuse scheiden sie Honigtau aus, der Rußtaupilze fördert. Besonders an Kakteen, Sukkulenten, Orchideen und mediterranen Kübelpflanzen verbreitet.",
   traits: [
