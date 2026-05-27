@@ -1,7 +1,7 @@
 import { ProviderError } from '@/lib/providers/errors';
 import type { IdentificationProvider } from '@/lib/providers/identification/types';
 import type { TriageProvider } from '@/lib/providers/triage/types';
-import type { ScanOutcome } from '@/domain/scan/ScanOutcome';
+import type { ScanOutcome, TriageCategory } from '@/domain/scan/ScanOutcome';
 
 const AUTO_OK_CONFIDENCE = 0.25;
 const UNCERTAIN_MIN_CONFIDENCE = 0.05;
@@ -9,7 +9,7 @@ const UNCERTAIN_MIN_CONFIDENCE = 0.05;
 export interface AnalyzeImageInput {
   imageUrl: string;
   triage: TriageProvider;
-  identification: IdentificationProvider;
+  identificationFor: (category: TriageCategory) => IdentificationProvider | null;
   locale?: 'de' | 'en';
   maxCandidates?: number;
 }
@@ -35,7 +35,8 @@ export async function analyzeImage(input: AnalyzeImageInput): Promise<ScanOutcom
     };
   }
 
-  if (triage.category !== 'plant') {
+  const identification = input.identificationFor(triage.category);
+  if (!identification) {
     return {
       status: 'category_unsupported',
       triage,
@@ -47,13 +48,13 @@ export async function analyzeImage(input: AnalyzeImageInput): Promise<ScanOutcom
   // Phase 2: Identification
   let ident;
   try {
-    ident = await input.identification.identify({
+    ident = await identification.identify({
       imageUrl: input.imageUrl,
       locale,
       maxCandidates,
     });
   } catch (err) {
-    return providerErrorOutcome(err, input.identification.name, triage);
+    return providerErrorOutcome(err, identification.name, triage);
   }
 
   const sorted = [...ident.candidates].sort((a, b) => b.confidence - a.confidence);
@@ -64,7 +65,7 @@ export async function analyzeImage(input: AnalyzeImageInput): Promise<ScanOutcom
       status: 'ok',
       triage,
       candidates: sorted.filter((c) => c.confidence >= AUTO_OK_CONFIDENCE).slice(0, 3),
-      provider: input.identification.name,
+      provider: identification.name,
     };
   }
 
@@ -75,7 +76,7 @@ export async function analyzeImage(input: AnalyzeImageInput): Promise<ScanOutcom
       candidates: sorted
         .filter((c) => c.confidence >= UNCERTAIN_MIN_CONFIDENCE)
         .slice(0, 3),
-      provider: input.identification.name,
+      provider: identification.name,
     };
   }
 
@@ -83,7 +84,7 @@ export async function analyzeImage(input: AnalyzeImageInput): Promise<ScanOutcom
     status: 'no_match',
     triage,
     candidates: [],
-    provider: input.identification.name,
+    provider: identification.name,
   };
 }
 

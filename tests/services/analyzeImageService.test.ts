@@ -9,6 +9,10 @@ function makeTriage(result: TriageResult): TriageProvider {
   return { name: 'triage', classify: vi.fn().mockResolvedValue(result) };
 }
 
+function makeIdFactory(id: IdentificationProvider | null) {
+  return (_category: TriageResult['category']) => id;
+}
+
 function makeId(result: Awaited<ReturnType<IdentificationProvider['identify']>> | Error): IdentificationProvider {
   return {
     name: 'id',
@@ -27,7 +31,7 @@ describe('analyzeImageService', () => {
       providerRaw: {},
     });
 
-    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: makeIdFactory(id) });
 
     expect(outcome.status).toBe('ok');
     expect(outcome.candidates).toHaveLength(1);
@@ -39,29 +43,28 @@ describe('analyzeImageService', () => {
     const triage = makeTriage({ category: 'plant', quality: 'blurry', reason: 'zu unscharf' });
     const id = makeId({ candidates: [], providerRaw: null });
 
-    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: makeIdFactory(id) });
 
     expect(outcome.status).toBe('low_quality');
     expect(outcome.candidates).toEqual([]);
     expect(id.identify).not.toHaveBeenCalled();
   });
 
-  it('category_unsupported: triage says insect', async () => {
-    const triage = makeTriage({ category: 'insect', quality: 'acceptable' });
-    const id = makeId({ candidates: [], providerRaw: null });
+  it('category_unsupported: triage says unclear, factory returns null', async () => {
+    const triage = makeTriage({ category: 'unclear', quality: 'acceptable', reason: 'nichts klar' });
+    const identificationFor = (_cat: TriageResult['category']) => null;
 
-    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor });
 
     expect(outcome.status).toBe('category_unsupported');
-    expect(outcome.triage?.category).toBe('insect');
-    expect(id.identify).not.toHaveBeenCalled();
+    expect(outcome.triage?.category).toBe('unclear');
   });
 
   it('no_match: empty candidates', async () => {
     const triage = makeTriage({ category: 'plant', quality: 'acceptable' });
     const id = makeId({ candidates: [], providerRaw: {} });
 
-    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: makeIdFactory(id) });
 
     expect(outcome.status).toBe('no_match');
   });
@@ -73,7 +76,7 @@ describe('analyzeImageService', () => {
       providerRaw: {},
     });
 
-    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: makeIdFactory(id) });
 
     expect(outcome.status).toBe('no_match');
     expect(outcome.candidates).toHaveLength(0);
@@ -90,7 +93,7 @@ describe('analyzeImageService', () => {
       providerRaw: {},
     });
 
-    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: makeIdFactory(id) });
 
     expect(outcome.status).toBe('uncertain_match');
     expect(outcome.candidates).toHaveLength(2);
@@ -105,7 +108,7 @@ describe('analyzeImageService', () => {
       providerRaw: {},
     });
 
-    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: makeIdFactory(id) });
 
     expect(outcome.status).toBe('uncertain_match');
   });
@@ -117,7 +120,7 @@ describe('analyzeImageService', () => {
       providerRaw: {},
     });
 
-    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: makeIdFactory(id) });
 
     expect(outcome.status).toBe('ok');
   });
@@ -129,7 +132,7 @@ describe('analyzeImageService', () => {
     };
     const id = makeId({ candidates: [], providerRaw: null });
 
-    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: makeIdFactory(id) });
 
     expect(outcome.status).toBe('provider_error');
     expect(id.identify).not.toHaveBeenCalled();
@@ -139,7 +142,7 @@ describe('analyzeImageService', () => {
     const triage = makeTriage({ category: 'plant', quality: 'acceptable' });
     const id = makeId(new ProviderError('timeout', 'plantnet', 'too slow'));
 
-    const outcome = await analyzeImage({ imageUrl: 'u', triage, identification: id });
+    const outcome = await analyzeImage({ imageUrl: 'u', triage, identificationFor: makeIdFactory(id) });
 
     expect(outcome.status).toBe('provider_error');
     expect(outcome.reason).toContain('timeout');
