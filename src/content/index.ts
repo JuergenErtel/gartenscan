@@ -23,6 +23,9 @@ import { schwebfliege } from "./beneficials/schwebfliege";
 import { echterMehltau } from "./diseases/echter_mehltau";
 import { krautBraunfaeule } from "./diseases/kraut_braunfaeule";
 import { rosenrost } from "./diseases/rosenrost";
+import { sternrusstau } from "./diseases/sternrusstau";
+import { kraeuselkrankheit } from "./diseases/kraeuselkrankheit";
+import { grauschimmel } from "./diseases/grauschimmel";
 
 // Plants
 import { hortensie } from "./plants/hortensie";
@@ -57,6 +60,9 @@ export const CONTENT_REGISTRY: ContentEntry[] = [
   echterMehltau,
   krautBraunfaeule,
   rosenrost,
+  sternrusstau,
+  kraeuselkrankheit,
+  grauschimmel,
   // Plants
   hortensie,
   rose,
