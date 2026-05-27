@@ -11,7 +11,13 @@ export type ScanStatus =
   | 'uncertain_match'
   | 'provider_error';
 
-export type TriageCategory = 'plant' | 'insect' | 'disease' | 'unclear';
+export type TriageCategory =
+  | 'beneficial'
+  | 'damage'
+  | 'disease'
+  | 'insect'
+  | 'plant'
+  | 'unclear';
 export type TriageQuality = 'acceptable' | 'blurry' | 'no_subject';
 
 export interface TriageResult {
