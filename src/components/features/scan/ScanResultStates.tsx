@@ -59,30 +59,47 @@ export function CategoryUnsupportedState({ category: _category }: { category?: s
   );
 }
 
-export function NoMatchState() {
+export function NoMatchState({
+  triageCategory,
+}: {
+  triageCategory?: import("@/domain/scan/ScanOutcome").TriageCategory;
+}) {
+  const isCreature = triageCategory === "insect" || triageCategory === "beneficial";
+  const isSymptom = triageCategory === "disease" || triageCategory === "damage";
+
+  const title = isCreature
+    ? "Dieses Tier kennen wir noch nicht."
+    : isSymptom
+      ? "Dieses Schadbild konnten wir nicht zuordnen."
+      : "Wir konnten diese Pflanze nicht sauber genug zuordnen.";
+
+  const coachPrompt = isCreature
+    ? "Ich habe ein Tier im Garten fotografiert, das nicht zugeordnet werden konnte. Hilf mir bei Einordnung und naechstem Schritt."
+    : isSymptom
+      ? "Ich habe ein Schadbild fotografiert, das nicht zugeordnet werden konnte. Hilf mir bei moeglichen Ursachen und naechstem Schritt."
+      : "Ich konnte meine Pflanze nicht sauber scannen. Hilf mir mit den wahrscheinlichsten Optionen und worauf ich als Naechstes achten soll.";
+
   return (
     <GenericErrorFrame
       eyebrow="Zu unsicher"
-      title="Wir konnten diese Pflanze nicht sauber genug zuordnen."
+      title={title}
       body="Unsichere Erkennung ist nur dann akzeptabel, wenn der naechste Versuch besser gefuehrt wird. Sonst bleibt es ein Demo-Gefuehl."
       mark="leaf"
       tips={[
-        "Nochmal naeher ran, besonders an Blatt, Bluete oder markante Schadstelle.",
-        "Hintergrund ruhig halten und lieber eine klare Teilansicht als ein komplettes Beet fotografieren.",
+        "Nochmal naeher ran an das eine Motiv, das du klaeren willst.",
+        "Hintergrund ruhig halten, lieber eine klare Teilansicht als ein Komplettbild.",
       ]}
       quickPlan={{
         title: "So kommst du eher zum Aha-Moment",
         steps: [
           "Eine markante Stelle gezielt neu fotografieren.",
-          "Falls moeglich Bluete, Frucht oder Blattunterseite mitnehmen.",
+          "Bei Pflanzen: Bluete, Frucht oder Blattunterseite mitnehmen. Bei Tieren: Naheinstellung. Bei Schaeden: betroffene Stelle isolieren.",
           "Wenn du Zeitdruck hast: Coach fragen, statt auf perfekten Match zu warten.",
         ],
       }}
       secondaryCta={{
-        href: `/coach?q=${encodeURIComponent(
-          "Ich konnte meine Pflanze nicht sauber scannen. Hilf mir mit den wahrscheinlichsten Optionen und worauf ich als Naechstes achten soll."
-        )}`,
-        label: "Mit Coach weiter"
+        href: `/coach?q=${encodeURIComponent(coachPrompt)}`,
+        label: "Mit Coach weiter",
       }}
     />
   );

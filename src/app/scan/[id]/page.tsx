@@ -67,7 +67,7 @@ export default async function ScanResultPage({
   if (scan.outcome.status === "no_match") {
     return (
       <OnboardingGuard>
-        <NoMatchState />
+        <NoMatchState triageCategory={scan.outcome.triage?.category} />
         <ScanFooterActions scanId={scan.id} />
       </OnboardingGuard>
     );
