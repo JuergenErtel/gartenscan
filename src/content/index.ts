@@ -16,6 +16,8 @@ import { dickmaulruessler } from "./pests/dickmaulruessler";
 
 // Beneficials
 import { marienkaefer } from "./beneficials/marienkaefer";
+import { florfliege } from "./beneficials/florfliege";
+import { schwebfliege } from "./beneficials/schwebfliege";
 
 // Diseases
 import { echterMehltau } from "./diseases/echter_mehltau";
@@ -49,6 +51,8 @@ export const CONTENT_REGISTRY: ContentEntry[] = [
   dickmaulruessler,
   // Beneficials
   marienkaefer,
+  florfliege,
+  schwebfliege,
   // Diseases
   echterMehltau,
   krautBraunfaeule,
