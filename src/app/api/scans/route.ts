@@ -7,7 +7,7 @@ import { saveScan } from '@/lib/services/scanRepository';
 import { listHistory } from '@/lib/services/historyService';
 import { uploadScanImage, createSignedReadUrl } from '@/lib/services/imageStorageService';
 import { incrementScanUsage, currentYearMonth } from '@/lib/services/usageCounterService';
-import { getIdentificationProvider } from '@/lib/providers/identification/factory';
+import { getIdentificationProviderFor } from '@/lib/providers/identification/factory';
 import { ClaudeVisionTriageProvider } from '@/lib/providers/triage/claudeVision';
 
 export async function GET() {
@@ -77,12 +77,11 @@ export async function POST(req: NextRequest) {
     const signedUrl = await createSignedReadUrl(uploaded.path, 600); // 10min reichen für synchrone Provider-Calls
 
     const triage = new ClaudeVisionTriageProvider({ apiKey: process.env.ANTHROPIC_API_KEY ?? '' });
-    const identification = getIdentificationProvider();
 
     const outcome = await analyzeImage({
       imageUrl: signedUrl,
       triage,
-      identification,
+      identificationFor: getIdentificationProviderFor,
     });
 
     await saveScan({
