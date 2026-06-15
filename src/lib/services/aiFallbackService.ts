@@ -51,7 +51,8 @@ export async function getOrCreateAiFallback(
       | undefined;
     if (!block) return null;
     text = block.text;
-  } catch {
+  } catch (err) {
+    console.warn(`[aiFallback] Generierung fehlgeschlagen für ${top.scientificName}:`, err);
     return null;
   }
 
@@ -66,8 +67,9 @@ export async function getOrCreateAiFallback(
 
   try {
     await saveAiFallback(scan.id, userId, content);
-  } catch {
+  } catch (err) {
     // Persistenz-Fehler ignorieren — Inhalt trotzdem anzeigen.
+    console.warn(`[aiFallback] Cache-Persistenz fehlgeschlagen für ${scan.id}:`, err);
   }
 
   return content;
