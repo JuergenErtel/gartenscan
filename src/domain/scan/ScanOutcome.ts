@@ -41,6 +41,23 @@ export interface DetectionCandidate {
   matchedContentId?: string;           // gesetzt wenn scientificName in src/content matcht
 }
 
+export interface AiFallbackTip {
+  title: string;
+  text: string;
+}
+
+/**
+ * Leichtgewichtiger, KI-generierter Ersatzinhalt für erkannte Arten ohne
+ * kuratierten Eintrag in src/content. Klar als nicht-redaktionell markiert.
+ */
+export interface AiFallbackContent {
+  summary: string;          // 1–2 Sätze Einordnung
+  tips: AiFallbackTip[];    // 2–4 Maßnahmen
+  caution?: string;         // optionaler Vorsichtshinweis
+  generatedAt: string;      // ISO-Zeitstempel
+  model: string;            // verwendetes Claude-Modell
+}
+
 export interface ScanOutcome {
   status: ScanStatus;
   triage?: TriageResult;
@@ -58,6 +75,7 @@ export interface StoredScan {
   outcome: ScanOutcome;
   matchedContentId?: string;
   plantId?: string;
+  aiFallback?: AiFallbackContent;
 }
 
 export type FollowUpStatus =
