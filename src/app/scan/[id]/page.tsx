@@ -1,6 +1,11 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import {
+  AiFallbackSection,
+  AiFallbackSkeleton,
+} from "@/components/features/scan/AiFallbackSection";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -296,13 +301,9 @@ export default async function ScanResultPage({
             </section>
           </>
         ) : (
-          <div className="px-5 pt-6">
-            <div className="rounded-[16px] bg-cream p-5 text-[13px] text-bark-900/75">
-              Wir haben diese Art erkannt, aber noch keine belastbare
-              Handlungsempfehlung hinterlegt. In diesem Zustand wirkt die App
-              wie ein Scanner. Genau das bauen wir gerade aus.
-            </div>
-          </div>
+          <Suspense fallback={<AiFallbackSkeleton />}>
+            <AiFallbackSection scan={scan} userId={user.id} />
+          </Suspense>
         )}
 
         {scan.outcome.candidates.length > 1 && (
