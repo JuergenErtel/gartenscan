@@ -1,7 +1,7 @@
 import 'server-only';
 import { createServiceRoleClient } from '@/lib/supabase/service-role';
 import { deleteImages } from '@/lib/services/imageStorageService';
-import type { ScanOutcome, StoredScan } from '@/domain/scan/ScanOutcome';
+import type { AiFallbackContent, ScanOutcome, StoredScan } from '@/domain/scan/ScanOutcome';
 
 export interface SaveScanInput {
   userId: string;
@@ -77,6 +77,7 @@ export async function getScanById(scanId: string, userId: string): Promise<Store
     imagePath: scan.image_path,
     imageMeta: (scan.image_meta ?? undefined) as StoredScan['imageMeta'],
     matchedContentId: scan.matched_content_id ?? undefined,
+    aiFallback: (scan.ai_fallback ?? undefined) as AiFallbackContent | undefined,
     plantId: scan.plant_id ?? undefined,
     outcome: {
       status: scan.status as ScanOutcome['status'],
@@ -329,4 +330,18 @@ export async function deleteScan(scanId: string, userId: string): Promise<void> 
   if (scan.imagePath) {
     await deleteImages([scan.imagePath]);
   }
+}
+
+export async function saveAiFallback(
+  scanId: string,
+  userId: string,
+  content: AiFallbackContent
+): Promise<void> {
+  const supabase = createServiceRoleClient();
+  const { error } = await supabase
+    .from('scans')
+    .update({ ai_fallback: content as never })
+    .eq('id', scanId)
+    .eq('user_id', userId);
+  if (error) throw new Error(`saveAiFallback: ${error.message}`);
 }

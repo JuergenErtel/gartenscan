@@ -465,6 +465,7 @@ export type Database = {
       }
       scans: {
         Row: {
+          ai_fallback: Json | null
           created_at: string
           id: string
           image_meta: Json | null
@@ -480,6 +481,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          ai_fallback?: Json | null
           created_at?: string
           id?: string
           image_meta?: Json | null
@@ -495,6 +497,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          ai_fallback?: Json | null
           created_at?: string
           id?: string
           image_meta?: Json | null
