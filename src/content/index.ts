@@ -4,6 +4,7 @@ import type { Category, ContentEntry } from "@/domain/types";
 import { loewenzahn } from "./weeds/loewenzahn";
 import { giersch } from "./weeds/giersch";
 import { brennnessel } from "./weeds/brennnessel";
+import { kraehenfuss } from "./weeds/kraehenfuss";
 
 // Pests
 import { blattlaeuse } from "./pests/blattlaeuse";
@@ -44,6 +45,7 @@ export const CONTENT_REGISTRY: ContentEntry[] = [
   loewenzahn,
   giersch,
   brennnessel,
+  kraehenfuss,
   // Pests
   blattlaeuse,
   schnecken,
