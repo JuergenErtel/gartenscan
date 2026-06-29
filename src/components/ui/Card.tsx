@@ -25,7 +25,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          "rounded-[20px] overflow-hidden transition-all duration-200",
+          "rounded-lg overflow-hidden transition-all duration-200",
           variantClasses[variant],
           interactive &&
             "cursor-pointer hover:shadow-[0_10px_36px_rgba(28,42,33,0.1)] hover:-translate-y-0.5 active:scale-[0.99]",

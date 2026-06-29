@@ -158,7 +158,7 @@ function CoachShell({
                 <button
                   key={prompt.title}
                   onClick={() => onSend?.(prompt.text)}
-                  className="rounded-[18px] border border-sage-200 bg-paper p-4 text-left shadow-[0_2px_10px_rgba(28,42,33,0.04)] transition hover:border-forest-700/30"
+                  className="rounded-lg border border-sage-200 bg-paper p-4 text-left shadow-[0_2px_10px_rgba(28,42,33,0.04)] transition hover:border-forest-700/30"
                 >
                   <div className="flex items-start gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sage-100">
@@ -266,7 +266,7 @@ function MessageBubble({
     >
       <div
         className={cn(
-          "max-w-[82%] rounded-[20px] px-4 py-3",
+          "max-w-[82%] rounded-lg px-4 py-3",
           isUser
             ? "rounded-br-md bg-forest-700 text-paper"
             : "rounded-bl-md bg-paper text-forest-900 shadow-[0_2px_10px_rgba(28,42,33,0.04)]"
@@ -307,7 +307,7 @@ function TypingIndicator() {
       animate={{ opacity: 1, y: 0 }}
       className="flex justify-start"
     >
-      <div className="flex items-center gap-1.5 rounded-[20px] rounded-bl-md bg-paper px-4 py-3 shadow-[0_2px_10px_rgba(28,42,33,0.04)]">
+      <div className="flex items-center gap-1.5 rounded-lg rounded-bl-md bg-paper px-4 py-3 shadow-[0_2px_10px_rgba(28,42,33,0.04)]">
         {[0, 1, 2].map((index) => (
           <motion.span
             key={index}

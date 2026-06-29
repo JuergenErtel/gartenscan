@@ -10,7 +10,7 @@ export function SavePlantPrompt({ scanId }: Props) {
     <section className="px-5 pt-6">
       <Link
         href={`/scan/${scanId}/save`}
-        className="tap-press flex items-center gap-3 rounded-[18px] border border-moss-300 bg-paper p-4"
+        className="tap-press flex items-center gap-3 rounded-lg border border-moss-300 bg-paper p-4"
       >
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-moss-100">
           <Sprout className="h-5 w-5 text-moss-700" strokeWidth={1.75} />

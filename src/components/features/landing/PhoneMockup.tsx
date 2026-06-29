@@ -25,9 +25,9 @@ export function PhoneMockup() {
       />
 
       {/* Phone body */}
-      <div className="relative rounded-[46px] bg-forest-900 p-[10px] shadow-[0_30px_80px_-20px_rgba(28,42,33,0.5),0_10px_30px_-10px_rgba(28,42,33,0.4)]">
+      <div className="relative rounded-xl bg-forest-900 p-[10px] shadow-[0_30px_80px_-20px_rgba(28,42,33,0.5),0_10px_30px_-10px_rgba(28,42,33,0.4)]">
         {/* Inner bezel */}
-        <div className="relative rounded-[38px] bg-sage-50 overflow-hidden aspect-[9/19] ring-[0.5px] ring-forest-700/40">
+        <div className="relative rounded-xl bg-sage-50 overflow-hidden aspect-[9/19] ring-[0.5px] ring-forest-700/40">
           {/* Dynamic island / notch */}
           <div className="absolute top-2 left-1/2 -translate-x-1/2 z-30 h-[22px] w-[90px] rounded-full bg-forest-900" />
 
@@ -48,7 +48,7 @@ export function PhoneMockup() {
                   opacity="0.9"
                 />
               </svg>
-              <span className="inline-block w-[22px] h-[10px] rounded-[3px] border border-forest-900/80 relative">
+              <span className="inline-block w-[22px] h-[10px] rounded-xs border border-forest-900/80 relative">
                 <span className="absolute inset-[1.5px] right-[6px] bg-forest-900 rounded-[1.5px]" />
                 <span className="absolute -right-[2px] top-[2.5px] bottom-[2.5px] w-[1.5px] bg-forest-900/80 rounded-r-sm" />
               </span>
@@ -97,7 +97,7 @@ export function PhoneMockup() {
           </div>
 
           {/* Result sheet */}
-          <div className="absolute left-0 right-0 bottom-[56px] z-20 rounded-t-[28px] bg-sage-50 pt-3 pb-3">
+          <div className="absolute left-0 right-0 bottom-[56px] z-20 rounded-t-xl bg-sage-50 pt-3 pb-3">
             {/* Drag handle */}
             <div className="mx-auto h-1 w-10 rounded-full bg-sage-200 mb-3" />
 
@@ -119,7 +119,7 @@ export function PhoneMockup() {
               </div>
 
               {/* Problem level */}
-              <div className="flex items-center justify-between rounded-[12px] bg-paper px-3 py-2.5 mb-3 border border-sage-200/70">
+              <div className="flex items-center justify-between rounded-sm bg-paper px-3 py-2.5 mb-3 border border-sage-200/70">
                 <span className="flex items-center gap-2 text-[11px] font-medium text-forest-900">
                   <Gauge className="h-3.5 w-3.5 text-sun-500" />
                   Problemeinstufung
@@ -203,7 +203,7 @@ export function PhoneMockup() {
       <Link
         href="/scan/weed_loewenzahn"
         aria-label="Live-Version im Prototypen ansehen"
-        className="absolute inset-0 rounded-[46px] focus-visible:outline-2 focus-visible:outline-forest-700"
+        className="absolute inset-0 rounded-xl focus-visible:outline-2 focus-visible:outline-forest-700"
       />
     </div>
   );
@@ -223,7 +223,7 @@ function SolutionRow({
   badgeTone: string;
 }) {
   return (
-    <div className="flex items-center gap-2 rounded-[10px] bg-paper px-2.5 py-1.5 border border-sage-200/60">
+    <div className="flex items-center gap-2 rounded-sm bg-paper px-2.5 py-1.5 border border-sage-200/60">
       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sage-100 text-forest-700">
         {icon}
       </span>

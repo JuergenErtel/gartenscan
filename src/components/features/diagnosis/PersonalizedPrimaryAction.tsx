@@ -36,7 +36,7 @@ export function PersonalizedPrimaryAction({
           </span>
         )}
       </div>
-      <div className="rounded-[20px] bg-paper shadow-[0_2px_16px_rgba(28,42,33,0.06)] p-5">
+      <div className="rounded-lg bg-paper shadow-[0_2px_16px_rgba(28,42,33,0.06)] p-5">
         <div className="flex items-start gap-3 mb-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest-700 text-paper">
             <span className="text-[14px] font-bold">1</span>

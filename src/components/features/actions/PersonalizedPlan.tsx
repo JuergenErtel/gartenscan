@@ -89,7 +89,7 @@ function BlockedSection({ blocked }: { blocked: FilteredRecommendation[] }) {
     <div className="mt-2">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between rounded-[16px] bg-paper border border-sage-200/60 px-4 py-3.5 hover:border-forest-700/30 transition"
+        className="w-full flex items-center justify-between rounded-md bg-paper border border-sage-200/60 px-4 py-3.5 hover:border-forest-700/30 transition"
       >
         <div className="flex items-center gap-2.5">
           <Lock className="h-4 w-4 text-ink-muted" strokeWidth={1.75} />
@@ -128,7 +128,7 @@ function BlockedSection({ blocked }: { blocked: FilteredRecommendation[] }) {
 
 function BlockedCard({ rec }: { rec: FilteredRecommendation }) {
   return (
-    <div className="rounded-[14px] bg-sage-50/60 border border-sage-200/60 p-4">
+    <div className="rounded-md bg-sage-50/60 border border-sage-200/60 p-4">
       <div className="flex items-start gap-2 mb-2">
         <Lock
           className="h-3.5 w-3.5 text-ink-muted shrink-0 mt-0.5"
@@ -152,7 +152,7 @@ function BlockedCard({ rec }: { rec: FilteredRecommendation }) {
 
 function EmptyRecommendedNote() {
   return (
-    <div className="mb-4 rounded-[16px] bg-sun-100/60 border border-sun-500/30 p-4">
+    <div className="mb-4 rounded-md bg-sun-100/60 border border-sun-500/30 p-4">
       <p className="text-[13px] leading-relaxed text-forest-900">
         Keine Methode passt perfekt zu deinem Profil. Schau bei den weiteren
         Methoden unten – du kannst mit ein paar Anpassungen trotzdem etwas

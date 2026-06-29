@@ -157,7 +157,7 @@ function GenericErrorFrame({
         </p>
 
         {supportNote && (
-          <div className="mx-auto mt-6 flex max-w-sm gap-3 rounded-[16px] border border-sage-200/80 bg-paper p-4">
+          <div className="mx-auto mt-6 flex max-w-sm gap-3 rounded-md border border-sage-200/80 bg-paper p-4">
             <ShieldCheck
               className="mt-0.5 h-5 w-5 shrink-0 text-moss-600"
               strokeWidth={1.75}
@@ -174,7 +174,7 @@ function GenericErrorFrame({
         )}
 
         {tips && tips.length > 0 && (
-          <div className="mx-auto mt-6 max-w-sm rounded-[16px] bg-paper p-5">
+          <div className="mx-auto mt-6 max-w-sm rounded-md bg-paper p-5">
             <div className="mb-3 flex items-center gap-2">
               <Info className="h-4 w-4 text-clay-800" strokeWidth={1.75} />
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
@@ -195,7 +195,7 @@ function GenericErrorFrame({
         )}
 
         {quickPlan && (
-          <div className="mx-auto mt-6 max-w-sm rounded-[18px] bg-gradient-to-br from-bark-900 to-clay-800 p-5 text-cream shadow-[var(--shadow-editorial)]">
+          <div className="mx-auto mt-6 max-w-sm rounded-lg bg-gradient-to-br from-bark-900 to-clay-800 p-5 text-cream shadow-[var(--shadow-editorial)]">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-sun-500/90">
               Zwischenhilfe
             </p>
@@ -218,7 +218,7 @@ function GenericErrorFrame({
         )}
 
         {detail && process.env.NODE_ENV === "development" && (
-          <pre className="mx-auto mt-6 max-w-sm whitespace-pre-wrap rounded-[12px] border border-clay-800/15 bg-cream p-3 text-[11px] text-bark-900/70">
+          <pre className="mx-auto mt-6 max-w-sm whitespace-pre-wrap rounded-sm border border-clay-800/15 bg-cream p-3 text-[11px] text-bark-900/70">
             {detail}
           </pre>
         )}

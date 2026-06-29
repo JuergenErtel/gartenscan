@@ -159,7 +159,7 @@ export default async function ScanResultPage({
         </div>
 
         <div
-          className="relative -mt-7 rounded-t-[28px] bg-cream pt-6 pb-6 px-5 shadow-[0_-8px_24px_rgba(58,37,21,0.06)] anim-bloom"
+          className="relative -mt-7 rounded-t-xl bg-cream pt-6 pb-6 px-5 shadow-[0_-8px_24px_rgba(58,37,21,0.06)] anim-bloom"
           style={{ animationDelay: "400ms" }}
         >
           {matchedEntry && (
@@ -213,7 +213,7 @@ export default async function ScanResultPage({
               )}
 
             <section className="px-5 pt-8">
-              <div className="rounded-[22px] border border-sage-200/70 bg-paper p-5">
+              <div className="rounded-lg border border-sage-200/70 bg-paper p-5">
                 <div className="mb-3 flex items-center gap-2">
                   <BookOpen
                     className="h-4 w-4 text-clay-800"
@@ -252,7 +252,7 @@ export default async function ScanResultPage({
                   {matchedEntry.confusionRisk.map((risk) => (
                     <div
                       key={risk.name}
-                      className="rounded-[16px] border border-clay-800/10 bg-paper p-4"
+                      className="rounded-md border border-clay-800/10 bg-paper p-4"
                     >
                       <p className="text-[14px] font-semibold text-bark-900">
                         {risk.name}
@@ -270,7 +270,7 @@ export default async function ScanResultPage({
               <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
                 Erkennungsmerkmale
               </p>
-              <div className="rounded-[16px] bg-paper p-5 space-y-2">
+              <div className="rounded-md bg-paper p-5 space-y-2">
                 {matchedEntry.traits.map((trait, index) => (
                   <div
                     key={`${trait}-${index}`}
@@ -284,7 +284,7 @@ export default async function ScanResultPage({
             </section>
 
             <section className="px-5 pt-6">
-              <div className="rounded-[20px] bg-paper p-5">
+              <div className="rounded-lg bg-paper p-5">
                 <div className="mb-3 flex items-center gap-2">
                   <BookOpen
                     className="h-4 w-4 text-clay-800"
@@ -315,7 +315,7 @@ export default async function ScanResultPage({
               {scan.outcome.candidates.slice(1).map((candidate) => (
                 <div
                   key={candidate.rank}
-                  className="rounded-[12px] border border-clay-800/10 bg-paper px-4 py-3"
+                  className="rounded-sm border border-clay-800/10 bg-paper px-4 py-3"
                 >
                   <p className="mb-0.5 text-[13px] font-semibold text-bark-900">
                     {candidate.commonNames[0] ?? candidate.scientificName}
@@ -359,7 +359,7 @@ function SupportFact({
   detail: string;
 }) {
   return (
-    <div className="rounded-[16px] bg-sage-50 p-4">
+    <div className="rounded-md bg-sage-50 p-4">
       <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
         {label}
       </p>

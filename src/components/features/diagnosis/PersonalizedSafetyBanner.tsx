@@ -43,7 +43,7 @@ export function PersonalizedSafetyBanner({
 
 function Banner({ message }: { message: string }) {
   return (
-    <div className="rounded-[16px] bg-berry-100 border border-berry-500/30 p-4 flex gap-3">
+    <div className="rounded-md bg-berry-100 border border-berry-500/30 p-4 flex gap-3">
       <ShieldAlert
         className="h-5 w-5 shrink-0 text-berry-600 mt-0.5"
         strokeWidth={1.75}

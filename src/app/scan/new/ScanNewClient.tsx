@@ -127,7 +127,7 @@ export default function ScanNewClient() {
       {phase === "pick" && (
         <>
           <div className="px-5 pt-6">
-            <div className="rounded-[24px] bg-gradient-to-br from-bark-900 to-clay-800 p-5 text-cream">
+            <div className="rounded-lg bg-gradient-to-br from-bark-900 to-clay-800 p-5 text-cream">
               <div className="inline-flex items-center gap-1.5 rounded-full bg-paper/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]">
                 <Sparkles className="h-3 w-3" />
                 Soforthilfe statt Pflanzenlexikon
@@ -152,7 +152,7 @@ export default function ScanNewClient() {
                   if (file) void handleFile(file);
                 }}
               />
-              <div className="tap-press flex items-center gap-3 rounded-[18px] bg-bark-900 px-5 py-4 text-cream cursor-pointer">
+              <div className="tap-press flex items-center gap-3 rounded-lg bg-bark-900 px-5 py-4 text-cream cursor-pointer">
                 <Camera className="h-5 w-5" />
                 <span className="text-[15px] font-semibold">Foto aufnehmen</span>
               </div>
@@ -168,7 +168,7 @@ export default function ScanNewClient() {
                   if (file) void handleFile(file);
                 }}
               />
-              <div className="tap-press flex items-center gap-3 rounded-[18px] border border-clay-800/20 bg-cream px-5 py-4 text-bark-900 cursor-pointer">
+              <div className="tap-press flex items-center gap-3 rounded-lg border border-clay-800/20 bg-cream px-5 py-4 text-bark-900 cursor-pointer">
                 <ImageIcon className="h-5 w-5" />
                 <span className="text-[15px] font-semibold">
                   Aus Mediathek waehlen
@@ -178,7 +178,7 @@ export default function ScanNewClient() {
           </div>
 
           <div className="px-5 pt-6 space-y-3">
-            <div className="rounded-[20px] bg-paper p-5">
+            <div className="rounded-lg bg-paper p-5">
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
                 Gute Fotos sparen Zeit
               </p>
@@ -189,7 +189,7 @@ export default function ScanNewClient() {
               </div>
             </div>
 
-            <div className="rounded-[20px] border border-sage-200/70 bg-sage-50 p-5">
+            <div className="rounded-lg border border-sage-200/70 bg-sage-50 p-5">
               <div className="flex items-start gap-3">
                 <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-moss-600" />
                 <div>
@@ -211,7 +211,7 @@ export default function ScanNewClient() {
       {(phase === "uploading" || phase === "analyzing") && (
         <div className="px-5 pt-8">
           {selectedPreview && (
-            <div className="overflow-hidden rounded-[24px] border border-clay-800/10 bg-paper shadow-[var(--shadow-editorial)]">
+            <div className="overflow-hidden rounded-lg border border-clay-800/10 bg-paper shadow-[var(--shadow-editorial)]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={selectedPreview}
@@ -221,7 +221,7 @@ export default function ScanNewClient() {
             </div>
           )}
 
-          <div className="mt-5 rounded-[24px] bg-paper p-5">
+          <div className="mt-5 rounded-lg bg-paper p-5">
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sage-100">
                 <Loader2 className="h-5 w-5 animate-spin text-clay-800" />
@@ -273,7 +273,7 @@ export default function ScanNewClient() {
 
       {phase === "error" && (
         <div className="px-5 pt-10">
-          <div className="rounded-[20px] border border-berry-500/40 bg-cream p-5">
+          <div className="rounded-lg border border-berry-500/40 bg-cream p-5">
             <p className="eyebrow mb-2 text-berry-500">Hat nicht geklappt</p>
             <h2 className="font-serif text-[24px] leading-tight text-bark-900">
               Noch kein belastbarer Scan
@@ -316,7 +316,7 @@ function ValueChip({
   text: string;
 }) {
   return (
-    <div className="rounded-[18px] bg-paper/10 p-4">
+    <div className="rounded-lg bg-paper/10 p-4">
       <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-sage-100/70">
         {title}
       </p>

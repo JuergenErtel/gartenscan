@@ -63,7 +63,7 @@ export function ActionDecisionPanel({
         </p>
       </div>
 
-      <div className="rounded-[24px] bg-gradient-to-br from-bark-900 to-clay-800 p-5 text-cream shadow-[var(--shadow-editorial-lg)]">
+      <div className="rounded-lg bg-gradient-to-br from-bark-900 to-clay-800 p-5 text-cream shadow-[var(--shadow-editorial-lg)]">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h2 className="font-serif text-[28px] leading-[1.08] tracking-tight">
@@ -103,7 +103,7 @@ export function ActionDecisionPanel({
           {warnings.slice(0, 2).map((warning, index) => (
             <div
               key={`${warning}-${index}`}
-              className="rounded-[18px] border border-berry-500/20 bg-berry-100/85 p-4"
+              className="rounded-lg border border-berry-500/20 bg-berry-100/85 p-4"
             >
               <div className="flex items-start gap-3">
                 <AlertTriangle
@@ -124,7 +124,7 @@ export function ActionDecisionPanel({
         </div>
       )}
 
-      <div className="mt-4 rounded-[24px] bg-paper p-5 shadow-[var(--shadow-editorial)]">
+      <div className="mt-4 rounded-lg bg-paper p-5 shadow-[var(--shadow-editorial)]">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-moss-600">
@@ -197,7 +197,7 @@ export function ActionDecisionPanel({
       </div>
 
       {alternatives.length > 0 && (
-        <div className="mt-4 rounded-[22px] bg-cream p-5">
+        <div className="mt-4 rounded-lg bg-cream p-5">
           <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted">
             Weitere sinnvolle Wege
           </p>
@@ -222,7 +222,7 @@ function DecisionFact({
   detail: string;
 }) {
   return (
-    <div className="rounded-[18px] bg-paper/10 p-4 backdrop-blur-sm">
+    <div className="rounded-lg bg-paper/10 p-4 backdrop-blur-sm">
       <p className="text-[10px] uppercase tracking-[0.12em] font-semibold text-cream/65">
         {label}
       </p>
@@ -238,7 +238,7 @@ function DecisionFact({
 
 function AlternativeMethodCard({ method }: { method: TreatmentMethod }) {
   return (
-    <div className="rounded-[16px] border border-clay-800/10 bg-paper p-4">
+    <div className="rounded-md border border-clay-800/10 bg-paper p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h4 className="text-[15px] font-semibold text-bark-900">

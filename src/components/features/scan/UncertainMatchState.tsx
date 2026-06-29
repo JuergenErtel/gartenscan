@@ -92,7 +92,7 @@ export function UncertainMatchState({ scanId, candidates, imageUrl }: Props) {
         </div>
       </div>
 
-      <div className="relative -mt-7 rounded-t-[28px] bg-cream pt-6 pb-4 px-5 shadow-[0_-8px_24px_rgba(58,37,21,0.06)]">
+      <div className="relative -mt-7 rounded-t-xl bg-cream pt-6 pb-4 px-5 shadow-[0_-8px_24px_rgba(58,37,21,0.06)]">
         <p className="eyebrow mb-2">Vermutung, nicht bestätigt</p>
         <h1 className="font-serif text-[28px] leading-tight text-bark-900 mb-1">
           Welche Pflanze passt am ehesten?
@@ -116,7 +116,7 @@ export function UncertainMatchState({ scanId, candidates, imageUrl }: Props) {
                 onClick={() => submit({ action: 'confirm', rank: cand.rank })}
                 disabled={pending !== null}
                 className={cn(
-                  'tap-press w-full rounded-[18px] border bg-paper px-4 py-4 text-left transition',
+                  'tap-press w-full rounded-lg border bg-paper px-4 py-4 text-left transition',
                   isPending
                     ? 'border-forest-700 ring-2 ring-forest-700/30'
                     : 'border-clay-800/15 hover:border-forest-700/40',
@@ -153,7 +153,7 @@ export function UncertainMatchState({ scanId, candidates, imageUrl }: Props) {
           })}
         </div>
 
-        <div className="mt-4 rounded-[18px] border border-clay-800/15 bg-cream p-4">
+        <div className="mt-4 rounded-lg border border-clay-800/15 bg-cream p-4">
           <p className="mb-3 text-[13px] leading-relaxed text-bark-900">
             Keine davon passt?
           </p>

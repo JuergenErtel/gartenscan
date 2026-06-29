@@ -280,7 +280,7 @@ function FeatureItem({
 }) {
   return (
     <div className="flex items-start gap-4">
-      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-paper shadow-[0_4px_14px_rgba(28,42,33,0.06)] ring-1 ring-sage-200/70">
+      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-paper shadow-[0_4px_14px_rgba(28,42,33,0.06)] ring-1 ring-sage-200/70">
         <Icon className="h-5 w-5 text-forest-700" strokeWidth={1.75} />
       </span>
       <div className="pt-0.5">

@@ -104,7 +104,7 @@ export default function PremiumPage() {
       </header>
 
       <section className="px-5 pt-4">
-        <div className="relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-[28px] bg-gradient-to-br from-forest-900 via-forest-800 to-forest-700 p-8 text-paper">
+        <div className="relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-xl bg-gradient-to-br from-forest-900 via-forest-800 to-forest-700 p-8 text-paper">
           <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-clay-500/20 blur-3xl" />
           <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-moss-500/30 blur-2xl" />
 
@@ -143,7 +143,7 @@ export default function PremiumPage() {
       </div>
 
       <section className="px-5">
-        <div className="rounded-[22px] border border-sage-200 bg-paper p-5">
+        <div className="rounded-lg border border-sage-200 bg-paper p-5">
           <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
             Was Premium konkret besser macht
           </p>
@@ -204,7 +204,7 @@ export default function PremiumPage() {
               key={tier}
               onClick={() => setSelected(tier)}
               className={cn(
-                "relative w-full overflow-hidden rounded-[22px] text-left transition-all duration-300",
+                "relative w-full overflow-hidden rounded-lg text-left transition-all duration-300",
                 isSelected
                   ? "bg-paper ring-2 ring-forest-700 shadow-[0_8px_28px_rgba(28,42,33,0.12)]"
                   : "bg-paper/70 ring-1 ring-sage-200",
@@ -329,7 +329,7 @@ function ValueCard({
   body: string;
 }) {
   return (
-    <div className="rounded-[18px] bg-sage-50 p-4">
+    <div className="rounded-lg bg-sage-50 p-4">
       <p className="text-[14px] font-semibold text-bark-900">{title}</p>
       <p className="mt-1 text-[13px] leading-relaxed text-ink-muted">{body}</p>
     </div>

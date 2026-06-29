@@ -44,7 +44,7 @@ export function ErrorState({
         <button
           type="button"
           onClick={onRetry}
-          className="tap-press inline-flex items-center justify-center rounded-[14px] bg-bark-900 px-6 h-12 text-cream text-[14px] font-medium hover:bg-clay-800 transition-colors mb-3"
+          className="tap-press inline-flex items-center justify-center rounded-md bg-bark-900 px-6 h-12 text-cream text-[14px] font-medium hover:bg-clay-800 transition-colors mb-3"
         >
           Erneut versuchen
         </button>

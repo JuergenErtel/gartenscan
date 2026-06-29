@@ -118,7 +118,7 @@ export function FollowUpActions({
 
   return (
     <section className="px-5 pt-6">
-      <div className="rounded-[22px] border border-sage-200/70 bg-paper p-5">
+      <div className="rounded-lg border border-sage-200/70 bg-paper p-5">
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
           Fallstatus
         </p>
@@ -141,7 +141,7 @@ export function FollowUpActions({
                 disabled={pending}
                 onClick={() => handleStatusChange(option.status)}
                 className={cn(
-                  "rounded-[18px] border p-4 text-left transition",
+                  "rounded-lg border p-4 text-left transition",
                   active
                     ? "border-forest-700 bg-sage-50"
                     : "border-sage-200 hover:border-forest-700/30"
@@ -167,7 +167,7 @@ export function FollowUpActions({
         </div>
 
         {status === "MONITORING" && (
-          <div className="mt-5 rounded-[18px] bg-sage-50 p-4">
+          <div className="mt-5 rounded-lg bg-sage-50 p-4">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
               Wiedervorlage
             </p>

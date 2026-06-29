@@ -106,7 +106,7 @@ export default function UseCasesPage() {
           subtitle="Mehrfachauswahl ist moeglich. Wir setzen lieber klare Erwartungen, als dir eine zu breite Wunder-App zu verkaufen."
         />
 
-        <div className="mt-5 rounded-[18px] border border-sage-200/70 bg-paper p-4">
+        <div className="mt-5 rounded-lg border border-sage-200/70 bg-paper p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
             Ehrlicher Startpunkt
           </p>

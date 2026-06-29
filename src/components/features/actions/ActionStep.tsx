@@ -107,7 +107,7 @@ export function ActionStep({ recommendation: r, index }: ActionStepProps) {
         <div className="flex-1 pb-8">
           <div
             className={cn(
-              "overflow-hidden rounded-[20px] bg-paper shadow-[0_2px_16px_rgba(28,42,33,0.06)] transition-opacity",
+              "overflow-hidden rounded-lg bg-paper shadow-[0_2px_16px_rgba(28,42,33,0.06)] transition-opacity",
               completed && "opacity-60"
             )}
           >
@@ -199,7 +199,7 @@ export function ActionStep({ recommendation: r, index }: ActionStepProps) {
 function MethodCard({ method }: { method: Method }) {
   const Icon = methodIcons[method.type];
   return (
-    <div className="flex gap-3 rounded-[14px] bg-sage-50/60 p-3.5 border border-sage-200/60">
+    <div className="flex gap-3 rounded-md bg-sage-50/60 p-3.5 border border-sage-200/60">
       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-paper">
         <Icon className="h-4 w-4 text-moss-600" strokeWidth={1.75} />
       </div>

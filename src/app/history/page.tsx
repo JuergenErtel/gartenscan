@@ -75,7 +75,7 @@ export default async function HistoryPage() {
         </div>
 
         <section className="px-5 pt-6">
-          <div className="grid grid-cols-3 gap-2 rounded-[18px] bg-paper p-1">
+          <div className="grid grid-cols-3 gap-2 rounded-lg bg-paper p-1">
             <JournalStat label="Scans" value={String(items.length)} />
             <JournalStat label="Offen" value={String(actionable.length)} />
             <JournalStat label="Akut" value={String(urgent.length)} />
@@ -107,10 +107,10 @@ export default async function HistoryPage() {
                       <Link
                         key={scan.id}
                         href={`/scan/${scan.id}`}
-                        className="flex gap-3 rounded-[18px] bg-paper p-4 shadow-[var(--shadow-soft)] tap-press"
+                        className="flex gap-3 rounded-lg bg-paper p-4 shadow-[var(--shadow-soft)] tap-press"
                       >
                         <div
-                          className="h-16 w-16 shrink-0 rounded-[12px] bg-cover bg-center photo-graded"
+                          className="h-16 w-16 shrink-0 rounded-sm bg-cover bg-center photo-graded"
                           style={{ backgroundImage: `url(${urlById.get(scan.id)})` }}
                           aria-hidden
                         />
@@ -158,7 +158,7 @@ function JournalStat({
   value: string;
 }) {
   return (
-    <div className="rounded-[14px] bg-sage-50 py-3 text-center">
+    <div className="rounded-md bg-sage-50 py-3 text-center">
       <p className="font-serif text-[18px] leading-none text-bark-900">
         {value}
       </p>

@@ -81,7 +81,7 @@ export default async function PlantDetailPage({
         </div>
 
         <section className="px-5 pt-6">
-          <div className="grid grid-cols-3 gap-2 rounded-[16px] bg-paper p-1">
+          <div className="grid grid-cols-3 gap-2 rounded-md bg-paper p-1">
             <Stat label="Zone" value={plant.zoneLabel ?? '—'} />
             <Stat label="Scans" value={scans.length.toString()} />
             <Stat
@@ -111,10 +111,10 @@ export default async function PlantDetailPage({
                 <Link
                   key={scan.id}
                   href={`/scan/${scan.id}`}
-                  className="flex gap-3 rounded-[18px] bg-paper p-4 shadow-[var(--shadow-soft)] tap-press"
+                  className="flex gap-3 rounded-lg bg-paper p-4 shadow-[var(--shadow-soft)] tap-press"
                 >
                   <div
-                    className="h-16 w-16 shrink-0 rounded-[12px] bg-cover bg-center photo-graded"
+                    className="h-16 w-16 shrink-0 rounded-sm bg-cover bg-center photo-graded"
                     style={{ backgroundImage: `url(${signedUrl})` }}
                     aria-hidden
                   />
@@ -152,7 +152,7 @@ export default async function PlantDetailPage({
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[12px] bg-sage-50 text-center py-3 px-2">
+    <div className="rounded-sm bg-sage-50 text-center py-3 px-2">
       <p className="font-serif text-[15px] leading-none text-forest-900 truncate">
         {value}
       </p>
@@ -173,7 +173,7 @@ function InfoRow({
   value: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-[14px] bg-paper px-4 py-3">
+    <div className="flex items-center gap-3 rounded-md bg-paper px-4 py-3">
       <Icon className="h-4 w-4 text-forest-700" strokeWidth={1.75} />
       <span className="text-[13px] text-ink-muted">{label}</span>
       <span className="ml-auto text-[14px] font-medium text-forest-900">

@@ -68,7 +68,7 @@ export function UrgencyIndicator({
     return (
       <div
         className={cn(
-          "flex items-center gap-2.5 rounded-[14px] px-4 py-3",
+          "flex items-center gap-2.5 rounded-md px-4 py-3",
           c.bg,
           className
         )}

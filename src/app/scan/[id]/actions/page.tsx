@@ -48,7 +48,7 @@ export default async function ActionsPage({
 
         <section className="px-5 pt-6">
           <div className="flex items-center gap-3">
-            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[14px]">
+            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md">
               <Image
                 src={entry.imageUrl}
                 alt={entry.name}
@@ -68,7 +68,7 @@ export default async function ActionsPage({
             <UrgencyIndicator urgency={entry.defaultUrgency} />
           </div>
 
-          <div className="mt-6 rounded-[24px] bg-gradient-to-br from-forest-900 via-forest-800 to-forest-700 p-6 text-paper">
+          <div className="mt-6 rounded-lg bg-gradient-to-br from-forest-900 via-forest-800 to-forest-700 p-6 text-paper">
             <div className="inline-flex items-center gap-1.5 rounded-full bg-paper/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-sage-100">
               <Sparkles className="h-3 w-3" />
               Priorisiert statt ueberladen
@@ -85,7 +85,7 @@ export default async function ActionsPage({
         </section>
 
         <section className="px-5 pt-6">
-          <div className="grid grid-cols-3 gap-2 rounded-[16px] bg-paper p-1">
+          <div className="grid grid-cols-3 gap-2 rounded-md bg-paper p-1">
             <StatBlock label="Methoden" value={entry.methods.length.toString()} />
             <StatBlock label="Zeit gesamt" value={`${totalMin} Min`} />
             <StatBlock label="Aufwand" value={avgEffort(entry.methods)} />
@@ -98,7 +98,7 @@ export default async function ActionsPage({
 
         {entry.prevention.length > 0 && (
           <section className="px-5 pt-6">
-            <div className="rounded-[16px] bg-sage-100/80 p-5">
+            <div className="rounded-md bg-sage-100/80 p-5">
               <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-moss-600">
                 Danach vorbeugen
               </p>
@@ -122,7 +122,7 @@ export default async function ActionsPage({
         </section>
 
         <section className="px-5 pt-2">
-          <button className="group flex w-full items-center gap-3 rounded-[18px] border border-sage-200 bg-paper p-4 transition hover:border-forest-700/30">
+          <button className="group flex w-full items-center gap-3 rounded-lg border border-sage-200 bg-paper p-4 transition hover:border-forest-700/30">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sky-100">
               <Bell className="h-4.5 w-4.5 text-sky-400" strokeWidth={1.75} />
             </div>
@@ -152,7 +152,7 @@ export default async function ActionsPage({
 
 function StatBlock({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[12px] bg-sage-50 py-3 text-center">
+    <div className="rounded-sm bg-sage-50 py-3 text-center">
       <p className="font-serif text-[16px] leading-none text-forest-900">
         {value}
       </p>

@@ -61,7 +61,7 @@ export function DeleteScanSheet({ scanId, onClose }: Props) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="delete-scan-dialog-title"
-        className="fixed bottom-0 left-0 right-0 z-50 rounded-t-[24px] bg-paper px-5 pt-3 pb-[max(env(safe-area-inset-bottom),1.25rem)] shadow-[0_-8px_32px_rgba(28,42,33,0.18)] animate-in slide-in-from-bottom duration-300"
+        className="fixed bottom-0 left-0 right-0 z-50 rounded-t-xl bg-paper px-5 pt-3 pb-[max(env(safe-area-inset-bottom),1.25rem)] shadow-[0_-8px_32px_rgba(28,42,33,0.18)] animate-in slide-in-from-bottom duration-300"
       >
         <div className="mx-auto h-1 w-10 rounded-full bg-sage-200" aria-hidden />
 
@@ -79,7 +79,7 @@ export function DeleteScanSheet({ scanId, onClose }: Props) {
               <button
                 type="button"
                 onClick={onClose}
-                className="tap-press w-full rounded-[14px] bg-sage-100 px-6 py-3.5 text-[15px] font-semibold text-forest-800 transition"
+                className="tap-press w-full rounded-md bg-sage-100 px-6 py-3.5 text-[15px] font-semibold text-forest-800 transition"
               >
                 OK
               </button>
@@ -99,7 +99,7 @@ export function DeleteScanSheet({ scanId, onClose }: Props) {
                 type="button"
                 onClick={handleDelete}
                 disabled={pending}
-                className="tap-press w-full rounded-[14px] bg-berry-600 px-6 py-3.5 text-[15px] font-semibold text-paper transition disabled:opacity-50"
+                className="tap-press w-full rounded-md bg-berry-600 px-6 py-3.5 text-[15px] font-semibold text-paper transition disabled:opacity-50"
               >
                 {pending ? 'Lösche ...' : 'Endgültig löschen'}
               </button>
@@ -107,7 +107,7 @@ export function DeleteScanSheet({ scanId, onClose }: Props) {
                 type="button"
                 onClick={onClose}
                 disabled={pending}
-                className="tap-press w-full rounded-[14px] bg-sage-100 px-6 py-3.5 text-[15px] font-semibold text-forest-800 transition disabled:opacity-50"
+                className="tap-press w-full rounded-md bg-sage-100 px-6 py-3.5 text-[15px] font-semibold text-forest-800 transition disabled:opacity-50"
               >
                 Abbrechen
               </button>

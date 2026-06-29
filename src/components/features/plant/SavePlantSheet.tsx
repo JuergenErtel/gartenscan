@@ -133,7 +133,7 @@ export function SavePlantSheet({
               autoFocus
               required
               placeholder={defaultNickname}
-              className="mt-2 w-full rounded-[14px] border border-clay-800/15 bg-paper px-4 py-3 text-[15px] text-bark-900 placeholder:text-ink-muted/60 focus:outline-none focus:border-moss-500"
+              className="mt-2 w-full rounded-md border border-clay-800/15 bg-paper px-4 py-3 text-[15px] text-bark-900 placeholder:text-ink-muted/60 focus:outline-none focus:border-moss-500"
             />
           </div>
           <div>
@@ -146,7 +146,7 @@ export function SavePlantSheet({
               onChange={(e) => setZone(e.target.value)}
               maxLength={80}
               placeholder="z.B. Vorgarten, Hochbeet Süd"
-              className="mt-2 w-full rounded-[14px] border border-clay-800/15 bg-paper px-4 py-3 text-[15px] text-bark-900 placeholder:text-ink-muted/60 focus:outline-none focus:border-moss-500"
+              className="mt-2 w-full rounded-md border border-clay-800/15 bg-paper px-4 py-3 text-[15px] text-bark-900 placeholder:text-ink-muted/60 focus:outline-none focus:border-moss-500"
             />
           </div>
           <Button
@@ -169,9 +169,9 @@ export function SavePlantSheet({
               key={p.id}
               onClick={() => submitExisting(p.id)}
               disabled={pending}
-              className="tap-press flex w-full items-center gap-3 rounded-[16px] border border-clay-800/10 bg-paper p-3 text-left disabled:opacity-50"
+              className="tap-press flex w-full items-center gap-3 rounded-md border border-clay-800/10 bg-paper p-3 text-left disabled:opacity-50"
             >
-              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[10px]">
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm">
                 {signedCoverUrls[p.id] && (
                   <Image
                     src={signedCoverUrls[p.id]}

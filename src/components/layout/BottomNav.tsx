@@ -41,7 +41,7 @@ export function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
       <div className="mx-auto max-w-lg px-4 pb-[max(env(safe-area-inset-bottom),0.75rem)] pt-2">
-        <div className="pointer-events-auto relative flex items-end justify-between rounded-[28px] bg-cream/95 backdrop-blur-xl px-3 py-2 shadow-[0_12px_40px_rgba(58,37,21,0.12)] border border-terra-500/20">
+        <div className="pointer-events-auto relative flex items-end justify-between rounded-xl bg-cream/95 backdrop-blur-xl px-3 py-2 shadow-[0_12px_40px_rgba(58,37,21,0.12)] border border-terra-500/20">
           {tabs.slice(0, 2).map((t) => (
             <NavItem
               key={t.href}

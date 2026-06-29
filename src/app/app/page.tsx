@@ -79,7 +79,7 @@ export default async function DashboardPage() {
         </div>
 
         <section className="px-5 mt-5">
-          <div className="relative overflow-hidden rounded-[26px] bg-gradient-to-br from-bark-900 via-clay-800 to-bark-900 p-6 text-cream shadow-[var(--shadow-editorial-lg)]">
+          <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-bark-900 via-clay-800 to-bark-900 p-6 text-cream shadow-[var(--shadow-editorial-lg)]">
             <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-sage-200/10 blur-2xl" />
             <div className="absolute -left-6 bottom-0 h-24 w-24 rounded-full bg-clay-500/10 blur-2xl" />
             <div className="relative">
@@ -136,7 +136,7 @@ export default async function DashboardPage() {
         </section>
 
         {weather?.alert && (
-          <div className="mx-5 mt-4 flex items-center gap-3 rounded-[16px] border border-sky-300/40 bg-gradient-to-br from-sky-100 to-paper px-4 py-3">
+          <div className="mx-5 mt-4 flex items-center gap-3 rounded-md border border-sky-300/40 bg-gradient-to-br from-sky-100 to-paper px-4 py-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-300/30">
               <span className="text-base text-forest-700">
                 {weather.alert.type === "frost"
@@ -189,7 +189,7 @@ export default async function DashboardPage() {
           {primaryOpenCase ? (
             <Link
               href={`/scan/${primaryOpenCase.item.scan.id}`}
-              className="group block overflow-hidden rounded-[24px] bg-forest-900 p-6 text-paper shadow-[0_12px_40px_rgba(28,42,33,0.2)]"
+              className="group block overflow-hidden rounded-lg bg-forest-900 p-6 text-paper shadow-[0_12px_40px_rgba(28,42,33,0.2)]"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -209,7 +209,7 @@ export default async function DashboardPage() {
                 />
               </div>
 
-              <div className="mt-5 rounded-[18px] bg-paper/10 p-4">
+              <div className="mt-5 rounded-lg bg-paper/10 p-4">
                 <div className="flex items-start gap-3">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-paper/10">
                     <Clock3 className="h-4.5 w-4.5 text-sun-500/90" />
@@ -231,7 +231,7 @@ export default async function DashboardPage() {
               </div>
             </Link>
           ) : (
-            <div className="rounded-[20px] border border-sage-200/70 bg-paper p-5">
+            <div className="rounded-lg border border-sage-200/70 bg-paper p-5">
               <p className="text-[13px] leading-relaxed text-bark-900">
                 Solange noch keine echten Scans vorliegen, bleibt dieser Bereich
                 bewusst leer. Das Dashboard zeigt hier keine Beispiel- oder
@@ -277,7 +277,7 @@ export default async function DashboardPage() {
                   <Link
                     key={item.scan.id}
                     href={`/scan/${item.scan.id}`}
-                    className="block rounded-[20px] bg-paper p-5 shadow-[var(--shadow-soft)] transition hover:shadow-[var(--shadow-card)]"
+                    className="block rounded-lg bg-paper p-5 shadow-[var(--shadow-soft)] transition hover:shadow-[var(--shadow-card)]"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
@@ -301,7 +301,7 @@ export default async function DashboardPage() {
               })}
             </div>
           ) : (
-            <div className="rounded-[20px] border border-sage-200/70 bg-paper p-5">
+            <div className="rounded-lg border border-sage-200/70 bg-paper p-5">
               <p className="text-[13px] leading-relaxed text-bark-900">
                 Dein Journal ist noch leer. Genau deshalb wirkt das Produkt noch
                 nicht unverzichtbar. Nach dem ersten echten Fall beginnt hier der
@@ -317,7 +317,7 @@ export default async function DashboardPage() {
         </section>
 
         <section className="mt-10 px-5">
-          <div className="rounded-[24px] border border-sage-200/70 bg-paper p-6">
+          <div className="rounded-lg border border-sage-200/70 bg-paper p-6">
             <div className="flex items-start gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sage-100">
                 <ShieldCheck className="h-5 w-5 text-moss-600" strokeWidth={1.75} />
@@ -351,7 +351,7 @@ export default async function DashboardPage() {
         <section className="mt-8 px-5">
           <Link
             href="/premium"
-            className="tap-press group flex items-center gap-4 rounded-[18px] border border-clay-500/30 bg-cream p-4 transition hover:border-clay-500/50"
+            className="tap-press group flex items-center gap-4 rounded-lg border border-clay-500/30 bg-cream p-4 transition hover:border-clay-500/50"
           >
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-bark-900 to-clay-800 text-cream">
               <Sparkles className="h-5 w-5" strokeWidth={1.75} />
@@ -380,7 +380,7 @@ function HomeMetric({
   value: string;
 }) {
   return (
-    <div className="rounded-[18px] bg-paper/10 p-4">
+    <div className="rounded-lg bg-paper/10 p-4">
       <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-sage-100/70">
         {label}
       </p>

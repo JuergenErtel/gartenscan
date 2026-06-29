@@ -33,7 +33,7 @@ export function PlantTile({ plant }: { plant: Plant }) {
   return (
     <Link
       href={`/garden/${plant.id}`}
-      className="group block overflow-hidden rounded-[18px] bg-paper shadow-[0_2px_12px_rgba(28,42,33,0.05)] hover:shadow-[0_6px_24px_rgba(28,42,33,0.08)] transition-all duration-300"
+      className="group block overflow-hidden rounded-lg bg-paper shadow-[0_2px_12px_rgba(28,42,33,0.05)] hover:shadow-[0_6px_24px_rgba(28,42,33,0.08)] transition-all duration-300"
     >
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
