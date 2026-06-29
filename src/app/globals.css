@@ -18,15 +18,19 @@
 
   /* Accents */
   --color-clay-600: #9f5230;
+  --color-clay-700: #834326;
   --color-clay-500: #b8623a;
   --color-clay-400: #cf8463;
   --color-clay-100: #f2dfd2;
+  --color-sun-800: #8a6a14;
   --color-sun-500: #c49a3e;
   --color-sun-400: #d4a84b;
   --color-sun-100: #f5e8c4;
+  --color-berry-700: #6a2727;
   --color-berry-600: #7a2e2e;
   --color-berry-500: #8a3a3a;
   --color-berry-100: #efd6d6;
+  --color-sky-700: #3d5565;
   --color-sky-400: #6d8e9f;
   --color-sky-300: #8ba7b8;
   --color-sky-100: #dbe5eb;
