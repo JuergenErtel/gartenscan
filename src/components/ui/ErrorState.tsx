@@ -31,11 +31,11 @@ export function ErrorState({
         className
       )}
     >
-      <span className="inline-flex h-[88px] w-[88px] items-center justify-center rounded-full bg-cream border-[1.5px] border-berry-500/60">
-        <svg viewBox="0 0 100 100" className="h-[60%] w-[60%]" fill="none" stroke="#7a2e2e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <span className="inline-flex h-[88px] w-[88px] items-center justify-center rounded-full bg-cream border-[1.5px] border-berry-500/60 text-berry-600">
+        <svg viewBox="0 0 100 100" className="h-[60%] w-[60%]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="50" cy="50" r="35" />
           <path d="M50 32 L50 56" />
-          <circle cx="50" cy="68" r="2.5" fill="#7a2e2e" stroke="none" />
+          <circle cx="50" cy="68" r="2.5" fill="currentColor" stroke="none" />
         </svg>
       </span>
       <h3 className="display-m mt-6 mb-2 text-bark-900">{title}</h3>

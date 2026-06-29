@@ -38,10 +38,10 @@ export function AiFallbackPanel({ content }: { content: AiFallbackContent }) {
         {content.caution && (
           <div className="mt-4 flex gap-2 rounded-[14px] bg-sun-100 p-3.5">
             <AlertTriangle
-              className="h-4 w-4 shrink-0 text-[#8a6a14]"
+              className="h-4 w-4 shrink-0 text-sun-800"
               strokeWidth={2}
             />
-            <p className="text-[13px] leading-relaxed text-[#8a6a14]">
+            <p className="text-[13px] leading-relaxed text-sun-800">
               {content.caution}
             </p>
           </div>

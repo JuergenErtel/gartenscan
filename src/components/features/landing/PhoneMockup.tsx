@@ -125,7 +125,7 @@ export function PhoneMockup() {
                   Problemeinstufung
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="inline-block rounded-full bg-sun-100 text-[9px] font-bold uppercase tracking-wider text-[#8a6a14] px-2 py-0.5">
+                  <span className="inline-block rounded-full bg-sun-100 text-[9px] font-bold uppercase tracking-wider text-sun-800 px-2 py-0.5">
                     Mittel
                   </span>
                   <ArrowRight className="h-3 w-3 text-ink-soft" />

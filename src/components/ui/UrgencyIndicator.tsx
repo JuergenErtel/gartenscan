@@ -15,7 +15,7 @@ const config = {
     label: "Diese Woche",
     icon: Clock,
     dot: "bg-sun-500",
-    text: "text-[#8a6a14]",
+    text: "text-sun-800",
     bg: "bg-sun-100",
     ring: "",
   },
