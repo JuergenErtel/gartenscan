@@ -28,7 +28,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
           "rounded-lg overflow-hidden transition-all duration-200",
           variantClasses[variant],
           interactive &&
-            "cursor-pointer hover:shadow-[0_10px_36px_rgba(28,42,33,0.1)] hover:-translate-y-0.5 active:scale-[0.99]",
+            "cursor-pointer hover:shadow-float hover:-translate-y-0.5 active:scale-[0.99]",
           className
         )}
         {...props}
@@ -44,5 +44,5 @@ export function CardBody({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-[22px]", className)} {...props} />;
+  return <div className={cn("p-6", className)} {...props} />;
 }

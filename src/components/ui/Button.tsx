@@ -34,7 +34,7 @@ type ButtonProps = ButtonAsButtonProps | ButtonAsLinkProps;
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    "bg-forest-700 text-paper hover:bg-forest-800 shadow-[0_4px_12px_rgba(28,42,33,0.08)]",
+    "bg-forest-700 text-paper hover:bg-forest-800 shadow-soft",
   secondary:
     "bg-transparent text-forest-700 border-[1.5px] border-forest-700 hover:bg-forest-700 hover:text-paper",
   tertiary:
@@ -44,7 +44,7 @@ const variantClasses: Record<Variant, string> = {
   destructive:
     "bg-berry-500 text-paper hover:bg-berry-600",
   editorial:
-    "bg-bark-900 text-cream hover:bg-clay-800 shadow-[0_4px_14px_rgba(58,37,21,0.15)]",
+    "bg-bark-900 text-cream hover:bg-clay-800 shadow-editorial",
 };
 
 const sizeClasses: Record<Size, string> = {

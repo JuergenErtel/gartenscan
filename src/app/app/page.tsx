@@ -66,7 +66,7 @@ export default async function DashboardPage() {
                 {displayName}
               </h1>
             </div>
-            <button className="relative flex h-10 w-10 items-center justify-center rounded-full bg-paper shadow-[0_2px_10px_rgba(28,42,33,0.05)] active:scale-95 transition">
+            <button className="relative flex h-10 w-10 items-center justify-center rounded-full bg-paper shadow-soft active:scale-95 transition">
               <Bell className="h-4.5 w-4.5 text-forest-700" strokeWidth={1.75} />
               <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-berry-500 ring-2 ring-paper" />
             </button>
@@ -189,7 +189,7 @@ export default async function DashboardPage() {
           {primaryOpenCase ? (
             <Link
               href={`/scan/${primaryOpenCase.item.scan.id}`}
-              className="group block overflow-hidden rounded-lg bg-forest-900 p-6 text-paper shadow-[0_12px_40px_rgba(28,42,33,0.2)]"
+              className="group block overflow-hidden rounded-lg bg-forest-900 p-6 text-paper shadow-float"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
