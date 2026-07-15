@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import { StatePanel } from "@/components/ui/StatePanel";
 
 interface ErrorStateProps {
   title?: string;
@@ -26,21 +26,20 @@ export function ErrorState({
   const [showDetail, setShowDetail] = React.useState(false);
 
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center text-center px-6 py-12 mx-auto max-w-sm",
-        className
-      )}
+    <StatePanel
+      mark={
+        <span className="inline-flex h-[88px] w-[88px] items-center justify-center rounded-full bg-cream border-[1.5px] border-berry-500/60 text-berry-600">
+          <svg viewBox="0 0 100 100" className="h-[60%] w-[60%]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="50" cy="50" r="35" />
+            <path d="M50 32 L50 56" />
+            <circle cx="50" cy="68" r="2.5" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+      }
+      title={title}
+      body={body}
+      className={className}
     >
-      <span className="inline-flex h-[88px] w-[88px] items-center justify-center rounded-full bg-cream border-[1.5px] border-berry-500/60 text-berry-600">
-        <svg viewBox="0 0 100 100" className="h-[60%] w-[60%]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="50" cy="50" r="35" />
-          <path d="M50 32 L50 56" />
-          <circle cx="50" cy="68" r="2.5" fill="currentColor" stroke="none" />
-        </svg>
-      </span>
-      <h3 className="display-m mt-6 mb-2 text-bark-900">{title}</h3>
-      <p className="text-[14px] leading-relaxed text-ink-muted mb-6">{body}</p>
       {onRetry && (
         <Button onClick={onRetry} variant="editorial" size="md" className="mb-3">
           Erneut versuchen
@@ -62,6 +61,6 @@ export function ErrorState({
           )}
         </>
       )}
-    </div>
+    </StatePanel>
   );
 }

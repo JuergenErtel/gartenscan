@@ -1,8 +1,8 @@
 import * as React from "react";
 import { BotanicalIcon } from "@/components/ui/BotanicalIcon";
 import { Button } from "@/components/ui/Button";
+import { StatePanel } from "@/components/ui/StatePanel";
 import type { BotanicalName } from "@/components/icons/botanical";
-import { cn } from "@/lib/utils";
 
 interface EmptyStateProps {
   mark: BotanicalName;
@@ -24,15 +24,12 @@ export function EmptyState({
   className,
 }: EmptyStateProps) {
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center text-center px-6 py-12 mx-auto max-w-sm",
-        className
-      )}
+    <StatePanel
+      mark={<BotanicalIcon name={mark} size={88} animate />}
+      title={title}
+      body={body}
+      className={className}
     >
-      <BotanicalIcon name={mark} size={88} animate />
-      <h3 className="display-m mt-6 mb-2 text-bark-900">{title}</h3>
-      <p className="text-[14px] leading-relaxed text-ink-muted mb-6">{body}</p>
       {ctaLabel && ctaHref && (
         <Button href={ctaHref} variant="editorial" size="md">
           {ctaLabel}
@@ -43,6 +40,6 @@ export function EmptyState({
           {ctaLabel}
         </Button>
       )}
-    </div>
+    </StatePanel>
   );
 }
