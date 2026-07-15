@@ -38,7 +38,7 @@ export default async function GardenPage() {
           <p className="eyebrow text-ink-muted mb-2">
             Mein Garten
           </p>
-          <h1 className="font-serif text-[32px] leading-tight tracking-tight text-forest-900 font-normal">
+          <h1 className="font-serif text-[32px] leading-tight tracking-tight text-bark-900 font-normal">
             {plants.length === 0
               ? 'Noch keine Pflanzen'
               : `${plants.length} ${plants.length === 1 ? 'Pflanze' : 'Pflanzen'}`}

@@ -120,14 +120,14 @@ function CoachShell({
 }) {
   return (
     <AppShell>
-      <div className="sticky top-0 z-20 border-b border-sage-200/60 bg-sage-50/90 backdrop-blur-md safe-top">
+      <div className="sticky top-0 z-20 border-b border-sage-200/60 bg-linen/90 backdrop-blur-md safe-top">
         <div className="flex items-center gap-3 px-5 py-3">
           <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-moss-500 to-forest-700">
             <Leaf className="h-5 w-5 text-paper" strokeWidth={1.5} />
-            <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-moss-500 ring-2 ring-sage-50 anim-breath" />
+            <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-moss-500 ring-2 ring-linen anim-breath" />
           </div>
           <div className="flex-1">
-            <p className="font-serif text-[16px] leading-tight text-forest-900 font-normal">
+            <p className="font-serif text-[16px] leading-tight text-bark-900 font-normal">
               Gartencoach
             </p>
             <p className="flex items-center gap-1 text-[11px] text-moss-600">
@@ -157,7 +157,7 @@ function CoachShell({
                 <button
                   key={prompt.title}
                   onClick={() => onSend?.(prompt.text)}
-                  className="rounded-lg border border-sage-200 bg-paper p-4 text-left shadow-[0_2px_10px_rgba(28,42,33,0.04)] transition hover:border-forest-700/30"
+                  className="rounded-lg border border-sage-200 bg-cream p-4 text-left shadow-[0_2px_10px_rgba(28,42,33,0.04)] transition hover:border-forest-700/30"
                 >
                   <div className="flex items-start gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sage-100">
@@ -170,7 +170,7 @@ function CoachShell({
                       )}
                     </div>
                     <div>
-                      <p className="text-[14px] font-semibold text-forest-900">
+                      <p className="text-[14px] font-semibold text-bark-900">
                         {prompt.title}
                       </p>
                       <p className="mt-1 text-[12px] leading-relaxed text-ink-muted">
@@ -268,7 +268,7 @@ function MessageBubble({
           "max-w-[82%] rounded-lg px-4 py-3",
           isUser
             ? "rounded-br-md bg-forest-700 text-paper"
-            : "rounded-bl-md bg-paper text-forest-900 shadow-[0_2px_10px_rgba(28,42,33,0.04)]"
+            : "rounded-bl-md bg-paper text-bark-900 shadow-[0_2px_10px_rgba(28,42,33,0.04)]"
         )}
       >
         <p

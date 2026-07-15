@@ -46,7 +46,7 @@ export default async function PlantDetailPage({
 
   return (
     <OnboardingGuard>
-      <div className="min-h-screen bg-sage-50 pb-20">
+      <div className="min-h-screen bg-linen pb-20">
         <div className="relative h-[50vh] min-h-[380px] w-full overflow-hidden">
           <Image
             src={coverUrl}
@@ -57,7 +57,7 @@ export default async function PlantDetailPage({
             sizes="(max-width: 768px) 100vw, 500px"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-forest-900/30 via-transparent to-sage-50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-bark-900/30 via-transparent to-linen" />
 
           <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-3">
             <Link
@@ -106,7 +106,7 @@ export default async function PlantDetailPage({
 
         {scanRows.length > 0 && (
           <section className="px-5 pt-8">
-            <h2 className="font-serif text-[22px] leading-tight text-forest-900 font-normal mb-3">
+            <h2 className="font-serif text-[22px] leading-tight text-bark-900 font-normal mb-3">
               Verlauf dieser Pflanze
             </h2>
             <div className="space-y-3">
@@ -114,7 +114,7 @@ export default async function PlantDetailPage({
                 <Link
                   key={scan.id}
                   href={`/scan/${scan.id}`}
-                  className="flex gap-3 rounded-lg bg-paper p-4 shadow-[var(--shadow-soft)] tap-press"
+                  className="flex gap-3 rounded-lg bg-cream p-4 shadow-[var(--shadow-soft)] tap-press"
                 >
                   <div
                     className="h-16 w-16 shrink-0 rounded-sm bg-cover bg-center photo-graded"
@@ -163,10 +163,10 @@ function InfoRow({
   value: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-md bg-paper px-4 py-3">
+    <div className="flex items-center gap-3 rounded-md bg-cream px-4 py-3">
       <Icon className="h-4 w-4 text-forest-700" strokeWidth={1.75} />
       <span className="text-[13px] text-ink-muted">{label}</span>
-      <span className="ml-auto text-[14px] font-medium text-forest-900">
+      <span className="ml-auto text-[14px] font-medium text-bark-900">
         {value}
       </span>
     </div>

@@ -36,7 +36,7 @@ export default async function ActionsPage({
 
   return (
     <OnboardingGuard>
-      <div className="min-h-screen bg-sage-50 pb-10">
+      <div className="min-h-screen bg-linen pb-10">
         <ScreenHeader
           back={backHref}
           title="Handlungsempfehlung"
@@ -62,14 +62,14 @@ export default async function ActionsPage({
               <p className="text-[11px] uppercase tracking-wider font-semibold text-ink-muted">
                 Fuer {entry.name}
               </p>
-              <p className="truncate text-[15px] font-semibold text-forest-900">
+              <p className="truncate text-[15px] font-semibold text-bark-900">
                 {primaryMethod ? primaryMethod.title : "Naechster sinnvoller Schritt"}
               </p>
             </div>
             <UrgencyIndicator urgency={entry.defaultUrgency} />
           </div>
 
-          <div className="mt-6 rounded-lg bg-gradient-to-br from-forest-900 via-forest-800 to-forest-700 p-6 text-paper">
+          <div className="mt-6 rounded-lg bg-gradient-to-br from-bark-900 to-clay-800 p-6 text-paper">
             <div className="inline-flex items-center gap-1.5 rounded-full bg-paper/10 px-3 py-1 eyebrow-on-dark">
               <Sparkles className="h-3 w-3" />
               Priorisiert statt ueberladen
@@ -109,7 +109,7 @@ export default async function ActionsPage({
                 {entry.prevention.map((prevention, index) => (
                   <li
                     key={`${prevention}-${index}`}
-                    className="flex gap-2 text-[13px] leading-relaxed text-forest-900"
+                    className="flex gap-2 text-[13px] leading-relaxed text-bark-900"
                   >
                     <span className="shrink-0 text-moss-600">-</span>
                     <span>{prevention}</span>
@@ -130,7 +130,7 @@ export default async function ActionsPage({
               <Bell className="h-4.5 w-4.5 text-sky-400" strokeWidth={1.75} />
             </div>
             <div className="flex-1 text-left">
-              <p className="text-[14px] font-semibold text-forest-900">
+              <p className="text-[14px] font-semibold text-bark-900">
                 Folgebehandlung merken
               </p>
               <p className="text-[12px] text-ink-muted">
