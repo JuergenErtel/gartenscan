@@ -1,16 +1,18 @@
 import type { StoredScan } from "@/domain/scan/ScanOutcome";
 import { getOrCreateAiFallback } from "@/lib/services/aiFallbackService";
+import { BotanicalIcon } from "@/components/ui/BotanicalIcon";
+import { StatePanel } from "@/components/ui/StatePanel";
 import { AiFallbackPanel } from "./AiFallbackPanel";
 
-/** Statischer Platzhalter, wenn kein KI-Inhalt erzeugt werden konnte. */
+/** Empty-State, wenn (noch) keine Detailinfos zur Art vorliegen. */
 export function AiFallbackPlaceholder() {
   return (
     <div className="px-5 pt-6">
-      <div className="rounded-md bg-cream p-5 text-[13px] text-bark-900/75">
-        Wir haben diese Art erkannt, aber noch keine belastbare
-        Handlungsempfehlung hinterlegt. In diesem Zustand wirkt die App wie ein
-        Scanner. Genau das bauen wir gerade aus.
-      </div>
+      <StatePanel
+        mark={<BotanicalIcon name="leaf" size={88} animate />}
+        title="Noch keine Pflegehinweise"
+        body="Fuer diese Art liegen noch keine Detailinfos vor - wir ergaenzen sie laufend."
+      />
     </div>
   );
 }

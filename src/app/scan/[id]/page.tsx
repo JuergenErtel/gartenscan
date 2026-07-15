@@ -11,7 +11,6 @@ import {
   ArrowLeft,
   ArrowRight,
   BookOpen,
-  Share2,
   ShieldCheck,
 } from "lucide-react";
 import { ActionDecisionPanel } from "@/components/features/diagnosis/ActionDecisionPanel";
@@ -126,16 +125,13 @@ export default async function ScanResultPage({
           <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_50%,rgba(58,37,21,0.25)_100%)]" />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-bark-900/40" />
 
-          <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-3">
+          <div className="absolute top-0 left-0 right-0 flex items-center px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-3">
             <Link
               href="/app"
               className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-cream/92 backdrop-blur-md"
             >
               <ArrowLeft className="h-5 w-5 text-bark-900" />
             </Link>
-            <button className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-cream/92 backdrop-blur-md">
-              <Share2 className="h-4.5 w-4.5 text-bark-900" strokeWidth={1.75} />
-            </button>
           </div>
 
           <div

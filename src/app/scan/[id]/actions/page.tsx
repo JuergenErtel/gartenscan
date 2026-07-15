@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Bell, Share2, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { getContentById } from "@/content";
 import { PersonalizedPlan } from "@/components/features/actions/PersonalizedPlan";
 import { PersonalizedSafetyBanner } from "@/components/features/diagnosis/PersonalizedSafetyBanner";
@@ -37,15 +37,7 @@ export default async function ActionsPage({
   return (
     <OnboardingGuard>
       <div className="min-h-screen bg-linen pb-10">
-        <ScreenHeader
-          back={backHref}
-          title="Handlungsempfehlung"
-          right={
-            <button className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream">
-              <Share2 className="h-4 w-4 text-forest-700" strokeWidth={1.75} />
-            </button>
-          }
-        />
+        <ScreenHeader back={backHref} title="Handlungsempfehlung" />
 
         <section className="px-5 pt-6">
           <div className="flex items-center gap-3">
@@ -122,25 +114,6 @@ export default async function ActionsPage({
 
         <section className="px-5 pt-8">
           <PersonalizedPlan entry={entry} />
-        </section>
-
-        <section className="px-5 pt-2">
-          <button className="group flex w-full items-center gap-3 rounded-lg border border-sage-200 bg-paper p-4 transition hover:border-forest-700/30">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sky-100">
-              <Bell className="h-4.5 w-4.5 text-sky-400" strokeWidth={1.75} />
-            </div>
-            <div className="flex-1 text-left">
-              <p className="text-[14px] font-semibold text-bark-900">
-                Folgebehandlung merken
-              </p>
-              <p className="text-[12px] text-ink-muted">
-                Sinnvoll, wenn du in 3 bis 7 Tagen nachfassen musst
-              </p>
-            </div>
-            <span className="relative inline-flex h-6 w-11 shrink-0 rounded-full bg-sage-200 transition group-hover:bg-moss-500">
-              <span className="absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-paper shadow transition group-hover:translate-x-5" />
-            </span>
-          </button>
         </section>
 
         <section className="px-5 pt-8">
