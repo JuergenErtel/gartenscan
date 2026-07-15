@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { Button } from '@/components/ui/Button';
 
 interface Props {
   scanId: string;
@@ -76,13 +77,9 @@ export function DeleteScanSheet({ scanId, onClose }: Props) {
               Bitte erst dort ein anderes Foto wählen oder die Pflanze löschen.
             </p>
             <div className="mt-6">
-              <button
-                type="button"
-                onClick={onClose}
-                className="tap-press w-full rounded-md bg-sage-100 px-6 py-3.5 text-[15px] font-semibold text-forest-800 transition"
-              >
+              <Button type="button" onClick={onClose} variant="ghost" fullWidth>
                 OK
-              </button>
+              </Button>
             </div>
           </>
         ) : (
@@ -95,22 +92,24 @@ export function DeleteScanSheet({ scanId, onClose }: Props) {
             </p>
 
             <div className="mt-6 space-y-2">
-              <button
+              <Button
                 type="button"
                 onClick={handleDelete}
                 disabled={pending}
-                className="tap-press w-full rounded-md bg-berry-600 px-6 py-3.5 text-[15px] font-semibold text-paper transition disabled:opacity-50"
+                variant="destructive"
+                fullWidth
               >
                 {pending ? 'Lösche ...' : 'Endgültig löschen'}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
                 onClick={onClose}
                 disabled={pending}
-                className="tap-press w-full rounded-md bg-sage-100 px-6 py-3.5 text-[15px] font-semibold text-forest-800 transition disabled:opacity-50"
+                variant="ghost"
+                fullWidth
               >
                 Abbrechen
-              </button>
+              </Button>
             </div>
 
             {error && (

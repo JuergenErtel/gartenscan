@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 
 interface ErrorStateProps {
   title?: string;
@@ -41,13 +42,9 @@ export function ErrorState({
       <h3 className="display-m mt-6 mb-2 text-bark-900">{title}</h3>
       <p className="text-[14px] leading-relaxed text-ink-muted mb-6">{body}</p>
       {onRetry && (
-        <button
-          type="button"
-          onClick={onRetry}
-          className="tap-press inline-flex items-center justify-center rounded-md bg-bark-900 px-6 h-12 text-cream text-[14px] font-medium hover:bg-clay-800 transition-colors mb-3"
-        >
+        <Button onClick={onRetry} variant="editorial" size="md" className="mb-3">
           Erneut versuchen
-        </button>
+        </Button>
       )}
       {detail && (
         <>
