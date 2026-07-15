@@ -62,7 +62,7 @@ export default async function PlantDetailPage({
           <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-3">
             <Link
               href="/garden"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-paper/80 backdrop-blur-md active:scale-95 transition"
+              className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-paper/80 backdrop-blur-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
               <ArrowLeft className="h-5 w-5 text-forest-700" />
             </Link>

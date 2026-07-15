@@ -50,7 +50,7 @@ export function ErrorState({
           <button
             type="button"
             onClick={() => setShowDetail((v) => !v)}
-            className="text-[12px] text-ink-soft underline-offset-4 hover:underline"
+            className="rounded-sm text-[12px] text-ink-soft underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
           >
             {showDetail ? "Details ausblenden" : "Details anzeigen"}
           </button>

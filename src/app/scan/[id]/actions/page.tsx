@@ -41,7 +41,7 @@ export default async function ActionsPage({
           back={backHref}
           title="Handlungsempfehlung"
           right={
-            <button className="flex h-9 w-9 items-center justify-center rounded-full bg-paper active:scale-95 transition">
+            <button className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream">
               <Share2 className="h-4 w-4 text-forest-700" strokeWidth={1.75} />
             </button>
           }

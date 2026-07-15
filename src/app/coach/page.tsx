@@ -228,14 +228,14 @@ function CoachShell({
             {input.trim() ? (
               <button
                 type="submit"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest-700 text-paper transition hover:bg-forest-800 active:scale-95"
+                className="tap-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-forest-700 text-paper transition-colors hover:bg-forest-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
               >
                 <Send className="h-4 w-4" />
               </button>
             ) : (
               <button
                 type="button"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sage-100 text-forest-700 transition hover:bg-sage-200 active:scale-95"
+                className="tap-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sage-100 text-forest-700 transition-colors hover:bg-sage-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
               >
                 <Mic className="h-4 w-4" strokeWidth={1.75} />
               </button>

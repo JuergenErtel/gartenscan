@@ -33,12 +33,12 @@ export function OnboardingShell({
       )}
     >
       <header className="flex items-center justify-between px-4 pt-3 pb-2">
-        <div className="w-10">
+        <div className="w-11">
           {!hideBack &&
             (backHref ? (
               <Link
                 href={backHref}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-cream/80 hover:bg-cream active:scale-95 transition"
+                className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-cream/80 hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
                 aria-label="Zurück"
               >
                 <ArrowLeft className="h-5 w-5 text-bark-900" />
@@ -46,7 +46,7 @@ export function OnboardingShell({
             ) : (
               <button
                 onClick={() => router.back()}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-cream/80 hover:bg-cream active:scale-95 transition"
+                className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-cream/80 hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
                 aria-label="Zurück"
               >
                 <ArrowLeft className="h-5 w-5 text-bark-900" />
@@ -56,7 +56,7 @@ export function OnboardingShell({
         <div className="flex-1 flex justify-center">
           {!hideProgress && <ProgressDots active={step} />}
         </div>
-        <div className="w-10" />
+        <div className="w-11" />
       </header>
       <main className="flex-1 flex flex-col mx-auto w-full max-w-lg px-5 pb-[max(env(safe-area-inset-bottom),1.5rem)]">
         {children}

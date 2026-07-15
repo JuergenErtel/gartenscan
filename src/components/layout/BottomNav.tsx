@@ -88,6 +88,7 @@ function NavItem({
       href={href}
       className={cn(
         "relative flex flex-1 flex-col items-center justify-center gap-1 rounded-2xl py-2 transition-colors",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream",
         active ? "text-bark-900" : "text-ink-soft hover:text-bark-900"
       )}
     >

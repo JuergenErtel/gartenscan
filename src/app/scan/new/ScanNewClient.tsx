@@ -107,7 +107,7 @@ export default function ScanNewClient() {
       <div className="px-5 pt-[max(env(safe-area-inset-top),1rem)] pb-3">
         <Link
           href="/app"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-cream shadow-[0_2px_10px_rgba(58,37,21,0.05)]"
+          className="tap-press inline-flex h-11 w-11 items-center justify-center rounded-full bg-cream shadow-[0_2px_10px_rgba(58,37,21,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
         >
           <ArrowLeft className="h-5 w-5 text-bark-900" />
         </Link>

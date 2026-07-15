@@ -79,7 +79,7 @@ export function UncertainMatchState({ scanId, candidates, imageUrl }: Props) {
         <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-3">
           <Link
             href="/app"
-            className="tap-press flex h-10 w-10 items-center justify-center rounded-full bg-cream/92 backdrop-blur-md"
+            className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-cream/92 backdrop-blur-md"
           >
             <ArrowLeft className="h-5 w-5 text-bark-900" />
           </Link>

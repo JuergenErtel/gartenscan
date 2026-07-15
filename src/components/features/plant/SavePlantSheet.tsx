@@ -89,7 +89,7 @@ export function SavePlantSheet({
       <header className="flex items-center gap-3 px-4 pt-[max(env(safe-area-inset-top),1rem)] pb-3">
         <Link
           href={`/scan/${scanId}`}
-          className="tap-press flex h-10 w-10 items-center justify-center rounded-full bg-cream/92"
+          className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-cream/92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
         >
           <ArrowLeft className="h-5 w-5 text-bark-900" />
         </Link>

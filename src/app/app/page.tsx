@@ -66,7 +66,7 @@ export default async function DashboardPage() {
                 {displayName}
               </h1>
             </div>
-            <button className="relative flex h-10 w-10 items-center justify-center rounded-full bg-paper shadow-soft active:scale-95 transition">
+            <button className="tap-press relative flex h-11 w-11 items-center justify-center rounded-full bg-paper shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream">
               <Bell className="h-4.5 w-4.5 text-forest-700" strokeWidth={1.75} />
               <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-berry-500 ring-2 ring-paper" />
             </button>
@@ -180,7 +180,7 @@ export default async function DashboardPage() {
             {primaryOpenCase && (
               <Link
                 href="/history"
-                className="flex items-center gap-0.5 text-[12px] font-semibold text-forest-700"
+                className="-m-2 flex items-center gap-0.5 p-2 text-[12px] font-semibold text-forest-700"
               >
                 Verlauf <ArrowRight className="h-3.5 w-3.5" />
               </Link>
@@ -259,7 +259,7 @@ export default async function DashboardPage() {
             </div>
             <Link
               href="/history"
-              className="flex items-center gap-0.5 text-[12px] font-semibold text-forest-700"
+              className="-m-2 flex items-center gap-0.5 p-2 text-[12px] font-semibold text-forest-700"
             >
               Alles <ArrowRight className="h-3.5 w-3.5" />
             </Link>

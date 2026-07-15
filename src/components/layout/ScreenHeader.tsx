@@ -42,14 +42,14 @@ export function ScreenHeader({
           (typeof back === "string" ? (
             <Link
               href={back}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-paper/80 hover:bg-paper active:scale-95 transition"
+              className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-paper/80 hover:bg-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
               <ArrowLeft className="h-5 w-5 text-forest-700" />
             </Link>
           ) : (
             <button
               onClick={handleBack}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-paper/80 hover:bg-paper active:scale-95 transition"
+              className="tap-press flex h-11 w-11 items-center justify-center rounded-full bg-paper/80 hover:bg-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
             >
               <ArrowLeft className="h-5 w-5 text-forest-700" />
             </button>
