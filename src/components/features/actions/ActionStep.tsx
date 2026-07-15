@@ -123,7 +123,7 @@ export function ActionStep({ recommendation: r, index }: ActionStepProps) {
               className="w-full p-5 text-left"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[10px] uppercase tracking-[0.12em] font-semibold text-ink-muted">
+                <span className="eyebrow text-ink-muted">
                   {timeframeLabel[r.timeframe]}
                 </span>
               </div>
@@ -159,7 +159,7 @@ export function ActionStep({ recommendation: r, index }: ActionStepProps) {
                   className="overflow-hidden"
                 >
                   <div className="border-t border-sage-100 px-5 py-4">
-                    <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted mb-3">
+                    <p className="eyebrow text-ink-muted mb-3">
                       Anleitung
                     </p>
                     <ol className="space-y-2.5 mb-5">
@@ -175,7 +175,7 @@ export function ActionStep({ recommendation: r, index }: ActionStepProps) {
 
                     {r.methods.length > 0 && (
                       <>
-                        <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted mb-3">
+                        <p className="eyebrow text-ink-muted mb-3">
                           Methoden
                         </p>
                         <div className="space-y-2">

@@ -16,7 +16,7 @@ export function AiFallbackPanel({ content }: { content: AiFallbackContent }) {
           {content.summary}
         </p>
 
-        <p className="mt-5 mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+        <p className="mt-5 mb-3 eyebrow text-ink-muted">
           Erste Maßnahmen
         </p>
         <div className="space-y-2.5">

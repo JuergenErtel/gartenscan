@@ -69,7 +69,7 @@ export default async function ActionsPage({
           </div>
 
           <div className="mt-6 rounded-lg bg-gradient-to-br from-forest-900 via-forest-800 to-forest-700 p-6 text-paper">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-paper/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-sage-100">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-paper/10 px-3 py-1 eyebrow-on-dark">
               <Sparkles className="h-3 w-3" />
               Priorisiert statt ueberladen
             </div>
@@ -99,7 +99,7 @@ export default async function ActionsPage({
         {entry.prevention.length > 0 && (
           <section className="px-5 pt-6">
             <div className="rounded-md bg-sage-100/80 p-5">
-              <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-moss-600">
+              <p className="mb-2 eyebrow text-moss-600">
                 Danach vorbeugen
               </p>
               <ul className="space-y-1.5">

@@ -119,7 +119,7 @@ export function FollowUpActions({
   return (
     <section className="px-5 pt-6">
       <div className="rounded-lg border border-sage-200/70 bg-paper p-5">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+        <p className="eyebrow text-ink-muted">
           Fallstatus
         </p>
         <h2 className="mt-2 font-serif text-[24px] leading-tight text-bark-900">
@@ -168,7 +168,7 @@ export function FollowUpActions({
 
         {status === "MONITORING" && (
           <div className="mt-5 rounded-lg bg-sage-50 p-4">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+            <p className="eyebrow text-ink-muted">
               Wiedervorlage
             </p>
             <div className="mt-3 flex gap-2">

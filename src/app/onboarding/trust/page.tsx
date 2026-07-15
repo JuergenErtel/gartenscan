@@ -62,7 +62,7 @@ export default function TrustPage() {
               }}
             >
               <article className="rounded-2xl border border-terra-500/20 bg-cream p-5 shadow-[var(--shadow-editorial)]">
-                <p className="eyebrow mb-3">{quote.eyebrow}</p>
+                <p className="eyebrow mb-3 text-terra-500">{quote.eyebrow}</p>
                 <p className="pull-quote">{quote.quote}</p>
                 <p className="mt-3 text-[12px] leading-relaxed text-ink-muted">
                   {quote.foot}

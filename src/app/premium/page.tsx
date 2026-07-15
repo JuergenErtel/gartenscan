@@ -133,7 +133,7 @@ export default function PremiumPage() {
             key={promise.eyebrow}
             className="rounded-2xl border border-terra-500/20 bg-cream p-5 shadow-[var(--shadow-editorial)]"
           >
-            <p className="eyebrow mb-3">{promise.eyebrow}</p>
+            <p className="eyebrow mb-3 text-terra-500">{promise.eyebrow}</p>
             <p className="pull-quote">{promise.quote}</p>
             <p className="mt-3 text-[12px] leading-relaxed text-ink-muted">
               {promise.foot}
@@ -144,7 +144,7 @@ export default function PremiumPage() {
 
       <section className="px-5">
         <div className="rounded-lg border border-sage-200 bg-paper p-5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+          <p className="eyebrow text-ink-muted">
             Was Premium konkret besser macht
           </p>
           <div className="mt-4 grid grid-cols-1 gap-3">
@@ -219,7 +219,7 @@ export default function PremiumPage() {
               <div className="p-5">
                 <div className="mb-4 flex items-start justify-between">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                    <p className="eyebrow text-ink-muted">
                       {plan.tagline}
                     </p>
                     <h3

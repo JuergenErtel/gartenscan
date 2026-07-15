@@ -58,7 +58,7 @@ export function ActionDecisionPanel({
     <section className="px-5 pt-6">
       <div className="flex items-center gap-2 mb-3">
         <Sparkles className="h-4 w-4 text-clay-800" strokeWidth={1.75} />
-        <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted">
+        <p className="eyebrow text-ink-muted">
           Was jetzt zaehlt
         </p>
       </div>
@@ -127,7 +127,7 @@ export function ActionDecisionPanel({
       <div className="mt-4 rounded-lg bg-paper p-5 shadow-[var(--shadow-editorial)]">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-moss-600">
+            <p className="eyebrow text-moss-600">
               Erste sinnvolle Massnahme
             </p>
             <h3 className="mt-2 font-serif text-[24px] leading-tight text-bark-900">
@@ -198,7 +198,7 @@ export function ActionDecisionPanel({
 
       {alternatives.length > 0 && (
         <div className="mt-4 rounded-lg bg-cream p-5">
-          <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted">
+          <p className="eyebrow text-ink-muted">
             Weitere sinnvolle Wege
           </p>
           <div className="mt-3 space-y-2.5">
@@ -223,7 +223,7 @@ function DecisionFact({
 }) {
   return (
     <div className="rounded-lg bg-paper/10 p-4 backdrop-blur-sm">
-      <p className="text-[10px] uppercase tracking-[0.12em] font-semibold text-cream/65">
+      <p className="eyebrow-on-dark">
         {label}
       </p>
       <p className="mt-1 font-serif text-[20px] leading-tight text-paper">

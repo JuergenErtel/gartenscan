@@ -48,7 +48,7 @@ export default function WelcomePage() {
           transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
           className="text-center max-w-md mx-auto"
         >
-          <p className="eyebrow mb-3">Willkommen</p>
+          <p className="eyebrow mb-3 text-terra-500">Willkommen</p>
           <h1 className="font-serif text-[40px] leading-[1.05] text-bark-900 font-normal tracking-tight mb-4">
             Erkennen.{" "}
             <span className="italic text-clay-800">Verstehen.</span>{" "}

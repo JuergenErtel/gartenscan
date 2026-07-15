@@ -114,7 +114,7 @@ export default function ScanNewClient() {
       </div>
 
       <div className="px-5 pt-6">
-        <p className="eyebrow mb-2">Neuer Scan</p>
+        <p className="eyebrow mb-2 text-terra-500">Neuer Scan</p>
         <h1 className="font-serif text-[30px] leading-tight text-bark-900">
           Foto rein. Antwort raus.
         </h1>
@@ -128,7 +128,7 @@ export default function ScanNewClient() {
         <>
           <div className="px-5 pt-6">
             <div className="rounded-lg bg-gradient-to-br from-bark-900 to-clay-800 p-5 text-cream">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-paper/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-paper/10 px-3 py-1 eyebrow-on-dark">
                 <Sparkles className="h-3 w-3" />
                 Soforthilfe statt Pflanzenlexikon
               </div>
@@ -179,7 +179,7 @@ export default function ScanNewClient() {
 
           <div className="px-5 pt-6 space-y-3">
             <div className="rounded-lg bg-paper p-5">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+              <p className="eyebrow text-ink-muted">
                 Gute Fotos sparen Zeit
               </p>
               <div className="mt-3 space-y-2.5">
@@ -227,7 +227,7 @@ export default function ScanNewClient() {
                 <Loader2 className="h-5 w-5 animate-spin text-clay-800" />
               </div>
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                <p className="eyebrow text-ink-muted">
                   Analyse laeuft
                 </p>
                 <h2 className="font-serif text-[22px] leading-tight text-bark-900">
@@ -317,7 +317,7 @@ function ValueChip({
 }) {
   return (
     <div className="rounded-lg bg-paper/10 p-4">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-sage-100/70">
+      <p className="eyebrow-on-dark">
         {title}
       </p>
       <p className="mt-1 text-[14px] leading-snug text-paper">{text}</p>

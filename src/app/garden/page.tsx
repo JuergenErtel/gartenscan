@@ -35,7 +35,7 @@ export default async function GardenPage() {
     <OnboardingGuard>
       <AppShell>
         <div className="px-5 pt-8 safe-top">
-          <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted mb-2">
+          <p className="eyebrow text-ink-muted mb-2">
             Mein Garten
           </p>
           <h1 className="font-serif text-[32px] leading-tight tracking-tight text-forest-900 font-normal">

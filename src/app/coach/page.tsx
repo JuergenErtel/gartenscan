@@ -150,7 +150,7 @@ function CoachShell({
       <div ref={scrollRef} className="px-5 pt-5 pb-4 space-y-4">
         {!loading && messages.length <= 1 && (
           <section className="space-y-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+            <p className="eyebrow text-ink-muted">
               Starte mit einer echten Entscheidung
             </p>
             <div className="grid grid-cols-1 gap-3">
@@ -193,7 +193,7 @@ function CoachShell({
 
       {!loading && messages.length <= 2 && (
         <div className="pt-2 pb-3">
-          <p className="mb-3 px-5 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+          <p className="mb-3 px-5 eyebrow text-ink-muted">
             Frag mich z. B.
           </p>
           <div className="overflow-x-auto scroll-hidden">

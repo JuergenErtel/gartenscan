@@ -163,7 +163,7 @@ export default async function ScanResultPage({
           style={{ animationDelay: "400ms" }}
         >
           {matchedEntry && (
-            <p className="eyebrow mb-2">
+            <p className="eyebrow mb-2 text-terra-500">
               <CategoryLabel category={matchedEntry.category} />
             </p>
           )}
@@ -219,7 +219,7 @@ export default async function ScanResultPage({
                     className="h-4 w-4 text-clay-800"
                     strokeWidth={1.75}
                   />
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                  <span className="eyebrow text-ink-muted">
                     Warum wir das so einschaetzen
                   </span>
                 </div>
@@ -245,7 +245,7 @@ export default async function ScanResultPage({
 
             {matchedEntry.confusionRisk.length > 0 && (
               <section className="px-5 pt-6">
-                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                <p className="mb-3 eyebrow text-ink-muted">
                   Verwechslungsgefahr
                 </p>
                 <div className="space-y-2.5">
@@ -267,7 +267,7 @@ export default async function ScanResultPage({
             )}
 
             <section className="px-5 pt-8">
-              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+              <p className="mb-3 eyebrow text-ink-muted">
                 Erkennungsmerkmale
               </p>
               <div className="rounded-md bg-paper p-5 space-y-2">
@@ -290,7 +290,7 @@ export default async function ScanResultPage({
                     className="h-4 w-4 text-clay-800"
                     strokeWidth={1.75}
                   />
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                  <span className="eyebrow text-ink-muted">
                     Habitat und Saison
                   </span>
                 </div>
@@ -308,7 +308,7 @@ export default async function ScanResultPage({
 
         {scan.outcome.candidates.length > 1 && (
           <section className="px-5 pt-8">
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+            <p className="mb-3 eyebrow text-ink-muted">
               Weitere Moeglichkeiten
             </p>
             <div className="space-y-2">
@@ -360,7 +360,7 @@ function SupportFact({
 }) {
   return (
     <div className="rounded-md bg-sage-50 p-4">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+      <p className="eyebrow text-ink-muted">
         {label}
       </p>
       <p className="mt-1 font-serif text-[21px] leading-tight text-bark-900">

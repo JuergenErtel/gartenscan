@@ -85,7 +85,7 @@ export default async function DashboardPage() {
             <div className="relative">
               <div className="inline-flex items-center gap-1.5 rounded-full bg-paper/10 px-3 py-1">
                 <Sparkles className="h-3 w-3 text-sun-500/90" />
-                <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-sun-500/90">
+                <span className="eyebrow text-sun-500/90">
                   Soforthilfe
                 </span>
               </div>
@@ -193,7 +193,7 @@ export default async function DashboardPage() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-sage-200/90">
+                  <p className="eyebrow-on-dark">
                     Offener Fall
                   </p>
                   <h3 className="mt-2 font-serif text-[28px] leading-[1.08] tracking-tight">
@@ -215,7 +215,7 @@ export default async function DashboardPage() {
                     <Clock3 className="h-4.5 w-4.5 text-sun-500/90" />
                   </div>
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-sage-200/70">
+                    <p className="eyebrow-on-dark">
                       Naechster Schritt
                     </p>
                     <p className="mt-1 text-[14px] leading-relaxed text-paper">
@@ -281,7 +281,7 @@ export default async function DashboardPage() {
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                        <p className="eyebrow text-ink-muted">
                           Letzter Fall
                         </p>
                         <h3 className="mt-1 text-[18px] font-semibold text-bark-900">
@@ -323,7 +323,7 @@ export default async function DashboardPage() {
                 <ShieldCheck className="h-5 w-5 text-moss-600" strokeWidth={1.75} />
               </div>
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                <p className="eyebrow text-ink-muted">
                   Coach mit echtem Grund
                 </p>
                 <h3 className="mt-1 font-serif text-[24px] leading-tight text-bark-900">
@@ -381,7 +381,7 @@ function HomeMetric({
 }) {
   return (
     <div className="rounded-lg bg-paper/10 p-4">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-sage-100/70">
+      <p className="eyebrow-on-dark">
         {label}
       </p>
       <p className="mt-1 font-serif text-[24px] leading-tight text-paper">

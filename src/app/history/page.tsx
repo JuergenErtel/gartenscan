@@ -64,7 +64,7 @@ export default async function HistoryPage() {
     <OnboardingGuard>
       <AppShell>
         <div className="safe-top px-5 pt-8">
-          <p className="eyebrow mb-2">Verlauf</p>
+          <p className="eyebrow mb-2 text-terra-500">Verlauf</p>
           <h1 className="font-serif text-[32px] leading-tight tracking-tight text-bark-900">
             Gartenjournal statt Ablage
           </h1>

@@ -61,7 +61,7 @@ export function PersonalizedPlan({ entry }: { entry: ContentEntry }) {
   return (
     <>
       {recommended.length > 0 ? (
-        <div className="mb-2 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.12em] font-semibold text-moss-600">
+        <div className="mb-2 flex items-center gap-1.5 eyebrow text-moss-600">
           <Sparkles className="h-3 w-3" strokeWidth={2} />
           Auf dein Profil abgestimmt
         </div>

@@ -229,7 +229,7 @@ export default function LandingPage() {
                   <item.icon className="h-5 w-5 text-sage-200" strokeWidth={1.75} />
                 </span>
                 <div>
-                  <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.14em] text-sage-200">
+                  <p className="mb-1 eyebrow-on-dark">
                     {item.title}
                   </p>
                   <p className="max-w-[22ch] text-[13px] leading-snug text-sage-200/80">
@@ -284,7 +284,7 @@ function FeatureItem({
         <Icon className="h-5 w-5 text-forest-700" strokeWidth={1.75} />
       </span>
       <div className="pt-0.5">
-        <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.14em] text-forest-700">
+        <p className="mb-1 eyebrow text-forest-700">
           {title}
         </p>
         <p className="max-w-[26ch] text-[14px] leading-snug text-forest-800/85">
@@ -310,7 +310,7 @@ function CategoryItem({
         <Image src={img} alt="" fill sizes="64px" className="object-cover" />
       </span>
       <div>
-        <p className="mb-0.5 text-[11px] font-bold uppercase tracking-[0.14em] text-forest-700">
+        <p className="mb-0.5 eyebrow text-forest-700">
           {title}
         </p>
         <p className="max-w-[26ch] text-[13px] leading-snug text-forest-800/85">

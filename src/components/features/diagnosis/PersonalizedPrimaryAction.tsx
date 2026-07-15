@@ -26,7 +26,7 @@ export function PersonalizedPrimaryAction({
   return (
     <section className="px-5 pt-6">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted">
+        <p className="eyebrow text-ink-muted">
           Beste erste Maßnahme
         </p>
         {showPersonalizedTag && (

@@ -92,7 +92,7 @@ export default async function PlantDetailPage({
         </section>
 
         <section className="px-5 pt-8">
-          <p className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ink-muted mb-3">
+          <p className="eyebrow text-ink-muted mb-3">
             Über diese Pflanze
           </p>
           <div className="space-y-3">

@@ -148,7 +148,7 @@ function GenericErrorFrame({
         <div className="mt-8 mb-8 flex justify-center">
           <BotanicalIcon name={mark} framed size={72} />
         </div>
-        <p className="eyebrow mb-2 text-center">{eyebrow}</p>
+        <p className="eyebrow mb-2 text-center text-terra-500">{eyebrow}</p>
         <h1 className="text-center font-serif italic text-[26px] leading-tight text-bark-900 mb-4">
           {title}
         </h1>
@@ -177,7 +177,7 @@ function GenericErrorFrame({
           <div className="mx-auto mt-6 max-w-sm rounded-md bg-paper p-5">
             <div className="mb-3 flex items-center gap-2">
               <Info className="h-4 w-4 text-clay-800" strokeWidth={1.75} />
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+              <p className="eyebrow text-ink-muted">
                 So wirst du eher erfolgreich
               </p>
             </div>
@@ -196,7 +196,7 @@ function GenericErrorFrame({
 
         {quickPlan && (
           <div className="mx-auto mt-6 max-w-sm rounded-lg bg-gradient-to-br from-bark-900 to-clay-800 p-5 text-cream shadow-[var(--shadow-editorial)]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-sun-500/90">
+            <p className="eyebrow text-sun-500/90">
               Zwischenhilfe
             </p>
             <h2 className="mt-2 font-serif text-[22px] leading-tight">

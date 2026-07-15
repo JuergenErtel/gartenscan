@@ -107,7 +107,7 @@ export default function UseCasesPage() {
         />
 
         <div className="mt-5 rounded-lg border border-sage-200/70 bg-paper p-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+          <p className="eyebrow text-ink-muted">
             Ehrlicher Startpunkt
           </p>
           <p className="mt-2 text-[13px] leading-relaxed text-bark-900">
