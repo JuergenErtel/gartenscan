@@ -117,7 +117,8 @@ export default async function DashboardPage() {
                 <Button
                   href="/scan/new"
                   size="lg"
-                  className="sm:flex-1 !bg-paper !text-bark-900 hover:!bg-paper/90"
+                  variant="inverse"
+                  className="sm:flex-1"
                   iconLeft={<ScanLine className="h-4 w-4" />}
                 >
                   Jetzt Problem scannen
@@ -126,7 +127,7 @@ export default async function DashboardPage() {
                   href="/history"
                   size="lg"
                   variant="ghost"
-                  className="sm:flex-1 !bg-paper/10 !text-paper hover:!bg-paper/15"
+                  className="sm:flex-1 bg-paper/10 text-paper hover:bg-paper/15"
                 >
                   Verlauf mit naechstem Schritt
                 </Button>

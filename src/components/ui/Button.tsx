@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "tertiary" | "ghost" | "destructive" | "editorial";
+type Variant = "primary" | "secondary" | "tertiary" | "ghost" | "destructive" | "editorial" | "inverse";
 type Size = "sm" | "md" | "lg";
 
 interface ButtonBaseProps {
@@ -45,6 +45,8 @@ const variantClasses: Record<Variant, string> = {
     "bg-berry-500 text-paper hover:bg-berry-600",
   editorial:
     "bg-bark-900 text-cream hover:bg-clay-800 shadow-editorial",
+  inverse:
+    "bg-paper text-bark-900 hover:bg-paper/90 shadow-editorial",
 };
 
 const sizeClasses: Record<Size, string> = {
