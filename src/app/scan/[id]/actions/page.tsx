@@ -7,6 +7,7 @@ import { PersonalizedSafetyBanner } from "@/components/features/diagnosis/Person
 import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { Button } from "@/components/ui/Button";
+import { StatRow } from "@/components/ui/StatRow";
 import { UrgencyIndicator } from "@/components/ui/UrgencyIndicator";
 import type { EffortLevel, TreatmentMethod } from "@/domain/types";
 import { getHistoryItem } from "@/lib/services/historyService";
@@ -85,11 +86,13 @@ export default async function ActionsPage({
         </section>
 
         <section className="px-5 pt-6">
-          <div className="grid grid-cols-3 gap-2 rounded-md bg-paper p-1">
-            <StatBlock label="Methoden" value={entry.methods.length.toString()} />
-            <StatBlock label="Zeit gesamt" value={`${totalMin} Min`} />
-            <StatBlock label="Aufwand" value={avgEffort(entry.methods)} />
-          </div>
+          <StatRow
+            items={[
+              { label: "Methoden", value: entry.methods.length.toString() },
+              { label: "Zeit gesamt", value: `${totalMin} Min` },
+              { label: "Aufwand", value: avgEffort(entry.methods) },
+            ]}
+          />
         </section>
 
         <section className="px-5 pt-6">
@@ -147,19 +150,6 @@ export default async function ActionsPage({
         </section>
       </div>
     </OnboardingGuard>
-  );
-}
-
-function StatBlock({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-sm bg-sage-50 py-3 text-center">
-      <p className="font-serif text-[16px] leading-none text-forest-900">
-        {value}
-      </p>
-      <p className="mt-1 text-[10px] font-medium uppercase tracking-wider text-ink-muted">
-        {label}
-      </p>
-    </div>
   );
 }
 

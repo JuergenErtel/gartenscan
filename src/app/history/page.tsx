@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { OnboardingGuard } from "@/components/features/onboarding/OnboardingGuard";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { StatRow } from "@/components/ui/StatRow";
 import { UrgencyIndicator } from "@/components/ui/UrgencyIndicator";
 import { createSignedReadUrl } from "@/lib/services/imageStorageService";
 import { listHistory } from "@/lib/services/historyService";
@@ -75,11 +76,13 @@ export default async function HistoryPage() {
         </div>
 
         <section className="px-5 pt-6">
-          <div className="grid grid-cols-3 gap-2 rounded-lg bg-paper p-1">
-            <JournalStat label="Scans" value={String(items.length)} />
-            <JournalStat label="Offen" value={String(actionable.length)} />
-            <JournalStat label="Akut" value={String(urgent.length)} />
-          </div>
+          <StatRow
+            items={[
+              { label: "Scans", value: String(items.length) },
+              { label: "Offen", value: String(actionable.length) },
+              { label: "Akut", value: String(urgent.length) },
+            ]}
+          />
         </section>
 
         {items.length === 0 ? (
@@ -147,24 +150,5 @@ export default async function HistoryPage() {
         )}
       </AppShell>
     </OnboardingGuard>
-  );
-}
-
-function JournalStat({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-md bg-sage-50 py-3 text-center">
-      <p className="font-serif text-[18px] leading-none text-bark-900">
-        {value}
-      </p>
-      <p className="mt-1 text-[10px] font-medium uppercase tracking-wider text-ink-muted">
-        {label}
-      </p>
-    </div>
   );
 }

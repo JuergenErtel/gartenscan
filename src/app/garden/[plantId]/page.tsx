@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { notFound, redirect } from 'next/navigation';
 import { ArrowLeft, CalendarDays, Leaf } from 'lucide-react';
 import { UrgencyIndicator } from '@/components/ui/UrgencyIndicator';
+import { StatRow } from '@/components/ui/StatRow';
 import { PlantActions } from '@/components/features/garden/PlantActions';
 import { formatRelativeDate } from '@/lib/utils';
 import { OnboardingGuard } from '@/components/features/onboarding/OnboardingGuard';
@@ -81,14 +82,16 @@ export default async function PlantDetailPage({
         </div>
 
         <section className="px-5 pt-6">
-          <div className="grid grid-cols-3 gap-2 rounded-md bg-paper p-1">
-            <Stat label="Zone" value={plant.zoneLabel ?? '—'} />
-            <Stat label="Scans" value={scans.length.toString()} />
-            <Stat
-              label="Zuletzt"
-              value={lastScanAt ? formatRelativeDate(lastScanAt) : '—'}
-            />
-          </div>
+          <StatRow
+            items={[
+              { label: 'Zone', value: plant.zoneLabel ?? '—' },
+              { label: 'Scans', value: scans.length.toString() },
+              {
+                label: 'Zuletzt',
+                value: lastScanAt ? formatRelativeDate(lastScanAt) : '—',
+              },
+            ]}
+          />
         </section>
 
         <section className="px-5 pt-8">
@@ -147,19 +150,6 @@ export default async function PlantDetailPage({
         />
       </div>
     </OnboardingGuard>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-sm bg-sage-50 text-center py-3 px-2">
-      <p className="font-serif text-[15px] leading-none text-forest-900 truncate">
-        {value}
-      </p>
-      <p className="text-[10px] uppercase tracking-wider font-medium text-ink-muted mt-1">
-        {label}
-      </p>
-    </div>
   );
 }
 
