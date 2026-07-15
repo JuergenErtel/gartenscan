@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 
 interface Plant {
   id: string;
@@ -10,24 +9,9 @@ interface Plant {
   photoUrl: string;
   addedAt: Date;
   zoneLabel: string;
-  healthStatus: "HEALTHY" | "ATTENTION" | "CRITICAL" | "RECOVERING";
   lastScanAt?: Date;
   scanCount: number;
 }
-
-const statusDot = {
-  HEALTHY: "bg-moss-500",
-  ATTENTION: "bg-sun-500",
-  CRITICAL: "bg-berry-500 anim-breath",
-  RECOVERING: "bg-sky-300",
-};
-
-const statusLabel = {
-  HEALTHY: "Gesund",
-  ATTENTION: "Beobachten",
-  CRITICAL: "Kritisch",
-  RECOVERING: "Erholt sich",
-};
 
 export function PlantTile({ plant }: { plant: Plant }) {
   return (
@@ -43,17 +27,6 @@ export function PlantTile({ plant }: { plant: Plant }) {
           sizes="(max-width: 768px) 50vw, 240px"
           className="object-cover transition-transform duration-500 group-hover:scale-105 photo-graded"
         />
-        <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 rounded-full bg-paper/90 backdrop-blur-sm px-2 py-1">
-          <span
-            className={cn(
-              "inline-block h-1.5 w-1.5 rounded-full",
-              statusDot[plant.healthStatus]
-            )}
-          />
-          <span className="text-[10px] font-semibold uppercase tracking-wide text-forest-800">
-            {statusLabel[plant.healthStatus]}
-          </span>
-        </div>
       </div>
       <div className="p-3">
         <p className="text-[11px] uppercase tracking-wider text-ink-soft mb-0.5">

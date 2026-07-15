@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { Plus, MapPin } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PlantTile } from '@/components/features/garden/PlantTile';
 import { Button } from '@/components/ui/Button';
@@ -25,7 +25,6 @@ export default async function GardenPage() {
       photoUrl: await createSignedReadUrl(p.coverImagePath, 3600),
       addedAt: p.createdAt,
       zoneLabel: p.zoneLabel ?? '',
-      healthStatus: 'HEALTHY' as const,
       lastScanAt: p.lastScanAt ?? undefined,
       scanCount: p.scanCount,
     }))
@@ -43,13 +42,6 @@ export default async function GardenPage() {
               ? 'Noch keine Pflanzen'
               : `${plants.length} ${plants.length === 1 ? 'Pflanze' : 'Pflanzen'}`}
           </h1>
-
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-paper/70 border border-sage-200/60 backdrop-blur px-3 py-1.5">
-            <MapPin className="h-3.5 w-3.5 text-moss-600" strokeWidth={1.75} />
-            <span className="text-[12px] text-forest-800">
-              Zone 8a · mittlere Feuchtigkeit
-            </span>
-          </div>
         </div>
 
         {plants.length === 0 ? (
