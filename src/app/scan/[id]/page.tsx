@@ -142,19 +142,24 @@ export default async function ScanResultPage({
             className="absolute top-[calc(max(env(safe-area-inset-top),1rem)+52px)] left-4 anim-bloom"
             style={{ animationDelay: "200ms" }}
           >
-            <span className="inline-flex items-center gap-2 rounded-full bg-cream/92 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-bark-900">
-              <span
-                className={cn(
-                  "h-1.5 w-1.5 rounded-full",
-                  confidence >= 0.75
-                    ? "bg-moss-500"
-                    : confidence >= 0.5
-                      ? "bg-sun-500"
-                      : "bg-berry-500"
-                )}
-              />
+            <Badge
+              tone="outline"
+              className="gap-2 border-transparent bg-cream/92 px-3 text-[10px] font-bold normal-case tracking-normal text-bark-900 backdrop-blur-md"
+              icon={
+                <span
+                  className={cn(
+                    "h-1.5 w-1.5 rounded-full",
+                    confidence >= 0.75
+                      ? "bg-moss-500"
+                      : confidence >= 0.5
+                        ? "bg-sun-500"
+                        : "bg-berry-500"
+                  )}
+                />
+              }
+            >
               {Math.round(confidence * 100)} % sicher
-            </span>
+            </Badge>
           </div>
         </div>
 

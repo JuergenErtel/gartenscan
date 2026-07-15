@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { Leaf, Mic, Send, ShieldCheck, Sparkles, Zap } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
+import { Badge } from "@/components/ui/Badge";
+import { BetaBadge } from "@/components/ui/BetaBadge";
 import { Chip } from "@/components/ui/Chip";
 import {
   COACH_INITIAL,
@@ -133,17 +135,14 @@ function CoachShell({
               Entscheidet mit statt nur zu chatten
             </p>
           </div>
-          <div className="flex items-center gap-1 rounded-full bg-sage-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-forest-800">
-            <Sparkles className="h-3 w-3" />
-            Beta
-          </div>
+          <BetaBadge />
         </div>
 
         <div className="px-5 pb-4">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-sage-100 px-2.5 py-1 text-[11px] text-forest-800">
+          <Badge tone="neutral">
             <span className="opacity-60">Kontext:</span> Dein Garten, Muenchen,
             April
-          </span>
+          </Badge>
         </div>
       </div>
 

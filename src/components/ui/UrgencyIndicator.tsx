@@ -1,5 +1,6 @@
 import { AlertCircle, Eye, Clock, CheckCircle2 } from "lucide-react";
 import type { Urgency } from "@/lib/types";
+import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
 
 const config = {
@@ -82,16 +83,11 @@ export function UrgencyIndicator({
   }
 
   return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em]",
-        c.bg,
-        c.text,
-        className
-      )}
+    <Badge
+      className={cn(c.bg, c.text, className)}
+      icon={<Icon className="h-3 w-3" />}
     >
-      <Icon className="h-3 w-3" />
       {c.label}
-    </span>
+    </Badge>
   );
 }

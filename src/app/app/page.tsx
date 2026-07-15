@@ -206,7 +206,7 @@ export default async function DashboardPage() {
                 </div>
                 <UrgencyIndicator
                   urgency={primaryOpenCase.summary.urgency}
-                  className="!bg-paper/12 !text-paper"
+                  className="bg-paper/12 text-paper"
                 />
               </div>
 

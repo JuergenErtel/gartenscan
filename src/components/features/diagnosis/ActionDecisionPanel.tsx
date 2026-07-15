@@ -75,7 +75,7 @@ export function ActionDecisionPanel({
           </div>
           <UrgencyIndicator
             urgency={entry.defaultUrgency}
-            className="!bg-paper/12 !text-paper"
+            className="bg-paper/12 text-paper"
           />
         </div>
 
@@ -137,9 +137,7 @@ export function ActionDecisionPanel({
               {primary.description}
             </p>
           </div>
-          <div className="rounded-full bg-sage-100 px-3 py-1.5 text-[12px] font-semibold text-forest-900">
-            {primary.durationMin} Min
-          </div>
+          <Badge tone="neutral">{primary.durationMin} Min</Badge>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
@@ -248,9 +246,7 @@ function AlternativeMethodCard({ method }: { method: TreatmentMethod }) {
             {method.description}
           </p>
         </div>
-        <span className="rounded-full bg-sage-100 px-2.5 py-1 text-[11px] font-semibold text-forest-900">
-          {method.durationMin} Min
-        </span>
+        <Badge tone="neutral">{method.durationMin} Min</Badge>
       </div>
     </div>
   );
