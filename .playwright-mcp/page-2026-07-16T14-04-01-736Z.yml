@@ -1,0 +1,49 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e34] [cursor=pointer]
+  - alert [ref=e38]
+  - generic [ref=e121]:
+    - banner [ref=e122]:
+      - button "Zurück" [ref=e124]
+      - generic "Schritt 3 von 6" [ref=e128]
+    - main [ref=e135]:
+      - generic [ref=e136]:
+        - generic [ref=e137]:
+          - heading "Erzähl uns kurz von dir." [level=1] [ref=e138]
+          - paragraph [ref=e139]: Damit unsere Empfehlungen zu dir passen.
+        - generic [ref=e140]:
+          - heading "Dein Garten" [level=2] [ref=e141]
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - generic [ref=e144]: Bereich
+              - generic [ref=e145]:
+                - button "Garten" [ref=e146]
+                - button "Rasen" [ref=e147]
+                - button "Beet" [ref=e148]
+                - button "Balkon" [ref=e149]
+                - button "Terrasse" [ref=e150]
+                - button "Topfpflanzen" [ref=e151]
+            - generic [ref=e152]:
+              - generic [ref=e153]: Kinder im Haushalt
+              - radiogroup "Kinder im Haushalt" [ref=e154]:
+                - radio "Ja" [ref=e155]
+                - radio "Nein" [ref=e156]
+            - generic [ref=e157]:
+              - generic [ref=e158]: Haustiere
+              - radiogroup "Haustiere" [ref=e159]:
+                - radio "Ja" [ref=e160]
+                - radio "Nein" [ref=e161]
+        - generic [ref=e162]:
+          - heading "Deine Vorlieben" [level=2] [ref=e163]
+          - generic [ref=e164]:
+            - generic [ref=e165]:
+              - generic [ref=e166]: Lösungsart
+              - radiogroup [ref=e167]:
+                - radio "Bio" [ref=e168]
+                - radio "Ausgewogen" [ref=e169]
+                - radio "Schnell" [ref=e170]
+            - generic [ref=e171]:
+              - generic [ref=e172]: Erfahrung
+              - radiogroup [ref=e173]:
+                - radio "Anfänger" [ref=e174]
+                - radio "Fortgeschritten" [ref=e175]
+      - button "Weiter" [ref=e177]

@@ -1,0 +1,35 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e34] [cursor=pointer]
+  - alert [ref=e38]
+  - generic [ref=e39]:
+    - banner [ref=e40]:
+      - button "Zurück" [ref=e42]
+      - generic "Schritt 2 von 6" [ref=e46]
+    - main [ref=e53]:
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - heading "Wobei willst du wirklich Hilfe?" [level=1] [ref=e56]
+          - paragraph [ref=e57]: Mehrfachauswahl ist moeglich. Wir setzen lieber klare Erwartungen, als dir eine zu breite Wunder-App zu verkaufen.
+        - generic [ref=e58]:
+          - paragraph [ref=e59]: Ehrlicher Startpunkt
+          - paragraph [ref=e60]: Im Live-Scan sind wir heute am staerksten bei Pflanzen und klaren Einzelmotiven. Schaeden, Insekten und komplexe Problemfaelle bauen wir weiter aus.
+        - generic [ref=e61]:
+          - generic [ref=e63]:
+            - button "Pflanzen erkennen" [ref=e64]
+            - paragraph [ref=e69]: heute im Live-Scan am staerksten
+          - generic [ref=e71]:
+            - button "Unkraut" [ref=e72]
+            - paragraph [ref=e78]: gut fuer klare Einzelpflanzen
+          - generic [ref=e80]:
+            - button "Schaedlinge" [ref=e81]
+            - paragraph [ref=e92]: im Ausbau, noch nicht immer sauber im Live-Scan
+          - generic [ref=e94]:
+            - button "Krankheiten" [ref=e95]
+            - paragraph [ref=e101]: redaktionell da, live noch nicht durchgaengig stark
+          - generic [ref=e103]:
+            - button "Gartenideen" [ref=e104]
+            - paragraph [ref=e108]: mehr Coach als Scanner
+          - generic [ref=e110]:
+            - button "Alles davon" [ref=e111]
+            - paragraph [ref=e115]: du willst die volle Produktreise
+      - button "Weiter" [disabled] [ref=e117]

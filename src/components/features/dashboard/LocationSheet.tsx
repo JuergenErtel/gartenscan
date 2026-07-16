@@ -30,12 +30,17 @@ export function LocationSheet({ open, initialPlz, onClose }: LocationSheetProps)
   async function handleSave() {
     setPending(true);
     setError(null);
-    const result = await updateLocation(plz.trim());
-    setPending(false);
-    if (result.ok) {
-      onClose();
-    } else {
-      setError(result.error);
+    try {
+      const result = await updateLocation(plz.trim());
+      if (result.ok) {
+        onClose();
+      } else {
+        setError(result.error);
+      }
+    } catch {
+      setError("Speichern fehlgeschlagen — bitte nochmal versuchen.");
+    } finally {
+      setPending(false);
     }
   }
 

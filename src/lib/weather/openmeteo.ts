@@ -27,20 +27,64 @@ interface ForecastResponse {
 const GEOCODE_URL = "https://geocoding-api.open-meteo.com/v1/search";
 const FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 
+const PLZ_LOOKUP_URL = "https://api.zippopotam.us/de";
+
+// Grobe Bounding-Box Deutschlands — Zippopotam hat vereinzelt korrupte
+// Koordinaten (z. B. PLZ 01067 mit latitude "14612"), die hier rausfallen.
+function isInGermany(lat: number, lon: number): boolean {
+  return lat >= 47 && lat <= 55.2 && lon >= 5.5 && lon <= 15.6;
+}
+
 /**
- * Geocodes a German postal code to lat/lng + city name via Open-Meteo.
+ * Geocodes a German postal code to lat/lng + city name.
+ * Open-Meteos Geocoding kann keine deutschen PLZ (liefert oft nichts oder
+ * falsche Orte), daher: Zippopotam für PLZ → Ort/Koordinaten; bei korrupten
+ * Koordinaten Fallback auf Open-Meteo-Suche über den Ortsnamen.
  * Returns null on failure (no exceptions for flow control).
  */
 export async function geocodePLZ(plz: string): Promise<GeocodeResult | null> {
-  const url = `${GEOCODE_URL}?name=${encodeURIComponent(plz)}&country=DE&count=1&language=de&format=json`;
   try {
-    const res = await fetch(url, { next: { revalidate: 60 * 60 * 24 } });
+    const res = await fetch(`${PLZ_LOOKUP_URL}/${encodeURIComponent(plz)}`, {
+      next: { revalidate: 60 * 60 * 24 },
+    });
     if (!res.ok) return null;
-    const data = (await res.json()) as { results?: GeocodeResult[] };
-    return data.results?.[0] ?? null;
+    const data = (await res.json()) as {
+      places?: { "place name": string; latitude: string; longitude: string }[];
+    };
+    const place = data.places?.[0];
+    if (!place) return null;
+
+    const lat = Number(place.latitude);
+    const lon = Number(place.longitude);
+    if (isInGermany(lat, lon)) {
+      return { latitude: lat, longitude: lon, name: place["place name"] };
+    }
+    return await geocodePlaceName(place["place name"]);
   } catch {
     return null;
   }
+}
+
+/** Fallback: Ortsname über Open-Meteo geocoden, nur DE-Treffer akzeptieren. */
+async function geocodePlaceName(name: string): Promise<GeocodeResult | null> {
+  const candidates = [...new Set([name, name.split(" ")[0]])];
+  for (const candidate of candidates) {
+    try {
+      const url = `${GEOCODE_URL}?name=${encodeURIComponent(candidate)}&count=5&language=de&format=json`;
+      const res = await fetch(url, { next: { revalidate: 60 * 60 * 24 } });
+      if (!res.ok) continue;
+      const data = (await res.json()) as {
+        results?: (GeocodeResult & { country_code?: string })[];
+      };
+      const hit = data.results?.find(
+        (r) => r.country_code === "DE" && isInGermany(r.latitude, r.longitude)
+      );
+      if (hit) return { latitude: hit.latitude, longitude: hit.longitude, name };
+    } catch {
+      // nächsten Kandidaten versuchen
+    }
+  }
+  return null;
 }
 
 /**
