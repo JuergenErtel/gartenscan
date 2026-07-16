@@ -16,11 +16,20 @@ const alertLabel = {
   heavy_rain: "Starkregen",
 } as const;
 
-export function WeatherChip({ weather }: { weather: WeatherSnapshot }) {
+export function WeatherChip({
+  weather,
+  onClick,
+}: {
+  weather: WeatherSnapshot;
+  onClick?: () => void;
+}) {
   const Icon = icons[weather.icon];
 
   return (
-    <div className="inline-flex items-center gap-3 rounded-full bg-paper/70 backdrop-blur px-3.5 py-2 border border-sage-200/60">
+    <button
+      type="button"
+      onClick={onClick}
+      className="tap-press inline-flex min-h-[44px] items-center gap-3 rounded-full bg-paper/70 backdrop-blur px-3.5 py-2 border border-sage-200/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30">
       <Icon className="h-4 w-4 text-sky-400" strokeWidth={1.75} />
       <span className="text-sm font-medium text-forest-800 tabular-nums">
         {weather.tempC}°
@@ -38,6 +47,6 @@ export function WeatherChip({ weather }: { weather: WeatherSnapshot }) {
           {alertLabel[weather.alert.type]}
         </span>
       )}
-    </div>
+    </button>
   );
 }
