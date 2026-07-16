@@ -80,6 +80,7 @@ export type Database = {
           interests: string[]
           is_anonymous: boolean
           pets_children: string[]
+          postal_code: string | null
           solution_preference: string | null
         }
         Insert: {
@@ -92,6 +93,7 @@ export type Database = {
           interests?: string[]
           is_anonymous?: boolean
           pets_children?: string[]
+          postal_code?: string | null
           solution_preference?: string | null
         }
         Update: {
@@ -104,6 +106,7 @@ export type Database = {
           interests?: string[]
           is_anonymous?: boolean
           pets_children?: string[]
+          postal_code?: string | null
           solution_preference?: string | null
         }
         Relationships: []
