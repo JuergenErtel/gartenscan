@@ -53,12 +53,18 @@ export interface WeatherSnapshot {
   };
 }
 
+export interface CoachCitation {
+  id: string;
+  name: string;
+  category: string;
+}
+
 export interface CoachMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
   createdAt: Date;
-  citations?: string[];
+  citations?: CoachCitation[];
 }
 
 export type SubscriptionTier = "FREE" | "PREMIUM" | "PRO";

@@ -286,10 +286,10 @@ function MessageBubble({
             </span>
             {message.citations.map((citation) => (
               <span
-                key={citation}
+                key={citation.id}
                 className="rounded-full bg-sage-100 px-2 py-0.5 text-[11px] text-forest-800"
               >
-                {citation.replace("plant_", "")}
+                {citation.name}
               </span>
             ))}
           </div>

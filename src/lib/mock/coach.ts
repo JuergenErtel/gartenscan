@@ -16,7 +16,6 @@ export const COACH_INITIAL: CoachMessage[] = [
     content:
       "Ich sehe zwei offene Themen: Blattlaeuse an deiner Rose und erste Mehltau-Zeichen an der Hortensie. Wenn du willst, priorisiere ich dir jetzt die naechsten 7 Tage nach Wirkung, Aufwand und Haustierfreundlichkeit.",
     createdAt: new Date(),
-    citations: ["plant_rose", "plant_hortensie"],
   },
 ];
 
