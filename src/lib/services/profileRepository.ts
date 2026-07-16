@@ -13,6 +13,7 @@ type ProfileRow = {
   pets_children: string[];
   solution_preference: string | null;
   completed_onboarding_at: string | null;
+  postal_code: string | null;
 };
 
 export async function getProfile(userId: string): Promise<ProfileRow | null> {
@@ -26,13 +27,11 @@ export async function getProfile(userId: string): Promise<ProfileRow | null> {
   return (data ?? null) as ProfileRow | null;
 }
 
-export async function updateProfile(userId: string, patch: Partial<GardenProfile>): Promise<void> {
-  const supabase = await createClient();
+// Map GardenProfile → ProfileRow columns.
+// Felder, die GardenProfile kennt aber profiles-Row nicht hat (name etc.),
+// werden ignoriert — können in späterer Migration ergänzt werden.
+export function mapPatchToRow(patch: Partial<GardenProfile>): Partial<ProfileRow> {
   const row: Partial<ProfileRow> = {};
-
-  // Map GardenProfile → ProfileRow columns.
-  // Felder, die GardenProfile kennt aber profiles-Row nicht hat (postalCode, name etc.),
-  // werden in A+B ignoriert — können in späterer Migration ergänzt werden.
   if (patch.experience) row.experience = patch.experience;
   if (patch.solutionStyle) {
     row.solution_preference =
@@ -51,6 +50,13 @@ export async function updateProfile(userId: string, patch: Partial<GardenProfile
   }
 
   if (patch.onboardingCompletedAt) row.completed_onboarding_at = patch.onboardingCompletedAt.toISOString();
+  if (patch.postalCode !== undefined) row.postal_code = patch.postalCode;
+  return row;
+}
+
+export async function updateProfile(userId: string, patch: Partial<GardenProfile>): Promise<void> {
+  const supabase = await createClient();
+  const row = mapPatchToRow(patch);
 
   const { error } = await supabase.from('profiles').update(row).eq('id', userId);
   if (error) throw new Error(`updateProfile: ${error.message}`);
