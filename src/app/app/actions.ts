@@ -13,16 +13,16 @@ export async function updateLocation(
   if (!isValidPLZ(trimmed)) {
     return { ok: false, error: "Bitte eine 5-stellige PLZ eingeben." };
   }
-  const geo = await geocodePLZ(trimmed);
-  if (!geo) {
-    return { ok: false, error: "PLZ nicht gefunden." };
-  }
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
     return { ok: false, error: "Nicht angemeldet." };
+  }
+  const geo = await geocodePLZ(trimmed);
+  if (!geo) {
+    return { ok: false, error: "PLZ nicht gefunden." };
   }
   await updateProfile(user.id, { postalCode: trimmed });
   revalidatePath("/app");
