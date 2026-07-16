@@ -39,6 +39,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      coach_usage: {
+        Row: {
+          user_id: string
+          day: string
+          messages_used: number
+        }
+        Insert: {
+          user_id: string
+          day: string
+          messages_used?: number
+        }
+        Update: {
+          user_id?: string
+          day?: string
+          messages_used?: number
+        }
+        Relationships: []
+      }
       entitlements: {
         Row: {
           current_period_end: string | null
@@ -549,6 +567,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      increment_coach_usage: {
+        Args: { p_user_id: string; p_day: string }
+        Returns: undefined
+      }
       increment_scan_usage: {
         Args: { p_user_id: string; p_year_month: string }
         Returns: undefined
