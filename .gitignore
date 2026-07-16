@@ -37,3 +37,4 @@ next-env.d.ts
 .superpowers/
 supabase/.temp/
 .claude/
+.playwright-mcp/
