@@ -16,7 +16,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { UrgencyIndicator } from "@/components/ui/UrgencyIndicator";
-import { WeatherChip } from "@/components/features/dashboard/WeatherChip";
+import { LocationWeather } from "@/components/features/dashboard/LocationWeather";
 import { listHistory } from "@/lib/services/historyService";
 import { getScanCaseSummary } from "@/lib/scan/caseSummary";
 import { getProfile } from "@/lib/services/profileRepository";
@@ -48,7 +48,8 @@ export default async function DashboardPage() {
   const primaryOpenCase = actionableHistory[0];
   const recentCases = history.slice(0, 3);
 
-  const weather = await fetchWeatherForPLZ("80331");
+  const plz = profileRow?.postal_code ?? null;
+  const weather = plz ? await fetchWeatherForPLZ(plz) : null;
 
   const now = new Date();
   const hour = now.getHours();
@@ -71,11 +72,9 @@ export default async function DashboardPage() {
               <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-berry-500 ring-2 ring-paper" />
             </button>
           </div>
-          {weather && (
-            <div className="mt-3">
-              <WeatherChip weather={weather} />
-            </div>
-          )}
+          <div className="mt-3">
+            <LocationWeather weather={weather} postalCode={plz} />
+          </div>
         </div>
 
         <section className="px-5 mt-5">
