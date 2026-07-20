@@ -1,0 +1,14 @@
+# Einheitliche Zeilenenden: im Repo immer LF, unabhaengig vom Betriebssystem.
+# Ohne das checkt Windows CRLF aus und macOS/Linux LF, was beim Wechsel des
+# Rechners ganze Dateien als geaendert erscheinen laesst.
+* text=auto eol=lf
+
+# Binaerdateien nie anfassen.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
