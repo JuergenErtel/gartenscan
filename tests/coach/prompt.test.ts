@@ -23,6 +23,23 @@ describe("buildContentScope", () => {
     const scope = buildContentScope([], "Was hilft gegen Blattläuse an der Rose?");
     expect(scope.some((e) => e.id === "pest_blattlaeuse")).toBe(true);
   });
+  it("laesst der Frage Platz, auch wenn viele Faelle referenziert sind", () => {
+    const vieleIds = [
+      "pest_blattlaeuse",
+      "pest_spinnmilben",
+      "pest_buchsbaumzuensler",
+      "pest_trauermuecken",
+      "pest_wolllaeuse",
+      "pest_dickmaulruessler",
+      "pest_schnecken",
+    ];
+    const scope = buildContentScope(vieleIds, "Was hilft gegen Mehltau?");
+    expect(scope.some((e) => e.id === "disease_echter_mehltau")).toBe(true);
+  });
+  it("findet Eintraege auch bei ae/oe/ue-Schreibweise", () => {
+    const scope = buildContentScope([], "Was hilft gegen Blattlaeuse?");
+    expect(scope.some((e) => e.id === "pest_blattlaeuse")).toBe(true);
+  });
   it("ignoriert kurze Fuellwoerter in der Frage", () => {
     // "was", "und", "an" duerfen keine willkuerlichen Treffer erzeugen.
     const scope = buildContentScope([], "Was ist das und wie geht es an?");

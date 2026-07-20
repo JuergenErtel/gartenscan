@@ -8,6 +8,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { BetaBadge } from "@/components/ui/BetaBadge";
 import { Chip } from "@/components/ui/Chip";
 import { COACH_GREETING, COACH_SUGGESTIONS } from "@/lib/coach/constants";
+import { buildHistory } from "@/lib/coach/history";
 import type { CoachCitation, CoachMessage } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -61,6 +62,7 @@ function CoachPageInner() {
 
   const sendMessage = async (content: string) => {
     if (!content.trim() || typing) return;
+    if (limitInfo && limitInfo.used >= limitInfo.limit) return;
 
     const userMsg: CoachMessage = {
       id: Date.now().toString(),
@@ -77,17 +79,14 @@ function CoachPageInner() {
       const res = await fetch("/api/coach", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: nextMessages
-            .filter((m) => m.id !== "greeting")
-            .slice(-10)
-            .map((m) => ({ role: m.role, content: m.content })),
-        }),
+        body: JSON.stringify({ messages: buildHistory(nextMessages) }),
       });
 
       if (res.status === 402) {
         const data = await res.json().catch(() => null);
         setLimitInfo({ used: data?.used ?? 3, limit: data?.limit ?? 3 });
+        // Die Nachricht wurde nicht beantwortet — nicht als offener Turn stehen lassen.
+        setMessages((existing) => existing.filter((m) => m.id !== userMsg.id));
         return;
       }
       if (!res.ok) {
@@ -123,7 +122,14 @@ function CoachPageInner() {
   function pushAssistant(content: string) {
     setMessages((existing) => [
       ...existing,
-      { id: (Date.now() + 1).toString(), role: "assistant", content, createdAt: new Date() },
+      {
+        // error-Prefix: lokale Fehlermeldungen sind kein Coach-Turn und gehen
+        // deshalb nicht als Verlauf an die API zurueck.
+        id: `error-${Date.now()}`,
+        role: "assistant",
+        content,
+        createdAt: new Date(),
+      },
     ]);
   }
 

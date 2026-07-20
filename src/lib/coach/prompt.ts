@@ -16,6 +16,8 @@ export interface CoachContext {
 
 const MAX_SCOPE = 8;
 const MAX_SEARCH_HITS = 3;
+/** Platz, den referenzierte Eintraege belegen duerfen — der Rest bleibt der Frage. */
+const MAX_REFERENCED = MAX_SCOPE - MAX_SEARCH_HITS;
 const MIN_TOKEN_LENGTH = 4;
 
 /**
@@ -26,17 +28,29 @@ const MIN_TOKEN_LENGTH = 4;
  * im Namen, im wissenschaftlichen Namen oder in einem Alias vorkommt.
  */
 function searchByQuestion(query: string): ContentEntry[] {
-  const tokens = query
-    .toLowerCase()
-    .split(/[^a-zäöüß]+/)
+  const tokens = normalize(query)
+    .split(/[^a-z]+/)
     .filter((token) => token.length >= MIN_TOKEN_LENGTH);
   if (tokens.length === 0) return [];
   return CONTENT_REGISTRY.filter((entry) => {
-    const haystack = [entry.name, entry.scientificName, ...entry.aliases]
-      .join(' ')
-      .toLowerCase();
+    const haystack = normalize(
+      [entry.name, entry.scientificName, ...entry.aliases].join(' ')
+    );
     return tokens.some((token) => haystack.includes(token));
   });
+}
+
+/**
+ * Kleinschreibung + Umlaute auf ae/oe/ue — sonst findet "Blattlaeuse" den
+ * Eintrag "Blattläuse" nicht. Die eigene UI-Copy nutzt beide Schreibweisen.
+ */
+function normalize(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/ä/g, 'ae')
+    .replace(/ö/g, 'oe')
+    .replace(/ü/g, 'ue')
+    .replace(/ß/g, 'ss');
 }
 
 /** Katalog-Scope: referenzierte Eintraege der Faelle/Pflanzen + Top-Suchtreffer zur Frage. */
@@ -52,7 +66,10 @@ export function buildContentScope(
     if (!entry) continue;
     seen.add(id);
     scope.push(entry);
-    if (scope.length >= MAX_SCOPE) return scope;
+    // Nur bis MAX_REFERENCED fuellen: sonst verdraengen viele offene Faelle die
+    // Treffer zur eigentlichen Frage, und der Coach kennt ausgerechnet das Thema
+    // nicht, nach dem gefragt wurde.
+    if (scope.length >= MAX_REFERENCED) break;
   }
   if (query.trim()) {
     let hits = 0;

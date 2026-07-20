@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@/lib/supabase/server';
 import { buildEntitlements, FeatureGate } from '@/domain/entitlements/featureGate';
-import { getCoachUsageToday, incrementCoachUsage } from '@/lib/services/coachUsageService';
+import {
+  claimCoachMessage,
+  releaseCoachMessage,
+  LIMIT_REACHED,
+} from '@/lib/services/coachUsageService';
 import { getProfile } from '@/lib/services/profileRepository';
 import { listHistory } from '@/lib/services/historyService';
 import { getScanCaseSummary } from '@/lib/scan/caseSummary';
@@ -40,6 +44,9 @@ function validateMessages(body: unknown): CoachRequestMessage[] | null {
     }
     result.push({ role: (m as CoachRequestMessage).role, content: (m as CoachRequestMessage).content });
   }
+  // Anthropic lehnt einen Verlauf ab, der mit 'assistant' beginnt — sonst wird
+  // aus einem Client-Fehler ein undurchsichtiges 502.
+  if (result[0].role !== 'user') return null;
   if (result[result.length - 1].role !== 'user') return null;
   return result;
 }
@@ -64,22 +71,38 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'invalid_request' }, { status: 400 });
   }
 
-  // Tages-Limit VOR Grounding + Claude-Call (kein teurer Schritt fuer gesperrte Anfragen).
-  let used: number;
-  try {
-    used = await getCoachUsageToday(user.id);
-  } catch (err) {
-    console.error('[coach] usage read failed', err);
+  // API-Key zuerst pruefen: ohne ihn ist jede Grounding-Abfrage verschwendet.
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
     return NextResponse.json({ error: 'upstream_error' }, { status: 502 });
   }
-  const entitlements = buildEntitlements({ tier: 'FREE', coachMessagesUsedToday: used });
-  const gate = new FeatureGate(entitlements);
-  if (!gate.canCoachMessage().ok) {
+
+  // Kontingent atomar buchen — pruefen und erhoehen in einem DB-Schritt, damit
+  // parallele Requests das Limit nicht umgehen. Passiert VOR Grounding und
+  // Claude-Call, damit gesperrte Anfragen nichts kosten.
+  const limit = buildEntitlements({ tier: 'FREE' }).coachMessagesPerDay;
+  let used: number;
+  try {
+    used = await claimCoachMessage(user.id, limit);
+  } catch (err) {
+    console.error('[coach] usage claim failed', err);
+    return NextResponse.json({ error: 'upstream_error' }, { status: 502 });
+  }
+  if (used === LIMIT_REACHED) {
     return NextResponse.json(
-      { error: 'limit_reached', used, limit: entitlements.coachMessagesPerDay },
+      { error: 'limit_reached', used: limit, limit },
       { status: 402 }
     );
   }
+
+  // Ab hier ist ein Kontingent gebucht: bei jedem Fehlerausgang zurueckgeben.
+  const releaseQuota = async () => {
+    try {
+      await releaseCoachMessage(user.id);
+    } catch (err) {
+      console.error('[coach] usage release failed', err);
+    }
+  };
 
   // Grounding parallel laden; Einzel-Fehler degradieren still (Coach antwortet dann mit weniger Kontext).
   const [profile, history, plants] = await Promise.all([
@@ -130,10 +153,6 @@ export async function POST(request: Request) {
     entries,
   };
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json({ error: 'upstream_error' }, { status: 502 });
-  }
   const anthropic = new Anthropic({ apiKey, timeout: TIMEOUT_MS });
 
   let msg;
@@ -145,6 +164,7 @@ export async function POST(request: Request) {
       messages,
     });
   } catch (err) {
+    await releaseQuota();
     const status = (err as { status?: number })?.status;
     if (status === 429) {
       return NextResponse.json({ error: 'rate_limit' }, { status: 429 });
@@ -157,6 +177,7 @@ export async function POST(request: Request) {
     | { type: 'text'; text: string }
     | undefined;
   if (!textBlock) {
+    await releaseQuota();
     return NextResponse.json({ error: 'upstream_error' }, { status: 502 });
   }
 
@@ -168,16 +189,9 @@ export async function POST(request: Request) {
     return { id: entry.id, name: entry.name, category: entry.category };
   });
 
-  // Erst nach erfolgreichem Call zaehlen — Fehler kosten kein Kontingent.
-  try {
-    await incrementCoachUsage(user.id);
-  } catch (err) {
-    console.error('[coach] usage increment failed', err);
-  }
-
   return NextResponse.json({
     reply: parsed.reply,
     citations,
-    usage: { used: used + 1, limit: entitlements.coachMessagesPerDay },
+    usage: { used, limit },
   });
 }

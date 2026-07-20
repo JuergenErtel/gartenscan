@@ -568,11 +568,15 @@ export type Database = {
     }
     Functions: {
       increment_coach_usage: {
-        Args: { p_user_id: string; p_day: string }
-        Returns: undefined
+        Args: { p_user_id: string; p_day: string; p_limit: number }
+        Returns: number
       }
       increment_scan_usage: {
         Args: { p_user_id: string; p_year_month: string }
+        Returns: undefined
+      }
+      release_coach_message: {
+        Args: { p_user_id: string; p_day: string }
         Returns: undefined
       }
       is_admin: { Args: never; Returns: boolean }
