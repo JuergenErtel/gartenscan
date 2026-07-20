@@ -65,7 +65,13 @@ export async function POST(request: Request) {
   }
 
   // Tages-Limit VOR Grounding + Claude-Call (kein teurer Schritt fuer gesperrte Anfragen).
-  const used = await getCoachUsageToday(user.id);
+  let used: number;
+  try {
+    used = await getCoachUsageToday(user.id);
+  } catch (err) {
+    console.error('[coach] usage read failed', err);
+    return NextResponse.json({ error: 'upstream_error' }, { status: 502 });
+  }
   const entitlements = buildEntitlements({ tier: 'FREE', coachMessagesUsedToday: used });
   const gate = new FeatureGate(entitlements);
   if (!gate.canCoachMessage().ok) {
