@@ -5,16 +5,20 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { Leaf, Mic, Send, ShieldCheck, Sparkles, Zap } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
-import { Badge } from "@/components/ui/Badge";
 import { BetaBadge } from "@/components/ui/BetaBadge";
 import { Chip } from "@/components/ui/Chip";
-import {
-  COACH_INITIAL,
-  COACH_SUGGESTIONS,
-  findCoachResponse,
-} from "@/lib/mock/coach";
-import type { CoachMessage } from "@/lib/types";
+import { COACH_GREETING, COACH_SUGGESTIONS } from "@/lib/coach/constants";
+import type { CoachCitation, CoachMessage } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+const INITIAL_MESSAGES: CoachMessage[] = [
+  {
+    id: "greeting",
+    role: "assistant",
+    content: COACH_GREETING,
+    createdAt: new Date(),
+  },
+];
 
 const PROACTIVE_PROMPTS = [
   {
@@ -41,9 +45,10 @@ export default function CoachPage() {
 
 function CoachPageInner() {
   const searchParams = useSearchParams();
-  const [messages, setMessages] = useState<CoachMessage[]>(COACH_INITIAL);
+  const [messages, setMessages] = useState<CoachMessage[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
+  const [limitInfo, setLimitInfo] = useState<{ used: number; limit: number } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const consumedQueryRef = useRef<string | null>(null);
 
@@ -54,8 +59,8 @@ function CoachPageInner() {
     });
   }, [messages, typing]);
 
-  const sendMessage = (content: string) => {
-    if (!content.trim()) return;
+  const sendMessage = async (content: string) => {
+    if (!content.trim() || typing) return;
 
     const userMsg: CoachMessage = {
       id: Date.now().toString(),
@@ -63,30 +68,71 @@ function CoachPageInner() {
       content,
       createdAt: new Date(),
     };
-
-    setMessages((existing) => [...existing, userMsg]);
+    const nextMessages = [...messages, userMsg];
+    setMessages(nextMessages);
     setInput("");
     setTyping(true);
 
-    window.setTimeout(() => {
-      const response = findCoachResponse(content);
-      const assistantMsg: CoachMessage = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: response,
-        createdAt: new Date(),
+    try {
+      const res = await fetch("/api/coach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: nextMessages
+            .filter((m) => m.id !== "greeting")
+            .slice(-10)
+            .map((m) => ({ role: m.role, content: m.content })),
+        }),
+      });
+
+      if (res.status === 402) {
+        const data = await res.json().catch(() => null);
+        setLimitInfo({ used: data?.used ?? 3, limit: data?.limit ?? 3 });
+        return;
+      }
+      if (!res.ok) {
+        pushAssistant(
+          "Da ist gerade etwas schiefgelaufen. Versuch es in einem Moment nochmal."
+        );
+        return;
+      }
+
+      const data = (await res.json()) as {
+        reply: string;
+        citations: CoachCitation[];
+        usage: { used: number; limit: number };
       };
-      setMessages((existing) => [...existing, assistantMsg]);
+      setLimitInfo(data.usage);
+      setMessages((existing) => [
+        ...existing,
+        {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: data.reply,
+          createdAt: new Date(),
+          citations: data.citations,
+        },
+      ]);
+    } catch {
+      pushAssistant("Netzwerkfehler — bitte nochmal versuchen.");
+    } finally {
       setTyping(false);
-    }, 900);
+    }
   };
+
+  function pushAssistant(content: string) {
+    setMessages((existing) => [
+      ...existing,
+      { id: (Date.now() + 1).toString(), role: "assistant", content, createdAt: new Date() },
+    ]);
+  }
 
   useEffect(() => {
     const prompt = searchParams.get("q")?.trim();
     if (!prompt) return;
     if (consumedQueryRef.current === prompt) return;
     consumedQueryRef.current = prompt;
-    sendMessage(prompt);
+    void sendMessage(prompt);
   }, [searchParams]);
 
   return (
@@ -94,6 +140,7 @@ function CoachPageInner() {
       messages={messages}
       input={input}
       typing={typing}
+      limitInfo={limitInfo}
       scrollRef={scrollRef}
       onInputChange={setInput}
       onSend={sendMessage}
@@ -103,9 +150,10 @@ function CoachPageInner() {
 
 function CoachShell({
   loading,
-  messages = COACH_INITIAL,
+  messages = INITIAL_MESSAGES,
   input = "",
   typing = false,
+  limitInfo,
   scrollRef,
   onInputChange,
   onSend,
@@ -114,6 +162,7 @@ function CoachShell({
   messages?: CoachMessage[];
   input?: string;
   typing?: boolean;
+  limitInfo?: { used: number; limit: number } | null;
   scrollRef?: RefObject<HTMLDivElement | null>;
   onInputChange?: (value: string) => void;
   onSend?: (value: string) => void;
@@ -136,13 +185,6 @@ function CoachShell({
             </p>
           </div>
           <BetaBadge />
-        </div>
-
-        <div className="px-5 pb-4">
-          <Badge tone="neutral">
-            <span className="opacity-60">Kontext:</span> Dein Garten, Muenchen,
-            April
-          </Badge>
         </div>
       </div>
 
@@ -188,6 +230,25 @@ function CoachShell({
           <MessageBubble key={message.id} message={message} delay={index * 0.05} />
         ))}
         {typing && <TypingIndicator />}
+        {limitInfo && limitInfo.used >= limitInfo.limit && (
+          <div className="rounded-lg border border-sun-500/30 bg-sun-500/10 p-4">
+            <p className="text-[14px] font-semibold text-bark-900">
+              Tageslimit erreicht ({limitInfo.limit} Nachrichten/Tag)
+            </p>
+            <p className="mt-1 text-[13px] text-ink-muted">
+              Morgen geht es weiter — oder{" "}
+              <a href="/premium" className="underline text-forest-700">
+                Premium vormerken
+              </a>{" "}
+              für mehr Coach-Nachrichten.
+            </p>
+          </div>
+        )}
+        {limitInfo && limitInfo.used < limitInfo.limit && (
+          <p className="text-center text-[11px] text-ink-soft">
+            {limitInfo.used} von {limitInfo.limit} Nachrichten heute
+          </p>
+        )}
       </div>
 
       {!loading && messages.length <= 2 && (
@@ -228,7 +289,8 @@ function CoachShell({
             {input.trim() ? (
               <button
                 type="submit"
-                className="tap-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-forest-700 text-paper transition-colors hover:bg-forest-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+                disabled={typing || (limitInfo ? limitInfo.used >= limitInfo.limit : false)}
+                className="tap-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-forest-700 text-paper transition-colors hover:bg-forest-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream disabled:opacity-50"
               >
                 <Send className="h-4 w-4" />
               </button>
