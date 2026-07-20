@@ -15,11 +15,18 @@ describe("buildContentScope", () => {
     expect(scope.filter((e) => e.id === "pest_blattlaeuse")).toHaveLength(1);
   });
   it("ergaenzt Suchtreffer zur Query", () => {
-    // Hinweis: searchContent() matcht nur "alias.includes(query)", nicht umgekehrt
-    // (verifiziert gegen src/content/index.ts) - daher hier ein Alias-Substring statt
-    // eines vollen Satzes, sonst faende die Suche nichts.
     const scope = buildContentScope([], "Mehltau");
     expect(scope.some((e) => e.id === "disease_echter_mehltau")).toBe(true);
+  });
+  it("findet Eintraege in einer ganzen Nutzerfrage", () => {
+    // Der Coach uebergibt die komplette Nutzerfrage, keinen Suchbegriff.
+    const scope = buildContentScope([], "Was hilft gegen Blattläuse an der Rose?");
+    expect(scope.some((e) => e.id === "pest_blattlaeuse")).toBe(true);
+  });
+  it("ignoriert kurze Fuellwoerter in der Frage", () => {
+    // "was", "und", "an" duerfen keine willkuerlichen Treffer erzeugen.
+    const scope = buildContentScope([], "Was ist das und wie geht es an?");
+    expect(scope).toHaveLength(0);
   });
   it("begrenzt den Scope auf 8 Eintraege", () => {
     const allIds = [

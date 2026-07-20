@@ -1,4 +1,4 @@
-import { getContentById, searchContent } from '@/content';
+import { CONTENT_REGISTRY, getContentById } from '@/content';
 import type { ContentEntry } from '@/domain/types';
 
 export interface CoachContext {
@@ -16,6 +16,28 @@ export interface CoachContext {
 
 const MAX_SCOPE = 8;
 const MAX_SEARCH_HITS = 3;
+const MIN_TOKEN_LENGTH = 4;
+
+/**
+ * Sucht Katalog-Eintraege zu einer ganzen Nutzerfrage.
+ * `searchContent` aus @/content prueft, ob der Eintragsname die Query enthaelt —
+ * das passt zu einem Suchfeld, trifft bei einem ganzen Satz aber nie zu.
+ * Hier deshalb umgekehrt: Frage in Woerter zerlegen und pruefen, ob eines davon
+ * im Namen, im wissenschaftlichen Namen oder in einem Alias vorkommt.
+ */
+function searchByQuestion(query: string): ContentEntry[] {
+  const tokens = query
+    .toLowerCase()
+    .split(/[^a-zäöüß]+/)
+    .filter((token) => token.length >= MIN_TOKEN_LENGTH);
+  if (tokens.length === 0) return [];
+  return CONTENT_REGISTRY.filter((entry) => {
+    const haystack = [entry.name, entry.scientificName, ...entry.aliases]
+      .join(' ')
+      .toLowerCase();
+    return tokens.some((token) => haystack.includes(token));
+  });
+}
 
 /** Katalog-Scope: referenzierte Eintraege der Faelle/Pflanzen + Top-Suchtreffer zur Frage. */
 export function buildContentScope(
@@ -34,7 +56,7 @@ export function buildContentScope(
   }
   if (query.trim()) {
     let hits = 0;
-    for (const entry of searchContent(query)) {
+    for (const entry of searchByQuestion(query)) {
       if (seen.has(entry.id)) continue;
       seen.add(entry.id);
       scope.push(entry);
