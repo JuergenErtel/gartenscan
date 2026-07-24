@@ -63,8 +63,9 @@ export default function ImpressumPage() {
             Registereintrag
           </h2>
           <p>
-            Eintragung im Handelsregister wird ergänzt. Aktuelle Daten erhältst du
-            auf Anfrage per E-Mail.
+            Registergericht: Amtsgericht Landau
+            <br />
+            Registernummer: HRB 34581
           </p>
         </section>
 
@@ -73,8 +74,9 @@ export default function ImpressumPage() {
             Umsatzsteuer-ID
           </h2>
           <p>
-            Eine Umsatzsteuer-Identifikationsnummer gemäß § 27 a UStG wird – sofern
-            vorhanden – an dieser Stelle ergänzt.
+            Umsatzsteuer-Identifikationsnummer gemäß § 27 a UStG:
+            <br />
+            DE463262784
           </p>
         </section>
 
