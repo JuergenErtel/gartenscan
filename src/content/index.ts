@@ -35,6 +35,18 @@ import { tomate } from "./plants/tomate";
 import { efeu } from "./plants/efeu";
 import { ahorn } from "./plants/ahorn";
 import { hasenglocken } from "./plants/hasenglocken";
+import { lavendel } from "./plants/lavendel";
+import { buchsbaum } from "./plants/buchsbaum";
+import { kirschlorbeer } from "./plants/kirschlorbeer";
+import { thuja } from "./plants/thuja";
+import { erdbeere } from "./plants/erdbeere";
+import { apfel } from "./plants/apfel";
+import { zucchini } from "./plants/zucchini";
+import { basilikum } from "./plants/basilikum";
+import { geranie } from "./plants/geranie";
+import { sonnenblume } from "./plants/sonnenblume";
+import { tulpe } from "./plants/tulpe";
+import { funkie } from "./plants/funkie";
 
 /**
  * Central content registry. In production this would be replaced by a CMS
@@ -72,6 +84,18 @@ export const CONTENT_REGISTRY: ContentEntry[] = [
   efeu,
   ahorn,
   hasenglocken,
+  lavendel,
+  buchsbaum,
+  kirschlorbeer,
+  thuja,
+  erdbeere,
+  apfel,
+  zucchini,
+  basilikum,
+  geranie,
+  sonnenblume,
+  tulpe,
+  funkie,
 ];
 
 const CONTENT_BY_ID = new Map(CONTENT_REGISTRY.map((c) => [c.id, c]));

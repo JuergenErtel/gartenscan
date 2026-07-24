@@ -46,4 +46,8 @@ describe('CONTENT_REGISTRY', () => {
     expect(CONTENT_STATS.byCategory.BENEFICIAL ?? 0).toBeGreaterThanOrEqual(3);
     expect(CONTENT_STATS.byCategory.DISEASE ?? 0).toBeGreaterThanOrEqual(6);
   });
+
+  it('plant catalog expanded', () => {
+    expect(CONTENT_STATS.byCategory.PLANT ?? 0).toBeGreaterThanOrEqual(18);
+  });
 });
